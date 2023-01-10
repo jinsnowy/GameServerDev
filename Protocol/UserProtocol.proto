@@ -1,0 +1,39 @@
+syntax = "proto3";
+package UserProtocol;
+
+import "Struct.proto";
+
+message HEARTBEAT
+{
+	uint64 sessionId = 1;
+	int64 time = 2;
+}
+
+message TEST
+{
+	string text = 1;
+}
+
+message LOGIN_REQUEST
+{
+	Player player = 1;
+}
+
+message LOGIN_RESPONSE
+{
+	Player player = 1;
+}
+
+message ENTER_ROOM_REQUEST
+{
+}
+
+message ENTER_ROOM_RESPONSE
+{
+	int32 id = 1;
+}
+
+message CLIENT_MOVE_FORWARD
+{
+	int32 id = 1;
+}

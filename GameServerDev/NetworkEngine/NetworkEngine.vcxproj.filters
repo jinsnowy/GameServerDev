@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{fe760804-647c-4ad7-b81a-bf137d8b0158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{715cf68e-6779-4784-aa25-b59f12876c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{b4e403ce-b700-4cb2-8069-215a377cdda1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Socket">
+      <UniqueIdentifier>{77985fff-a5d3-4c00-8f9c-77ad90d77f03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{28128423-bfe3-4d5a-a58b-82333c4d0b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IoEvent">
+      <UniqueIdentifier>{e40f7b1b-a326-463a-ba8c-261c840f42ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{f9894e47-0149-4aa6-bef4-bfd89482b600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Session">
+      <UniqueIdentifier>{5312d023-c4cd-4f41-be53-6384b954dd6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Listener">
+      <UniqueIdentifier>{dc4bdd8c-968d-418e-b841-db02e86a1b86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffer">
+      <UniqueIdentifier>{f2e867cf-6733-4064-9cf7-0508497325e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SessionManager">
+      <UniqueIdentifier>{ca2e1954-ebde-4968-a8fa-03f6e5c2755a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{17a1d0b4-5354-455b-ab91-6c5679ce794b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet">
+      <UniqueIdentifier>{8d1982bc-3e8e-4ac7-be0a-cd2ae4dba8cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Handshake">
+      <UniqueIdentifier>{9cc988ce-fc22-4e3d-afc9-e14e691bc4f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{33b36a94-5cba-4d39-8458-ef511143c43e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol\Handshake">
+      <UniqueIdentifier>{1fd2caf6-b755-4192-8be1-3a44696f41cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Task">
+      <UniqueIdentifier>{29a3626b-f726-4525-bb38-6ddc133ea089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{cec31a39-bdd1-463e-a6e1-db943edd82ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Alaram">
+      <UniqueIdentifier>{8c8d7194-af3b-4a05-aab2-c5466e1e8a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Database">
+      <UniqueIdentifier>{fea54945-713f-4a9b-8217-7d132b6157ff}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Define.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SehException.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Format.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Synchronization.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="EndPoint.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpSocket.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PathManager.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CorePch.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="NetUtils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Stl.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="IoContext.h">
+      <Filter>IoEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="IoEvent.h">
+      <Filter>IoEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryPool.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="StdMutex.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Listener.h">
+      <Filter>Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="RecvBuffer.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSession.h">
+      <Filter>Session</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceBase.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSession.h">
+      <Filter>Session</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferSource.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionManager.h">
+      <Filter>SessionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSession.h">
+      <Filter>Session</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketException.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketHeader.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Handshake.h">
+      <Filter>Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpNetwork.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketHandler.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSessionManager.h">
+      <Filter>SessionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="HandshakeProtocol.h">
+      <Filter>Protocol\Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="HandshakePacketHandler.h">
+      <Filter>Protocol\Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskSchedule.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskSerializer.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskScheduler.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="ITaskCreator.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolObject.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskAsync.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TlsMemory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Alarm.h">
+      <Filter>Alaram</Filter>
+    </ClInclude>
+    <ClInclude Include="AlarmManager.h">
+      <Filter>Alaram</Filter>
+    </ClInclude>
+    <ClInclude Include="DBConnection.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="DBConnectionPool.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="DBBind.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="DBModel.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="DBSynchronizer.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferSegment.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="EndPoint.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpSocket.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="PathManager.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="NetUtils.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="DateTime.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="IoContext.cpp">
+      <Filter>IoEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="IoEvent.cpp">
+      <Filter>IoEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryPool.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="StdMutex.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="RecvBuffer.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerSession.cpp">
+      <Filter>Session</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceBase.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSession.cpp">
+      <Filter>Session</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferSource.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientService.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionManager.cpp">
+      <Filter>SessionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginSession.cpp">
+      <Filter>Session</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketHandler.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Handshake.cpp">
+      <Filter>Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpNetwork.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginSessionManager.cpp">
+      <Filter>SessionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="HandshakeProtocol.cpp">
+      <Filter>Protocol\Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="HandshakePacketHandler.cpp">
+      <Filter>Protocol\Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketHeader.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskSchedule.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskSerializer.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskScheduler.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="ITaskCreator.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="PoolObject.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskAsync.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TlsMemory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Alarm.cpp">
+      <Filter>Alaram</Filter>
+    </ClCompile>
+    <ClCompile Include="AlarmManager.cpp">
+      <Filter>Alaram</Filter>
+    </ClCompile>
+    <ClCompile Include="DBConnection.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="DBConnectionPool.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="DBBind.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="DBModel.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="DBSynchronizer.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferSegment.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\Config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\CopyGenerated.bat" />
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\README.md" />
+  </ItemGroup>
+</Project>
