@@ -39,3 +39,13 @@ struct DisconnectEvent
 
 	void operator()(int32 errorCode, DWORD);
 };
+
+struct AcceptEvent
+{
+	shared_ptr<TcpListener> listenerPtr;
+	shared_ptr<TcpNetwork> networkPtr;
+
+	AcceptEvent(shared_ptr<TcpListener> _listenerPtr, shared_ptr<TcpNetwork> _networkPtr);
+
+	void operator()(int32 errorCode, DWORD);
+};

@@ -3,7 +3,7 @@
 class Session : public std::enable_shared_from_this<Session>
 {
 	friend class TcpNetwork;
-	friend class Listener;
+	friend class TcpListener;
 	friend class HandshakePacketHandler;
 public:
 	Session();

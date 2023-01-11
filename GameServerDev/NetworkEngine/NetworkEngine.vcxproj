@@ -207,6 +207,9 @@ CALL GenProtocols.bat</Command>
     <ClInclude Include="ITaskCreator.h" />
     <ClInclude Include="NetworkEvent.h" />
     <ClInclude Include="PoolObject.h" />
+    <ClInclude Include="TcpActiveSocket.h" />
+    <ClInclude Include="TcpListenerNetwork.h" />
+    <ClInclude Include="TcpListenerSocket.h" />
     <ClInclude Include="XString.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAsync.h" />
@@ -219,7 +222,7 @@ CALL GenProtocols.bat</Command>
     <ClInclude Include="IoContext.h" />
     <ClInclude Include="IoEvent.h" />
     <ClInclude Include="ServiceBase.h" />
-    <ClInclude Include="Listener.h" />
+    <ClInclude Include="TcpListener.h" />
     <ClInclude Include="LoginSession.h" />
     <ClInclude Include="LoginSessionManager.h" />
     <ClInclude Include="MemoryPool.h" />
@@ -273,6 +276,9 @@ CALL GenProtocols.bat</Command>
     <ClCompile Include="PoolObject.cpp" />
     <ClCompile Include="Protocol.cpp" />
     <ClCompile Include="SehException.cpp" />
+    <ClCompile Include="TcpActiveSocket.cpp" />
+    <ClCompile Include="TcpListenerNetwork.cpp" />
+    <ClCompile Include="TcpListenerSocket.cpp" />
     <ClCompile Include="XString.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskAsync.cpp" />
@@ -285,7 +291,7 @@ CALL GenProtocols.bat</Command>
     <ClCompile Include="IoContext.cpp" />
     <ClCompile Include="IoEvent.cpp" />
     <ClCompile Include="ServiceBase.cpp" />
-    <ClCompile Include="Listener.cpp" />
+    <ClCompile Include="TcpListener.cpp" />
     <ClCompile Include="LoginSession.cpp" />
     <ClCompile Include="LoginSessionManager.cpp" />
     <ClCompile Include="MemoryPool.cpp" />

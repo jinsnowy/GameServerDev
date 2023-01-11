@@ -124,7 +124,7 @@
     <ClInclude Include="Session.h">
       <Filter>Session</Filter>
     </ClInclude>
-    <ClInclude Include="Listener.h">
+    <ClInclude Include="TcpListener.h">
       <Filter>Listener</Filter>
     </ClInclude>
     <ClInclude Include="RecvBuffer.h">
@@ -247,6 +247,15 @@
     <ClInclude Include="XString.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="TcpListenerNetwork.h">
+      <Filter>Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpListenerSocket.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpActiveSocket.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -289,7 +298,7 @@
     <ClCompile Include="Session.cpp">
       <Filter>Session</Filter>
     </ClCompile>
-    <ClCompile Include="Listener.cpp">
+    <ClCompile Include="TcpListener.cpp">
       <Filter>Listener</Filter>
     </ClCompile>
     <ClCompile Include="RecvBuffer.cpp">
@@ -402,6 +411,15 @@
     </ClCompile>
     <ClCompile Include="XString.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpListenerNetwork.cpp">
+      <Filter>Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpListenerSocket.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpActiveSocket.cpp">
+      <Filter>Socket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

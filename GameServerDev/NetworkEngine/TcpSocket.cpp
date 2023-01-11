@@ -57,36 +57,7 @@ void TcpSocket::Close(const char* reason)
 	NetUtils::Shutdown(_socket, SD_BOTH);
 }
 
-TcpAsyncSocket::TcpAsyncSocket(ServiceBase& service)
-	:
-	TcpSocket(service)
+bool TcpSocket::IsDisposed()
 {
-}
-
-TcpActiveSocket::TcpActiveSocket(ServiceBase& service)
-	:
-	TcpAsyncSocket(service)
-{
-}
-
-TcpListenerSocket::TcpListenerSocket(ServiceBase& service)
-	:
-	TcpSocket(service)
-{
-}
-
-bool TcpListenerSocket::Bind(uint16 port)
-{
-	_bindEndPoint = EndPoint("127.0.0.1", port);
-	return NetUtils::Bind(_socket, _bindEndPoint);
-}
-
-bool TcpListenerSocket::Listen(int32 backLog)
-{
-	return NetUtils::Listen(_socket, backLog);
-}
-
-bool TcpListenerSocket::SetUpdateAcceptSocket(SOCKET acceptSocket)
-{
-	return NetUtils::SetUpdateAcceptSocket(acceptSocket, _socket);
+	return _disposed;
 }

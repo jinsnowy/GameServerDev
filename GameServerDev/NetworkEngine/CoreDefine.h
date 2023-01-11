@@ -23,6 +23,7 @@ using SessionWeakPtr = std::weak_ptr<class Session>;
 using SessionPtrCRef = const SessionPtr&;
 using NetworkPtr = std::shared_ptr<class TcpNetwork>;
 using NetworkPtrCRef = const std::shared_ptr<class TcpNetwork>&;
+using ListenerPtr = std::shared_ptr<class TcpListener>;
 using SessionFactory = std::function<SessionPtr()>;
 using NetworkFactory = std::function<NetworkPtr(class ServiceBase&)>;
 using OnAcceptFunc = std::function<bool(NetworkPtr)>;

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "NetworkEvent.h"
+
 #include "TcpNetwork.h"
+#include "TcpListener.h"
 
 RecvEvent::RecvEvent(shared_ptr<TcpNetwork> networkIn)
 	:
@@ -71,4 +73,28 @@ void DisconnectEvent::operator()(int32 errorCode, DWORD)
 	}
 
 	network->SetDisconnected();
+}
+
+AcceptEvent::AcceptEvent(shared_ptr<TcpListener> _listenerPtr, shared_ptr<TcpNetwork> _networkPtr)
+	:
+	listenerPtr(_listenerPtr), networkPtr(_networkPtr)
+{}
+
+void AcceptEvent::operator()(int32 errorCode, DWORD)
+{
+	if (errorCode != 0)
+	{
+		LOG_ERROR("OnAccept Error : %s", get_last_err_msg_code(errorCode));
+		listenerPtr->RegisterAccpet();
+		return;
+	}
+
+	if (!listenerPtr->ProcessAccept(networkPtr))
+	{
+		LOG_ERROR("cannot process accept");
+		listenerPtr->RegisterAccpet();
+		return;
+	}
+
+	listenerPtr->RegisterAccpet();
 }

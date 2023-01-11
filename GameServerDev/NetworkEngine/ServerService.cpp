@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ServerService.h"
-#include "Listener.h"
+#include "TcpListener.h"
 #include "Handshake.h"
 #include "SessionManager.h"
 #include "TcpNetwork.h"
@@ -41,9 +41,9 @@ void ServerService::Start()
         return make_shared<TcpNetwork>(ServiceBase);
     };
 
-    auto listener = make_shared<Listener>(*this, config);
-    if (!listener->start())
+    auto listener = make_shared<TcpListener>(*this, config);
+    if (!listener->Start())
     {
-        throw std::exception("listener start failed");
+        throw std::exception("TcpListener start failed");
     }
 }

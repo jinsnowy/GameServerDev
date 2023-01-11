@@ -8,45 +8,12 @@ using SharedMutex = std::shared_mutex;
 
 struct StdThreadId
 {
-	static inline size_t Get()
-	{
-		struct ThreadIdInit
-		{
-			size_t Id;
-
-			ThreadIdInit()
-			{
-				static atomic<size_t> IdGen = 1;
-				Id = IdGen.fetch_add(1);
-			}
-		};
-
-		thread_local ThreadIdInit threadId;
-
-		return threadId.Id;
-	}
+	static size_t Get();
 };
 
 struct StdThreadIdStr
 {
-	static inline const char* Get()
-	{
-		struct StdThreadIdStrInit
-		{
-			string IdStr;
-
-			StdThreadIdStrInit()
-			{
-				stringstream ss;
-				ss << std::this_thread::get_id();
-				IdStr = ss.str();
-			}
-		};
-
-		thread_local StdThreadIdStrInit threadId;
-
-		return threadId.IdStr.c_str();
-	}
+	static const char* Get();
 };
 
 class StdMutex

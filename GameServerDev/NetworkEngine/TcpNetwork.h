@@ -1,10 +1,12 @@
-#include "TcpSocket.h"
+#pragma once
+
+#include "TcpActiveSocket.h"
 #include "RecvBuffer.h"
 
 class Handshake;
 class TcpNetwork : public std::enable_shared_from_this<TcpNetwork>
 {
-	friend class Listener;
+	friend class TcpListener;
 	friend struct AcceptEvent;
 	friend struct ConnectEvent;
 	friend struct DisconnectEvent;
