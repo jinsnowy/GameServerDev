@@ -4,7 +4,6 @@
 
 #include "Singleton.h"
 #include "DateTime.h"
-#include "Format.h"
 
 enum class ELogLevel
 {
@@ -15,15 +14,14 @@ enum class ELogLevel
 	Fatal,
 };
 
-extern class Logger* GLogger;
-
 class Logger : public ISingleton<Logger>
 {
 	friend class ISingleton<Logger>;
 private:
 	bool mExitFlag;
 	bool mConsoleLog;
-	int mFlushDurationMilliSec;
+	int  mFlushDurationMilliSec;
+
 	std::string basePath;
 	std::string programName;
 
@@ -55,13 +53,15 @@ private:
 	void write(const std::string& log);
 
 	void flush();
+
+public:
+	static Logger* GLogger;
 };
 
-
-#define LOG_FATAL(fmt, ...) GLogger->Out(ELogLevel::Fatal, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_ERROR(fmt, ...) GLogger->Out(ELogLevel::Error, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_WARN(fmt, ...) GLogger->Out(ELogLevel::Warn, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_DEBUG(fmt, ...) GLogger->Out(ELogLevel::Debug, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_INFO(fmt, ...) GLogger->Out(ELogLevel::Info, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
+#define LOG_FATAL(fmt, ...) Logger::GLogger->Out(ELogLevel::Fatal, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
+#define LOG_ERROR(fmt, ...) Logger::GLogger->Out(ELogLevel::Error, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
+#define LOG_WARN(fmt, ...) Logger::GLogger->Out(ELogLevel::Warn, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
+#define LOG_DEBUG(fmt, ...) Logger::GLogger->Out(ELogLevel::Debug, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
+#define LOG_INFO(fmt, ...) Logger::GLogger->Out(ELogLevel::Info, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
 
 #endif

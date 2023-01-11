@@ -1,5 +1,4 @@
 #pragma once
-#include "Define.h"
 
 class TaskSchedule;
 class TaskScheduler : public ISingleton<TaskScheduler>

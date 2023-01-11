@@ -6,71 +6,19 @@ private:
     SOCKADDR_IN mInfo;
 
 public:
-	EndPoint()
-		:
-		mInfo{}
-	{
-	}
+	EndPoint();
+	EndPoint(const SOCKADDR_IN& info);
+	EndPoint(uint16 port);
+	EndPoint(const char* ipAddress, uint16 port);
 
-    EndPoint(const SOCKADDR_IN& info)
-        :
-        mInfo(info)
-    {
-    }
+	std::string GetIpAddress() const;
+	std::string GetPort() const;
 
-	EndPoint(uint16 port)
-	{
-		mInfo.sin_family = AF_INET;
-		mInfo.sin_addr.s_addr = htonl(INADDR_ANY);
-		mInfo.sin_port = htons(port);
-	}
-
-    EndPoint(const char* ipAddress, uint16 port)
-    {
-        mInfo.sin_family = AF_INET;
-        mInfo.sin_addr.s_addr = inet_addr(ipAddress);
-        mInfo.sin_port = htons(port);
-    }
-
-	std::string GetIpAddress() const
-	{
-		return inet_ntoa(mInfo.sin_addr);
-	}
-
-	std::string GetPort() const
-	{
-		return std::to_string(ntohs(mInfo.sin_port));
-	}
-
-	const SOCKADDR* GetSockAddr() const
-	{
-		return (const SOCKADDR*)(&mInfo);
-	}
-
+	const SOCKADDR* GetSockAddr() const;
 	SOCKADDR* GetSockAddr() { return (SOCKADDR*)(&mInfo); }
 	
 	constexpr size_t GetSize() const { return sizeof(SOCKADDR); }
-
 	std::string ToString() const;
 
-	static bool resolve(const char* hostAddress, uint16 port, EndPoint& endPoint)
-	{
-		addrinfo* result = nullptr;
-		addrinfo hints = {};
-		hints.ai_family = AF_INET;
-		hints.ai_socktype = SOCK_STREAM;
-		hints.ai_protocol = IPPROTO_TCP;
-
-		auto err_code = getaddrinfo(hostAddress, std::to_string(port).c_str(), &hints, &result);
-		if (err_code != 0 || result == nullptr)
-		{
-			return false;
-		}
-
-		SOCKADDR_IN* address = (SOCKADDR_IN*)(result->ai_addr);
-		endPoint = EndPoint(*address);
-		freeaddrinfo(result);
-
-		return true;
-	}
+	static bool Resolve(const char* hostAddress, uint16 port, EndPoint& endPoint);
 };

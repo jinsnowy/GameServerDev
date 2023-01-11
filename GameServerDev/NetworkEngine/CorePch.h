@@ -34,10 +34,14 @@ using namespace std;
 #include <mswsock.h>
 #include <rpc.h>
 
+#include "CoreMacro.h"
+#include "CoreDefine.h"
+
+
 #include "TlsMemory.h"
 #include "Singleton.h"
 #include "Logger.h"
-#include "Define.h"
+
 #include "Common.h"
 #include "IoEvent.h"
 #include "MemoryPool.h"

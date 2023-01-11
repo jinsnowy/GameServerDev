@@ -61,22 +61,16 @@
     <Filter Include="Database">
       <UniqueIdentifier>{fea54945-713f-4a9b-8217-7d132b6157ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Exception">
+      <UniqueIdentifier>{9da139e9-891d-4d83-99c7-7951b21f0a97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Define.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="SehException.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Format.h">
+    <ClInclude Include="CoreDefine.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Synchronization.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
@@ -241,6 +235,18 @@
     <ClInclude Include="NetworkEvent.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="CoreMacro.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SehException.h">
+      <Filter>Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="XString.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -387,6 +393,15 @@
     </ClCompile>
     <ClCompile Include="NetworkEvent.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SehException.cpp">
+      <Filter>Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="XString.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

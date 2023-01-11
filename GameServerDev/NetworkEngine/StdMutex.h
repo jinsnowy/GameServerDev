@@ -13,9 +13,11 @@ struct StdThreadId
 		struct ThreadIdInit
 		{
 			size_t Id;
+
 			ThreadIdInit()
 			{
-				Id = std::hash<std::thread::id>{}(std::this_thread::get_id());
+				static atomic<size_t> IdGen = 1;
+				Id = IdGen.fetch_add(1);
 			}
 		};
 

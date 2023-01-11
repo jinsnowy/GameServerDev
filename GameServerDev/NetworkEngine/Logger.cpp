@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Logger.h"
+
 #include "PathManager.h"
+
+Logger* Logger::GLogger = Logger::GetInstance();
 
 static const char* GetTag(ELogLevel level)
 {
@@ -20,8 +23,6 @@ static const char* GetTag(ELogLevel level)
 		return "Unknown";
 	}
 }
-
-Logger* GLogger = Logger::GetInstance();
 
 Logger::Logger()
 	:
@@ -84,7 +85,7 @@ void Logger::Out(ELogLevel level, std::thread::id thread_id, int line, const cha
 	}
 	va_end(arg_ptr);
 
-	std::string message = Format::format("[%s] [%s] %s [%d] : %s\n", now.toString().c_str(), threadIdStr, function, line, logstr.c_str());
+	std::string message = String::Format("[%s] [%s] %s [%d] : %s\n", now.ToString().c_str(), threadIdStr, function, line, logstr.c_str());
 
 	{
 		std::lock_guard<std::mutex> lk(mSync);
@@ -99,8 +100,8 @@ void Logger::write(const std::string& logs)
 		if (mOutFile.is_open() == false)
 		{
 			DateTime now = DateTime::Now();
-			std::string log_file_name = Format::format("%s%d.%d.%d.log", programName.c_str(), now.Year(), now.Month(), now.Day());
-			std::string log_file_path = Format::format("%s\\%s", basePath.c_str(), log_file_name.c_str());
+			std::string log_file_name = String::Format("%s%d.%d.%d.log", programName.c_str(), now.Year(), now.Month(), now.Day());
+			std::string log_file_path = String::Format("%s\\%s", basePath.c_str(), log_file_name.c_str());
 
 			mOutFile.open(log_file_path, std::ios_base::out | std::ios_base::app);
 		}

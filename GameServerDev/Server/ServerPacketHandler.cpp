@@ -13,7 +13,7 @@ void ServerPacketHandler::onTest(SessionPtrCRef session, UserProtocol::TEST pkt)
 {
 	auto player = session->GetShared<UserSession>()->GetPlayer();
 
-	SharedGlobal<Room>()->Enqueue(&Room::Broadcast, BufferSegment::Serialize(pkt));
+	Utils::SharedGlobal<Room>()->Enqueue(&Room::Broadcast, BufferSegment::Serialize(pkt));
 }
 
 void ServerPacketHandler::onLoginRequest(SessionPtrCRef session, UserProtocol::LOGIN_REQUEST pkt)
@@ -30,7 +30,7 @@ void ServerPacketHandler::onEnterRoomRequest(SessionPtrCRef session, UserProtoco
 {
 	auto player = session->GetShared<UserSession>()->GetPlayer();
 
-	SharedGlobal<Room>()->Enqueue(&Room::Enter, player);
+	Utils::SharedGlobal<Room>()->Enqueue(&Room::Enter, player);
 
 	UserProtocol::ENTER_ROOM_RESPONSE response;
 	response.set_id(0);

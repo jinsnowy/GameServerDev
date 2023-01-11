@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Timer.h"
-#include "Format.h"
+#include "XString.h"
 #include "DateTime.h"
 #include "Logger.h"
 #include "EndPoint.h"
+#include "Utils.h"
 #include "NetUtils.h"
 #include "StdMutex.h"
 #include "BufferSegment.h"
