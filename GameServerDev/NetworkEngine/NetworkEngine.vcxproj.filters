@@ -238,6 +238,9 @@
     <ClInclude Include="BufferSegment.h">
       <Filter>Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkEvent.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -381,6 +384,9 @@
     </ClCompile>
     <ClCompile Include="BufferSegment.cpp">
       <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEvent.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

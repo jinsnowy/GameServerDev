@@ -3,103 +3,6 @@
 #include "Session.h"
 #include "Handshake.h"
 
-struct on_recv_t
-{
-	shared_ptr<TcpNetwork> network;
-
-	on_recv_t(shared_ptr<TcpNetwork> networkIn)
-		: 
-		network(networkIn)
-	{}
-
-	void operator()(int32 errorCode, DWORD recvBytes)
-	{
-		if (recvBytes == 0)
-		{
-			network->disconnectOnError("recv 0");
-			return;
-		}
-
-		if (errorCode != 0)
-		{
-			network->handleError(errorCode);
-			return;
-		}
-
-		network->recv(recvBytes);
-		network->registerRecv();
-	}
-};
-
-struct on_send_t
-{
-	shared_ptr<TcpNetwork> network;
-	std::vector<BufferSegment> segmentHolder;
-
-	on_send_t(shared_ptr<TcpNetwork>  networkIn, std::vector<BufferSegment>&& segments)
-		:
-		network(networkIn),
-		segmentHolder(segments)
-	{}
-
-	void operator()(int32 errorCode, DWORD writeBytes)
-	{
-		if (writeBytes == 0)
-		{
-			network->disconnectOnError("write 0");
-			return;
-		}
-
-		if (errorCode != 0)
-		{
-			network->handleError(errorCode);
-			return;
-		}
-
-		network->flush();
-	}
-};
-
-struct on_connect_t
-{
-	shared_ptr<TcpNetwork> network;
-	EndPoint endPoint;
-
-	on_connect_t(shared_ptr<TcpNetwork>  networkIn, EndPoint _endPoint)
-		: network(networkIn), endPoint(_endPoint) {}
-
-	void operator()(int32 errorCode, DWORD)
-	{
-		if (errorCode != 0)
-		{
-			LOG_ERROR("connect error : %s", get_last_err_msg());
-			return;
-		}
-
-		network->setConnected(endPoint);
-		network->ProcessHandshake();
-	}
-};
-
-struct on_disconnect_t
-{
-	shared_ptr<TcpNetwork> network;
-
-	on_disconnect_t(shared_ptr<TcpNetwork> networkIn)
-		: 
-		network(networkIn) {}
-
-	void operator()(int32 errorCode, DWORD)
-	{
-		if (errorCode != 0)
-		{
-			LOG_ERROR("disconnect error : %s", get_last_err_msg());
-		}
-
-		network->setDisconnected();
-	}
-};
-
 TcpNetwork::TcpNetwork(ServiceBase& ServiceBase)
 	:
 	_socket(ServiceBase),
@@ -227,6 +130,11 @@ void TcpNetwork::ConnectAsync(const EndPoint& endPoint)
 	{
 		LOG_ERROR("connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
 	}
+}
+
+void TcpNetwork::Start()
+{
+	registerRecv();
 }
 
 void TcpNetwork::setDisconnected()

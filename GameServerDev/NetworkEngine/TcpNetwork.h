@@ -5,11 +5,11 @@ class Handshake;
 class TcpNetwork : public std::enable_shared_from_this<TcpNetwork>
 {
 	friend class Listener;
-	friend struct on_accept_t;
-	friend struct on_connect_t;
-	friend struct on_disconnect_t;
-	friend struct on_recv_t;
-	friend struct on_send_t;
+	friend struct AcceptEvent;
+	friend struct ConnectEvent;
+	friend struct DisconnectEvent;
+	friend struct RecvEvent;
+	friend struct SendEvent;
 private:
 	TcpActiveSocket _socket;
 	SessionWeakPtr  _session;
@@ -33,7 +33,7 @@ public:
 	
 	void ConnectAsync(const EndPoint& endPoint);
 
-	void Start() { registerRecv(); }
+	void Start();
 public:
 	SessionPtr GetSession() { return _session.lock(); }
 
@@ -61,6 +61,7 @@ private:
 	void disconnectOnError(const char* reason = "");
 
 	void handleError(int32 errorCode);
+
 private:
 	atomic<bool>			_connected;
 	atomic<bool>			_pending;
@@ -69,7 +70,7 @@ private:
 	RecvBuffer				_recvBuffer;
 
 private:
-	StdMutex				    _handlerSync;
+	StdMutex				_handlerSync;
 	vector<PacketHandler*>  _packetHandlers;
 
 	bool resolvePacketHandler(int32 protocol, PacketHandler** handler);

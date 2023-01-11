@@ -204,6 +204,7 @@ CALL GenProtocols.bat</Command>
     <ClInclude Include="DBModel.h" />
     <ClInclude Include="DBSynchronizer.h" />
     <ClInclude Include="ITaskCreator.h" />
+    <ClInclude Include="NetworkEvent.h" />
     <ClInclude Include="PoolObject.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAsync.h" />
@@ -266,6 +267,7 @@ CALL GenProtocols.bat</Command>
     <ClCompile Include="DBModel.cpp" />
     <ClCompile Include="DBSynchronizer.cpp" />
     <ClCompile Include="ITaskCreator.cpp" />
+    <ClCompile Include="NetworkEvent.cpp" />
     <ClCompile Include="PacketHeader.cpp" />
     <ClCompile Include="PoolObject.cpp" />
     <ClCompile Include="Protocol.cpp" />
