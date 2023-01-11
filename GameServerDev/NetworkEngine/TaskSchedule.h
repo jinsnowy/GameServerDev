@@ -16,7 +16,7 @@ public:
 	
 	~TaskSchedule();
 
-	void Flush(int& timeOutMs);
+	void Flush(int64& timeOutMs);
 
 private:
 	void Done();

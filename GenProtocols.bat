@@ -1,3 +1,3 @@
-GenProtocols.exe --path=./UserProtocol.proto --out=./Include/protocol/
+GenProtocols.exe --path=./Protocol/UserProtocol.proto --out=./Include/protocol/
 
 IF ERRORLEVEL 1 PAUSE

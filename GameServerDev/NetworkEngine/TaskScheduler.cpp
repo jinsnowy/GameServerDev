@@ -12,7 +12,7 @@ TaskScheduler::~TaskScheduler()
 {
 }
 
-void TaskScheduler::Poll(int timeOutMs)
+void TaskScheduler::Poll(int64 timeOutMs)
 {
 	TaskSchedule* schedule;
 	while (timeOutMs > 0) 

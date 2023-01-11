@@ -32,7 +32,7 @@ private:
 	size_t		 _base_size;
 
 public:
-	static void initialize();
+	static void Initialize();
 
 	static void* allocate(size_t size);
 	static void  deallocate(void* ptr);

@@ -8,7 +8,7 @@ public:
 	TaskScheduler();
 	~TaskScheduler();
 
-	void Poll(int timeOutMs);
+	void Poll(int64 timeOutMs);
 
 	void Schedule(TaskSchedule* schedule);
 

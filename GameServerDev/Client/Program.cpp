@@ -10,10 +10,8 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
-    NetUtils::initialize();
-    MemoryPool::initialize();
+    NetUtils::Initialize();
+    MemoryPool::Initialize();
 
     ClientSessionFactory sessionFactory = []() { return shared_ptr<ClientSession>(new PlayerSession()); };
     ClientServiceParam param(100, 1, "127.0.0.1", 12321, sessionFactory);

@@ -115,7 +115,7 @@ bool Listener::processAccept(const NetworkPtr& network)
 		return false;
 	}
 
-	network->setConnected(endPoint);
+	network->SetConnected(endPoint);
 
 	return true;
 }

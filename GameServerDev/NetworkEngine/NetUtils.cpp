@@ -5,7 +5,7 @@ LPFN_CONNECTEX NetUtils::ConnectEx = nullptr;
 LPFN_DISCONNECTEX NetUtils::DisconnectEx = nullptr;
 LPFN_ACCEPTEX NetUtils::AcceptEx = nullptr;
 
-void NetUtils::initialize()
+void NetUtils::Initialize()
 {
 	struct WSAInit
 	{
@@ -25,9 +25,11 @@ void NetUtils::initialize()
 
 	/* 런타임에 주소 얻어오는 API */
 	SOCKET dummySocket = CreateSocket();
+
 	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_CONNECTEX, reinterpret_cast<LPVOID*>(&ConnectEx)));
 	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_DISCONNECTEX, reinterpret_cast<LPVOID*>(&DisconnectEx)));
 	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_ACCEPTEX, reinterpret_cast<LPVOID*>(&AcceptEx)));
+
 	Close(dummySocket);
 }
 

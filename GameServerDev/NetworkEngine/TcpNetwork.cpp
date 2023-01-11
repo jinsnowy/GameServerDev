@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "TcpNetwork.h"
 #include "Session.h"
+#include "NetworkEvent.h"
+
 #include "Handshake.h"
 
 TcpNetwork::TcpNetwork(ServiceBase& ServiceBase)
@@ -46,18 +48,18 @@ void TcpNetwork::RequireHandshake(Handshake* handshake)
 	_handshake.reset(handshake);
 }
 
-void TcpNetwork::recv(DWORD recvBytes)
+void TcpNetwork::Recv(DWORD recvBytes)
 {
 	if (!_recvBuffer.OnDataRecv(recvBytes))
 	{
-		disconnectOnError("recv buffer overflows");
+		DisconnectOnError("recv buffer overflows");
 		return;
 	}
 	
 	auto session = _session.lock();
 	if (session == nullptr)
 	{
-		disconnectOnError("session disposed");
+		DisconnectOnError("session disposed");
 		return;
 	}
 
@@ -82,7 +84,7 @@ void TcpNetwork::recv(DWORD recvBytes)
 		}
 		else
 		{
-			disconnectOnError("unknown protocol");
+			DisconnectOnError("unknown protocol");
 			break;
 		}
 	}
@@ -100,13 +102,13 @@ void TcpNetwork::SendAsync(const BufferSegment& segment)
 
 	if (_pending.exchange(true) == false)
 	{
-		flush();
+		Flush();
 	}
 }
 
 void TcpNetwork::DisconnectAsync()
 {
-	if (false == _socket.DisconnectAsync(on_disconnect_t(shared_from_this())))
+	if (false == _socket.DisconnectAsync(DisconnectEvent(shared_from_this())))
 	{
 		LOG_ERROR("disconnect failed %s", get_last_err_msg());
 	}
@@ -126,7 +128,7 @@ void TcpNetwork::ConnectAsync(const EndPoint& endPoint)
 		return;
 	}
 
-	if (!_socket.ConnectAsync(endPoint, on_connect_t(shared_from_this(), endPoint)))
+	if (!_socket.ConnectAsync(endPoint, ConnectEvent(shared_from_this(), endPoint)))
 	{
 		LOG_ERROR("connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
 	}
@@ -134,10 +136,10 @@ void TcpNetwork::ConnectAsync(const EndPoint& endPoint)
 
 void TcpNetwork::Start()
 {
-	registerRecv();
+	RegisterRecv();
 }
 
-void TcpNetwork::setDisconnected()
+void TcpNetwork::SetDisconnected()
 {
 	if (_connected.exchange(false) == true)
 	{
@@ -149,7 +151,7 @@ void TcpNetwork::setDisconnected()
 	}
 }
 
-void TcpNetwork::setConnected(EndPoint endPoint)
+void TcpNetwork::SetConnected(EndPoint endPoint)
 {
 	if (_connected.exchange(true) == false)
 	{
@@ -163,21 +165,21 @@ void TcpNetwork::setConnected(EndPoint endPoint)
 
 		LOG_INFO("start recv");
 
-		registerRecv(true);
+		RegisterRecv(true);
 	}
 }
 
-void TcpNetwork::flush()
+void TcpNetwork::Flush()
 {
-	if (flushInternal() == false)
+	if (FlushInternal() == false)
 	{
 		int32 errCode = ::WSAGetLastError();
 
-		handleError(errCode);
+		HandleError(errCode);
 	}
 }
 
-bool TcpNetwork::flushInternal()
+bool TcpNetwork::FlushInternal()
 {
 	if (IsConnected() == false)
 		return true;
@@ -204,10 +206,10 @@ bool TcpNetwork::flushInternal()
 		segments = std::move(_pendingSegment);
 	}
 	
-	return _socket.WriteAsync(buffers, on_send_t(shared_from_this(), std::move(segments)));
+	return _socket.WriteAsync(buffers, SendEvent(shared_from_this(), std::move(segments)));
 }
 
-void TcpNetwork::registerRecv(bool init)
+void TcpNetwork::RegisterRecv(bool init)
 {
 	if (!IsConnected())
 		return;
@@ -217,32 +219,32 @@ void TcpNetwork::registerRecv(bool init)
 		_recvBuffer.Clear();
 	}
 
-	if (!_socket.ReadAsync(_recvBuffer.GetBufferPtr(), _recvBuffer.GetLen(), on_recv_t(shared_from_this())))
+	if (!_socket.ReadAsync(_recvBuffer.GetBufferPtr(), _recvBuffer.GetLen(), RecvEvent(shared_from_this())))
 	{
 		int32 errCode = ::WSAGetLastError();
 
-		handleError(errCode);
+		HandleError(errCode);
 	}
 }
 
-void TcpNetwork::disconnectOnError(const char* reason)
+void TcpNetwork::DisconnectOnError(const char* reason)
 {
 	if (!IsConnected())
 		return;
 
-	if (!_socket.DisconnectAsync(on_disconnect_t(shared_from_this())))
+	if (!_socket.DisconnectAsync(DisconnectEvent(shared_from_this())))
 	{
 		LOG_ERROR("disconnect failed on %s : %s", reason, get_last_err_msg());
 	}
 }
 
-void TcpNetwork::handleError(int32 errorCode)
+void TcpNetwork::HandleError(int32 errorCode)
 {
 	switch (errorCode)
 	{
 	case WSAECONNRESET:
 	case WSAECONNABORTED:
-		disconnectOnError("connection reset");
+		DisconnectOnError("connection reset");
 		break;
 	default:
 		LOG_ERROR("handle error %s", get_last_err_msg_code(errorCode));

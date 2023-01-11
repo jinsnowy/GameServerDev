@@ -46,21 +46,21 @@ public:
 	bool IsConnected() { return _connected; }
 
 private:
-	void setDisconnected();
+	void SetDisconnected();
 
-	void setConnected(EndPoint endPoint);
+	void SetConnected(EndPoint endPoint);
 
-	void recv(DWORD bytes);
+	void Recv(DWORD bytes);
 
-	void flush();
+	void Flush();
 	
-	bool flushInternal();
+	bool FlushInternal();
 	
-	void registerRecv(bool init = false);
+	void RegisterRecv(bool init = false);
 
-	void disconnectOnError(const char* reason = "");
+	void DisconnectOnError(const char* reason = "");
 
-	void handleError(int32 errorCode);
+	void HandleError(int32 errorCode);
 
 private:
 	atomic<bool>			_connected;

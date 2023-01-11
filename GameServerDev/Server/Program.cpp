@@ -16,10 +16,8 @@ static void Process();
 
 int main(int argc, char ** argv)
 {
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
-    NetUtils::initialize();
-    MemoryPool::initialize();
+    NetUtils::Initialize();
+    MemoryPool::Initialize();
 
     LPCWSTR connString = L"Driver={ODBC Driver 17 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDb;Trusted_Connection=Yes;";
 

@@ -24,7 +24,7 @@ TaskSchedule::~TaskSchedule()
 {
 }
 
-void TaskSchedule::Flush(int& timeOutMs)
+void TaskSchedule::Flush(int64& timeOutMs)
 {
 	static TaskScheduler* scheduler = TaskScheduler::GetInstance();
 

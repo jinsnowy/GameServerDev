@@ -11,35 +11,18 @@ void RecvEvent::operator()(int32 errorCode, DWORD recvBytes)
 {
 	if (recvBytes == 0)
 	{
-		network->disconnectOnError("recv 0");
+		network->DisconnectOnError("recv 0");
 		return;
 	}
 
 	if (errorCode != 0)
 	{
-		network->handleError(errorCode);
+		network->HandleError(errorCode);
 		return;
 	}
 
-	network->recv(recvBytes);
-	network->registerRecv();
-}
-
-void SendEvent::operator()(int32 errorCode, DWORD writeBytes)
-{
-	if (writeBytes == 0)
-	{
-		network->disconnectOnError("write 0");
-		return;
-	}
-
-	if (errorCode != 0)
-	{
-		network->handleError(errorCode);
-		return;
-	}
-
-	network->flush();
+	network->Recv(recvBytes);
+	network->RegisterRecv();
 }
 
 SendEvent::SendEvent(shared_ptr<TcpNetwork> networkIn, std::vector<BufferSegment>&& segments)
@@ -50,6 +33,19 @@ SendEvent::SendEvent(shared_ptr<TcpNetwork> networkIn, std::vector<BufferSegment
 
 void SendEvent::operator()(int32 errorCode, DWORD writeBytes)
 {
+	if (writeBytes == 0)
+	{
+		network->DisconnectOnError("write 0");
+		return;
+	}
+
+	if (errorCode != 0)
+	{
+		network->HandleError(errorCode);
+		return;
+	}
+
+	network->Flush();
 }
 
 ConnectEvent::ConnectEvent(shared_ptr<TcpNetwork> networkIn, EndPoint _endPoint)
@@ -74,5 +70,5 @@ void DisconnectEvent::operator()(int32 errorCode, DWORD)
 		LOG_ERROR("disconnect error : %s", get_last_err_msg());
 	}
 
-	network->setDisconnected();
+	network->SetDisconnected();
 }

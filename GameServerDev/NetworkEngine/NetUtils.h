@@ -10,7 +10,7 @@ private:
 	static LPFN_ACCEPTEX AcceptEx;
 
 public:
-	static void initialize();
+	static void Initialize();
 
 	static bool BindWindowsFunction(SOCKET socket, GUID guid, LPVOID* fn);
 	static SOCKET CreateSocket();
