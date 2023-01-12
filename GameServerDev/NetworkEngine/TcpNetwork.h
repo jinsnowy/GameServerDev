@@ -2,6 +2,7 @@
 
 #include "TcpActiveSocket.h"
 #include "RecvBuffer.h"
+#include "SendBuffer.h"
 
 class Handshake;
 class TcpNetwork : public std::enable_shared_from_this<TcpNetwork>
@@ -67,44 +68,6 @@ private:
 private:
 	atomic<bool>			_connected;
 	atomic<bool>			_pending;
-	StdMutex				_sync;
-	vector<BufferSegment>	_pendingSegment;
 	RecvBuffer				_recvBuffer;
-
-private:
-	StdMutex				_handlerSync;
-	vector<PacketHandler*>  _packetHandlers;
-
-	bool resolvePacketHandler(int32 protocol, PacketHandler** handler);
-
-public:
-	template<typename T>
-	void InstallPacketHandler()
-	{
-		StdWriteLock lk(_handlerSync);
-
-		for (auto& packetHandler : _packetHandlers)
-		{
-			if (dynamic_cast<T*>(packetHandler) != nullptr)
-				return;
-		}
-
-		_packetHandlers.push_back(PacketHandler::GetHandler<T>());
-	}
-
-	template<typename T>
-	void UninstallPacketHandler()
-	{
-		StdWriteLock lk(_handlerSync);
-
-		auto iter = std::find_if(_packetHandlers.begin(), _packetHandlers.end(), [](PacketHandler* _packetHandler)
-		{
-			return dynamic_cast<T*>(_packetHandler) != nullptr;
-		});
-
-		if (iter != _packetHandlers.end())
-		{
-			_packetHandlers.erase(iter);
-		}
-	}
+	SendBuffer				_sendBuffer;
 };

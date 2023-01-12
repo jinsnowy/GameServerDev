@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Handshake.h"
-#include "HandshakeProtocol.h"
-#include "HandshakePacketHandler.h"
 #include "TcpNetwork.h"
 #include "Session.h"
 
@@ -31,9 +29,6 @@ void ClientHandshake::onProcess(shared_ptr<TcpNetwork> network)
 	if (session == nullptr)
 		return;
 
-	network->InstallPacketHandler<HandshakePacketHandler>();
-	PKT_CLIENT_HELLO hello(session->GetSessionId());
-	network->SendAsync(BufferSource::DefaultSerialize(hello));
 }
 
 ServerHandshake::ServerHandshake(shared_ptr<TcpNetwork> network)
@@ -43,5 +38,4 @@ ServerHandshake::ServerHandshake(shared_ptr<TcpNetwork> network)
 
 void ServerHandshake::onProcess(shared_ptr<TcpNetwork> network)
 {
-	network->InstallPacketHandler<HandshakePacketHandler>();
 }

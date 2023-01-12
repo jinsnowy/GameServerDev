@@ -46,9 +46,6 @@
     <Filter Include="Network">
       <UniqueIdentifier>{33b36a94-5cba-4d39-8458-ef511143c43e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Protocol\Handshake">
-      <UniqueIdentifier>{1fd2caf6-b755-4192-8be1-3a44696f41cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Task">
       <UniqueIdentifier>{29a3626b-f726-4525-bb38-6ddc133ea089}</UniqueIdentifier>
     </Filter>
@@ -86,9 +83,6 @@
       <Filter>Socket</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="PathManager.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
@@ -175,12 +169,6 @@
     <ClInclude Include="LoginSessionManager.h">
       <Filter>SessionManager</Filter>
     </ClInclude>
-    <ClInclude Include="HandshakeProtocol.h">
-      <Filter>Protocol\Handshake</Filter>
-    </ClInclude>
-    <ClInclude Include="HandshakePacketHandler.h">
-      <Filter>Protocol\Handshake</Filter>
-    </ClInclude>
     <ClInclude Include="Protocol.h">
       <Filter>Packet</Filter>
     </ClInclude>
@@ -256,6 +244,24 @@
     <ClInclude Include="TcpActiveSocket.h">
       <Filter>Socket</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkStream.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SendBuffer.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreStruct.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPacketHandler.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalProtocol.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePacketInstaller.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -267,9 +273,6 @@
     </ClCompile>
     <ClCompile Include="TcpSocket.cpp">
       <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="PathManager.cpp">
-      <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Utility</Filter>
@@ -339,12 +342,6 @@
     </ClCompile>
     <ClCompile Include="LoginSessionManager.cpp">
       <Filter>SessionManager</Filter>
-    </ClCompile>
-    <ClCompile Include="HandshakeProtocol.cpp">
-      <Filter>Protocol\Handshake</Filter>
-    </ClCompile>
-    <ClCompile Include="HandshakePacketHandler.cpp">
-      <Filter>Protocol\Handshake</Filter>
     </ClCompile>
     <ClCompile Include="Protocol.cpp">
       <Filter>Packet</Filter>
@@ -420,6 +417,21 @@
     </ClCompile>
     <ClCompile Include="TcpActiveSocket.cpp">
       <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkStream.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SendBuffer.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPacketHandler.cpp">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalProtocol.cpp">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePacketInstaller.cpp">
+      <Filter>Protocol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

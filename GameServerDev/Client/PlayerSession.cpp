@@ -3,16 +3,9 @@
 #include "TcpNetwork.h"
 #include "ClientPacketHandler.h"
 
-void PlayerSession::onConnected()
+void PlayerSession::OnConnected()
 {
-	ClientSession::onConnected();
-
-	GetNetwork()->InstallPacketHandler<ClientPacketHandler>();
-}
-
-void PlayerSession::onAuthorized()
-{
-	ClientSession::onAuthorized();
+	ClientSession::OnConnected();
 
 	static atomic<uint64> _playerId(0);
 

@@ -1,10 +1,4 @@
 #pragma once
-#include <chrono>
-#include <shared_mutex>
-#include <thread>
-#include <sstream>
-
-using SharedMutex = std::shared_mutex;
 
 struct StdThreadId
 {

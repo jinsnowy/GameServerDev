@@ -37,11 +37,11 @@ void TaskSchedule::Flush(int64& timeOutMs)
 		auto task = std::move(tasks.front());
 		tasks.pop();
 
-		timer.start();
+		timer.Start();
 
 		(*task)();
 
-		timeOutMs -= timer.count<std::chrono::milliseconds>();
+		timeOutMs -= timer.Count<std::chrono::milliseconds>();
 	}
 
 	// LOG_INFO("Leave %llu tasks", tasks.size());

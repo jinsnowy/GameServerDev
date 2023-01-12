@@ -23,6 +23,7 @@
 #include <type_traits>
 #include <chrono>
 #include <random>
+#include <shared_mutex>
 
 #include "Stl.h"
 
@@ -36,7 +37,7 @@ using namespace std;
 
 #include "CoreMacro.h"
 #include "CoreDefine.h"
-
+#include "CoreStruct.h"
 
 #include "TlsMemory.h"
 #include "Singleton.h"

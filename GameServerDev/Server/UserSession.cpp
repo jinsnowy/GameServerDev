@@ -7,16 +7,9 @@ UserSession::UserSession()
 {
 }
 
-void UserSession::onConnected()
+void UserSession::OnConnected()
 {
-	ServerSession::onConnected();
-
-	GetNetwork()->InstallPacketHandler<ServerPacketHandler>();
-}
-
-void UserSession::onAuthorized()
-{
-	ServerSession::onAuthorized();
+	ServerSession::OnConnected();
 }
 
 void UserSession::SetPlayer(UserProtocol::Player player)

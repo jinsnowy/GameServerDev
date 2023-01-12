@@ -4,8 +4,7 @@
 
 ClientSession::ClientSession()
 	:
-	Session(),
-	_logined(false)
+	Session()
 {
 }
 
@@ -75,19 +74,12 @@ void ClientSession::ReconnectAsync(const EndPoint& endPoint)
 	return ConnectAsync(endPoint);
 }
 
-void ClientSession::onConnected()
+void ClientSession::OnConnected()
 {
-	Session::onConnected();
+	Session::OnConnected();
 }
 
-void ClientSession::onDisconnected()
+void ClientSession::OnDisconnected()
 {
-	Session::onDisconnected();
-
-	_logined = false;
-}
-
-void ClientSession::onAuthorized()
-{
-	_logined = true;
+	Session::OnDisconnected();
 }

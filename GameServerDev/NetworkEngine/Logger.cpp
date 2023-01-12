@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Logger.h"
 
-#include "PathManager.h"
-
 Logger* Logger::GLogger = Logger::GetInstance();
 
 static const char* GetTag(ELogLevel level)

@@ -11,7 +11,7 @@ public:
 	IoContext();
 	~IoContext();
 
-	void registerHandle(HANDLE handle);
+	void RegisterHandle(HANDLE handle);
 
 	void Dispatch(DWORD timeOutMs = INFINITE);
 

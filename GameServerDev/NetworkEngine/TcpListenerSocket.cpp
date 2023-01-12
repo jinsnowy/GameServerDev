@@ -10,6 +10,7 @@ TcpListenerSocket::TcpListenerSocket(ServiceBase& service)
 bool TcpListenerSocket::Bind(uint16 port)
 {
 	_bindEndPoint = EndPoint("127.0.0.1", port);
+
 	return NetUtils::Bind(_socket, _bindEndPoint);
 }
 

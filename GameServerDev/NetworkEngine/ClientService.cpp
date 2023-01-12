@@ -37,9 +37,6 @@ void ClientService::Broadcast(BufferSegment buffer)
 {
 	for (auto& client : _clients)
 	{
-		if (client->IsLogin())
-		{
-			client->SendAsync(buffer);
-		}
+		client->SendAsync(buffer);
 	}
 }

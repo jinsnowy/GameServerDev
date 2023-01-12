@@ -46,7 +46,6 @@ void LoginSessionManager::Authorize(shared_ptr<LoginSession> loginSession)
     serverSession->SetSessionId(sessionId);
 
     network->AttachSession(serverSession);
-    serverSession->onAuthorized();
 
     SessionManager::GetInstance()->addSession(serverSession);
 

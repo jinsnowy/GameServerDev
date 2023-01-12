@@ -14,10 +14,9 @@ private:
 
 public:
 	TcpSocket(ServiceBase& service);
-	
-	SOCKET   GetSocket() { return _socket; }
-
 	virtual ~TcpSocket();
+
+	SOCKET   GetSocket() { return _socket; }
 
 	bool SetLinger(uint16 onoff, uint16 linger);
 	bool SetReuseAddress(bool flag);
@@ -25,8 +24,7 @@ public:
 	bool SetSendBufferSize(int32 size);
 	bool SetTcpNoDelay(bool flag);
 
-	void Dispose(const char* reason);
-	void Close(const char* reason);
-
+	void Dispose();
 	bool IsDisposed();
+	void Close();
 };

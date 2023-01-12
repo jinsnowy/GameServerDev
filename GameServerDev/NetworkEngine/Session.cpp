@@ -22,12 +22,7 @@ void Session::SendAsync(const BufferSegment& segment)
 	_network->SendAsync(segment);
 }
 
-bool Session::onRecv(const PacketHeader& header, CHAR* dataStartPtr)
-{
-	return true;
-}
-
-void Session::attachNetwork(shared_ptr<TcpNetwork> network)
+void Session::AttachNetwork(shared_ptr<TcpNetwork> network)
 {
 	if (_network != nullptr && _network->IsConnected())
 	{
@@ -37,24 +32,20 @@ void Session::attachNetwork(shared_ptr<TcpNetwork> network)
 
 	_network = network;
 
-	if (_network->IsConnected())
+	if (_network)
 	{
-		onConnected();
+		OnConnected();
 	}
 }
 
-void Session::detachNetwork()
+void Session::DetachNetwork()
 {
-	if (IsConnected())
+	if (_network)
 	{
-		onDisconnected();
+		OnDisconnected();
 	}
 
 	_network = nullptr;
-}
-
-void Session::recv(DWORD recvBytes)
-{
 }
 
 bool Session::IsConnected()
@@ -84,16 +75,12 @@ void Session::DisconnectAsync()
 	_network->DisconnectAsync();
 }
 
-void Session::onAuthorized()
-{
-}
-
-void Session::onConnected()
+void Session::OnConnected()
 {
 	LOG_INFO("connected to %s", GetEndPointDesc().c_str());
 }
 
-void Session::onDisconnected()
+void Session::OnDisconnected()
 {
 	LOG_INFO("disconnected from %s", GetEndPointDesc().c_str());
 }

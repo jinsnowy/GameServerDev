@@ -7,12 +7,12 @@ TcpSocket::TcpSocket(ServiceBase& service)
 	_service(service),
 	_socket(NetUtils::CreateSocket())
 {
-	_service.GetContext().registerHandle((HANDLE)_socket);
+	_service.GetContext().RegisterHandle((HANDLE)_socket);
 }
 
 TcpSocket::~TcpSocket()
 {
-	Dispose("destructor");
+	Dispose();
 }
 
 bool TcpSocket::SetLinger(uint16 onoff, uint16 linger)
@@ -40,20 +40,16 @@ bool TcpSocket::SetTcpNoDelay(bool flag)
 	return NetUtils::SetTcpNoDelay(_socket, flag);
 }
 
-void TcpSocket::Dispose(const char* reason)
+void TcpSocket::Dispose()
 {
 	if (_disposed.exchange(true) == false)
 	{
-		LOG_INFO("disposed : %s", reason);
-
 		NetUtils::Close(_socket);
 	}
 }
 
-void TcpSocket::Close(const char* reason)
+void TcpSocket::Close()
 {
-	LOG_INFO("close : %s", reason);
-
 	NetUtils::Shutdown(_socket, SD_BOTH);
 }
 

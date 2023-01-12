@@ -7,9 +7,7 @@ class UserSession : public ServerSession
 public:
 	UserSession();
 
-	virtual void onConnected();
-
-	virtual void onAuthorized();
+	virtual void OnConnected();
 
 	PlayerPtr GetPlayer() { return _player; }
 

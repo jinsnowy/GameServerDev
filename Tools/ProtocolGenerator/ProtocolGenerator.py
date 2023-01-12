@@ -6,14 +6,15 @@ import ProtoParser
 
 def main():
 	arg_parser = argparse.ArgumentParser(description = 'ProtocolGenerator')
-	arg_parser.add_argument('--path', type=str, default='C:/Users/yhjin/Desktop/CppProject/ynet/UserProtocol.proto', help='proto path')
+	arg_parser.add_argument('--path', type=str, default='./UserProtocol.proto', help='proto path')
 	arg_parser.add_argument('--out', type=str, default='./Generated/')
+	arg_parser.add_argument('--templates', type=str, default='./Templates/')
 	args = arg_parser.parse_args()
 
 	my_parser = ProtoParser.ProtoParser(1000)
 	my_parser.doParse(args.path)
 
-	file_loader = jinja2.FileSystemLoader('Templates')
+	file_loader = jinja2.FileSystemLoader(args.templates)
 	env = jinja2.Environment(loader=file_loader)
 
 	try:

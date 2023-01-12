@@ -70,7 +70,7 @@ bool TcpListenerNetwork::UpdateAcceptSocket(SOCKET socket)
 
 void TcpListenerNetwork::Finish()
 {
-	_listenerSocket.Dispose("Finish");
+	_listenerSocket.Dispose();
 }
 
 bool TcpListenerNetwork::IsFinished()

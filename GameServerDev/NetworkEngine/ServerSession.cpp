@@ -7,12 +7,12 @@ ServerSession::ServerSession()
 {
 }
 
-void ServerSession::onConnected()
+void ServerSession::OnConnected()
 {
-	Session::onConnected();
+	Session::OnConnected();
 }
 
-void ServerSession::onDisconnected()
+void ServerSession::OnDisconnected()
 {
-	Session::onDisconnected();
+	Session::OnDisconnected();
 }

@@ -4,9 +4,9 @@ class Session : public std::enable_shared_from_this<Session>
 {
 	friend class TcpNetwork;
 	friend class TcpListener;
-	friend class HandshakePacketHandler;
 public:
 	Session();
+
 	virtual ~Session();
 
 public:
@@ -24,11 +24,8 @@ public:
 protected:
 	shared_ptr<TcpNetwork> _network;
 
-	virtual void onAuthorized();
-
-	virtual void onConnected();
-	
-	virtual void onDisconnected();
+	virtual void OnConnected();
+	virtual void OnDisconnected();
 
 public:
 	EndPoint	 GetEndPoint();
@@ -41,9 +38,6 @@ public:
 private:
 	SessionID _sessionId;
 
-	bool onRecv(const PacketHeader& header, CHAR* dataStartPtr);
-	void recv(DWORD recvBytes);
-
-	void attachNetwork(shared_ptr<TcpNetwork> network);
-	void detachNetwork();
+	void AttachNetwork(shared_ptr<TcpNetwork> network);
+	void DetachNetwork();
 };

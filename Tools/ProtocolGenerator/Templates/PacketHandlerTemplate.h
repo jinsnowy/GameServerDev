@@ -32,7 +32,7 @@ public:
 		{
 {%- for pkt in parser.total_pkt %}
 		case PKT_{{pkt.name}}:
-			on{{pkt.name_res}}(session, parse<{{parser.package_name}}::{{pkt.name}}>(buffer, header.size));
+			on{{pkt.name_res}}(session, Parse<{{parser.package_name}}::{{pkt.name}}>(buffer, header.size));
 			break;
 {%- endfor %}
 		}

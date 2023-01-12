@@ -7,9 +7,7 @@ private:
 	UserProtocol::Player _player;
 
 public:
-	virtual void onConnected();
-
-	virtual void onAuthorized();
+	virtual void OnConnected() override;
 
 	void SetPlayer(UserProtocol::Player player) { _player = player; }
 };

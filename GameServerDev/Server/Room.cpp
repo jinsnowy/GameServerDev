@@ -15,7 +15,7 @@ void Room::Enter(PlayerPtr player)
 
 	RegisterAlarm(player->name, pnow, MakeTask([pnow, timer]() {
 		
-		auto tick = (uint32)timer.count<std::chrono::milliseconds>();
+		auto tick = (uint32)timer.Count<std::chrono::milliseconds>();
 
 		LOG_INFO("[Alarm Test] expected : %u ms result : %u ms ", pnow, tick);
 

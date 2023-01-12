@@ -20,9 +20,6 @@ public:
 		static T instance;
 		return &instance;
 	}
-
-	virtual bool initialize() { return true; }
-	virtual void destroy() {};
 };
 
 #endif // ! _Singleton_H_

@@ -17,7 +17,7 @@ IoContext::~IoContext()
 	Dispose();
 }
 
-void IoContext::registerHandle(HANDLE handle)
+void IoContext::RegisterHandle(HANDLE handle)
 {
 	_iocpHandle = ::CreateIoCompletionPort(handle, _iocpHandle, NULL, NULL);
 	ASSERT_CRASH(_iocpHandle != NULL)

@@ -2,7 +2,8 @@
 #include "TcpNetwork.h"
 #include "Session.h"
 #include "NetworkEvent.h"
-
+#include "InternalPacketHandler.h"
+#include "GamePacketInstaller.h"
 #include "Handshake.h"
 
 TcpNetwork::TcpNetwork(ServiceBase& ServiceBase)
@@ -16,7 +17,7 @@ TcpNetwork::TcpNetwork(ServiceBase& ServiceBase)
 
 TcpNetwork::~TcpNetwork()
 {
-	_socket.Dispose("network destructor");
+	_socket.Dispose();
 }
 
 void TcpNetwork::AttachSession(SessionPtr session)
@@ -24,14 +25,14 @@ void TcpNetwork::AttachSession(SessionPtr session)
 	auto sessionPrev = _session.lock();
 	if (sessionPrev)
 	{
-		sessionPrev->detachNetwork();
+		sessionPrev->DetachNetwork();
 	}
 
 	_session = session;
 
 	if (IsConnected())
 	{
-		session->attachNetwork(shared_from_this());
+		session->AttachNetwork(shared_from_this());
 	}
 }
 
@@ -76,11 +77,22 @@ void TcpNetwork::Recv(DWORD recvBytes)
 			break;
 		}
 
-		if (resolvePacketHandler(header.protocol, &handler))
-		{
-			handler->HandleRecv(session, header, bufferToRead);
+		static InternalPacketHandler internalPacketHandler;
 
-			_recvBuffer.Read(header.size);
+		if (internalPacketHandler.IsValidProtocol(header.protocol))
+		{
+			internalPacketHandler.HandleRecv(shared_from_this(), header, bufferToRead);
+
+			continue;
+		}
+
+		static PacketHandler* GamePacketHandler = GamePacketInstaller::GetHandler();
+
+		SessionPtr session = _session.lock();
+
+		if (GamePacketHandler->IsValidProtocol(header.protocol) && session)
+		{
+			GamePacketHandler->HandleRecv(session, header, bufferToRead);
 		}
 		else
 		{
@@ -94,12 +106,8 @@ void TcpNetwork::Recv(DWORD recvBytes)
 
 void TcpNetwork::SendAsync(const BufferSegment& segment)
 {
-	{
-		StdWriteLock lock(_sync);
-
-		_pendingSegment.push_back(segment);
-	}
-
+	_sendBuffer.Pend(segment);
+	
 	if (_pending.exchange(true) == false)
 	{
 		Flush();
@@ -146,7 +154,7 @@ void TcpNetwork::SetDisconnected()
 		auto session = _session.lock();
 		if (session)
 		{
-			session->detachNetwork();
+			session->DetachNetwork();
 		}
 	}
 }
@@ -156,14 +164,6 @@ void TcpNetwork::SetConnected(EndPoint endPoint)
 	if (_connected.exchange(true) == false)
 	{
 		_endPoint = endPoint;
-
-		auto session = _session.lock();
-		if (session)
-		{
-			session->attachNetwork(shared_from_this());
-		}
-
-		LOG_INFO("start recv");
 
 		RegisterRecv(true);
 	}
@@ -182,37 +182,26 @@ void TcpNetwork::Flush()
 bool TcpNetwork::FlushInternal()
 {
 	if (IsConnected() == false)
-		return true;
-
-	std::vector<WSABUF> buffers;
-	std::vector<BufferSegment> segments;
-
 	{
-		StdWriteLock lock(_sync);
+		return true;
+	}
 
-		int32 bufferNum = (int32)_pendingSegment.size();
-		if (bufferNum == 0)
-		{
-			_pending.store(false);
-			return true;
-		}
-
-		buffers.resize(bufferNum);
-		for (int32 i = 0; i < bufferNum; ++i)
-		{
-			buffers[i] = _pendingSegment[i].wsaBuf();
-		}
-
-		segments = std::move(_pendingSegment);
+	WriteData writeData = _sendBuffer.Flush();
+	if (writeData.IsEmpty())
+	{
+		_pending.store(false);
+		return true;
 	}
 	
-	return _socket.WriteAsync(buffers, SendEvent(shared_from_this(), std::move(segments)));
+	return _socket.WriteAsync(std::move(writeData.buffers), SendEvent(shared_from_this(), std::move(writeData.segments)));
 }
 
 void TcpNetwork::RegisterRecv(bool init)
 {
-	if (!IsConnected())
+	if (!IsConnected()) 
+	{
 		return;
+	}
 
 	if (init)
 	{
@@ -250,20 +239,4 @@ void TcpNetwork::HandleError(int32 errorCode)
 		LOG_ERROR("handle error %s", get_last_err_msg_code(errorCode));
 		break;
 	}
-}
-
-bool TcpNetwork::resolvePacketHandler(int32 protocol, PacketHandler** handler)
-{
-	StdReadLock lk(_handlerSync);
-
-	for (auto s_handler : _packetHandlers)
-	{
-		if (s_handler->IsValidProtocol(protocol))
-		{
-			*handler = s_handler;
-			return true;
-		}
-	}
-
-	return false;
 }
