@@ -22,3 +22,8 @@ WriteData SendBuffer::Flush()
 
 	return std::move(_writeData);
 }
+
+void SendBuffer::Clear()
+{
+	_writeData.Clear();
+}

@@ -3,6 +3,10 @@
 #include "ServerService.h"
 #include "ServerSession.h"
 #include "protocol\UserProtocol.pb.h"
+#include "GamePacketInstaller.h"
+#include "ServerPacketHandler.h"
+
+
 #include "SessionManager.h"
 #include "UserSession.h"
 #include "Room.h"
@@ -88,12 +92,13 @@ int main(int argc, char ** argv)
    //     DBConnectionPool::GetInstance()->Push(dbConn);
    // }
 
-    
-   ServerSessionFactory sessionFactory = []() { return std::shared_ptr<ServerSession>(new UserSession()); };
-   ServerServiceParam param(12321, 10, sessionFactory);
-   ServerService service(param);
-   service.Start();
-   service.Run(Process);
+	GamePacketInstaller::Install<ServerPacketHandler>();
+
+	ServerSessionFactory sessionFactory = []() { return std::shared_ptr<ServerSession>(new UserSession()); };
+	ServerServiceParam param(12321, 10, sessionFactory);
+	ServerService service(param);
+	service.Start();
+	service.Run(Process);
 
     return 0;
 }

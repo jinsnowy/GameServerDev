@@ -77,7 +77,11 @@ void Session::DisconnectAsync()
 
 void Session::OnConnected()
 {
-	LOG_INFO("connected to %s", GetEndPointDesc().c_str());
+	static atomic<SessionID> sessionIDGen = 0;
+
+	SetSessionId(sessionIDGen.fetch_add(1));
+
+	LOG_INFO("sessionId %lld connected to %s", GetSessionId(), GetEndPointDesc().c_str());
 }
 
 void Session::OnDisconnected()

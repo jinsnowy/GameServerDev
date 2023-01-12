@@ -2,19 +2,11 @@
 #include "ClientSession.h"
 #include "TcpNetwork.h"
 
-ClientSession::ClientSession()
+ClientSession::ClientSession(ServiceBase& serviceBase)
 	:
+	_serviceBase(serviceBase),
 	Session()
 {
-}
-
-void ClientSession::SetConnector(shared_ptr<TcpNetwork> connector)
-{
-	_connector = connector;
-	if (_connector)
-	{
-		_connector->AttachSession(shared_from_this());
-	}
 }
 
 bool ClientSession::Connect(const char* address, uint16 port)
@@ -29,8 +21,6 @@ bool ClientSession::Connect(const EndPoint& endPoint)
 		LOG_INFO("already connected");
 		return true;
 	}
-
-	_connector->ConnectAsync(endPoint);
 
 	int count = 0;
 	while (!IsConnected() && ++count < 10)
@@ -61,7 +51,19 @@ void ClientSession::ConnectAsync(const EndPoint& endPoint)
 		return;
 	}
 
-	_connector->ConnectAsync(endPoint);
+	auto connector = TcpNetwork::Create(_serviceBase);
+
+	const auto onConnected = [session = shared_from_this()](NetworkPtr network)
+	{
+		network->AttachSession(session);
+	};
+
+	const auto onConnectFailed = [](int32 errorCode)
+	{
+		LOG_ERROR("Connect Failed Error Code : %d, Desc : %S", errorCode, Utils::WSAGetLastErrorMsg(errorCode));
+	};
+
+	connector->ConnectAsync(endPoint, onConnected, onConnectFailed);
 }
 
 void ClientSession::ReconnectAsync(const EndPoint& endPoint)

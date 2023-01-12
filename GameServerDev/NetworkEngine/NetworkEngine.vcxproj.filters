@@ -145,9 +145,6 @@
     <ClInclude Include="ServerService.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="LoginSession.h">
-      <Filter>Session</Filter>
-    </ClInclude>
     <ClInclude Include="PacketException.h">
       <Filter>Packet</Filter>
     </ClInclude>
@@ -165,9 +162,6 @@
     </ClInclude>
     <ClInclude Include="PacketHandler.h">
       <Filter>Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginSessionManager.h">
-      <Filter>SessionManager</Filter>
     </ClInclude>
     <ClInclude Include="Protocol.h">
       <Filter>Packet</Filter>
@@ -328,9 +322,6 @@
     <ClCompile Include="ServerService.cpp">
       <Filter>Service</Filter>
     </ClCompile>
-    <ClCompile Include="LoginSession.cpp">
-      <Filter>Session</Filter>
-    </ClCompile>
     <ClCompile Include="PacketHandler.cpp">
       <Filter>Packet</Filter>
     </ClCompile>
@@ -339,9 +330,6 @@
     </ClCompile>
     <ClCompile Include="TcpNetwork.cpp">
       <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginSessionManager.cpp">
-      <Filter>SessionManager</Filter>
     </ClCompile>
     <ClCompile Include="Protocol.cpp">
       <Filter>Packet</Filter>

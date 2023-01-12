@@ -27,12 +27,16 @@ using NetworkPtrCRef = const std::shared_ptr<class TcpNetwork>&;
 using ListenerPtr = std::shared_ptr<class TcpListener>;
 using SessionFactory = std::function<SessionPtr()>;
 using NetworkFactory = std::function<NetworkPtr(class ServiceBase&)>;
+
 using OnAcceptFunc = std::function<bool(NetworkPtr)>;
+using OnConnectFunc = std::function<void(NetworkPtr)>;
+using OnConnectFailFunc = std::function<void(int)>;
+
 using PacketHandlerFunc = std::function<void(SessionPtr)>;
 using HandshakePtr = std::unique_ptr<class Handshake>;
 using TaskPtr = std::unique_ptr<class Task>;
 using PlayerPtr = std::shared_ptr<class Player>;
-using ClientSessionFactory = std::function<std::shared_ptr<class ClientSession>()>;
+using ClientSessionFactory = std::function<std::shared_ptr<class ClientSession>(ServiceBase&)>;
 using ServerSessionFactory = std::function<std::shared_ptr<class ServerSession>()>;
 
 static const char* get_bool_str(const bool& v) { return v ? "true" : "false"; }

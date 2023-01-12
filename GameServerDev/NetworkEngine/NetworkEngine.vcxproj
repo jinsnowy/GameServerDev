@@ -130,7 +130,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ExceptionHandling>Async</ExceptionHandling>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)..\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -167,6 +167,7 @@ CALL GenProtocols.bat</Command>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalIncludeDirectories>$(SolutionDir)..\Include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -227,8 +228,6 @@ CALL GenProtocols.bat</Command>
     <ClInclude Include="IoEvent.h" />
     <ClInclude Include="ServiceBase.h" />
     <ClInclude Include="TcpListener.h" />
-    <ClInclude Include="LoginSession.h" />
-    <ClInclude Include="LoginSessionManager.h" />
     <ClInclude Include="MemoryPool.h" />
     <ClInclude Include="TcpNetwork.h" />
     <ClInclude Include="PacketHeader.h" />
@@ -298,8 +297,6 @@ CALL GenProtocols.bat</Command>
     <ClCompile Include="IoEvent.cpp" />
     <ClCompile Include="ServiceBase.cpp" />
     <ClCompile Include="TcpListener.cpp" />
-    <ClCompile Include="LoginSession.cpp" />
-    <ClCompile Include="LoginSessionManager.cpp" />
     <ClCompile Include="MemoryPool.cpp" />
     <ClCompile Include="NetUtils.cpp" />
     <ClCompile Include="TcpNetwork.cpp" />

@@ -78,6 +78,13 @@ bool NetUtils::SetUpdateAcceptSocket(SOCKET socket, SOCKET listenSocket)
 	return SetSockOpt(socket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, listenSocket);
 }
 
+bool NetUtils::IsOk(SOCKET socket)
+{
+	int error = 0;
+	socklen_t len = sizeof(error);
+	return 0 != getsockopt(socket, SOL_SOCKET, SO_ERROR, (CHAR*)(&error), &len);
+}
+
 bool NetUtils::Bind(SOCKET socket, EndPoint netAddr)
 {
 	return SOCKET_ERROR != ::bind(socket, netAddr.GetSockAddr(), sizeof(SOCKADDR_IN));
@@ -123,13 +130,6 @@ bool NetUtils::ConnectAsync(SOCKET socket, LPWSAOVERLAPPED overlapped, const End
 	DWORD dwSentBytes = 0;
 	if (!ConnectEx(socket, endPoint.GetSockAddr(), sizeof(SOCKADDR), NULL, 0, &dwSentBytes, overlapped))
 	{
-		int32 errorCode = ::WSAGetLastError();
-
-		if (errorCode != WSA_IO_PENDING)
-		{
-			string msg = get_last_err_msg();
-		}
-
 		return was_io_pending();
 	}
 
@@ -196,37 +196,4 @@ bool NetUtils::ReadAsync(SOCKET socket, LPWSAOVERLAPPED overlapped, CHAR* buf, U
 	}
 
 	return true;
-}
-
-std::string WSAGetLastErrorMsg()
-{
-	auto errorMessageID = ::WSAGetLastError();
-
-	char* szMessage = NULL;
-	LPSTR messageBuffer = nullptr;
-
-	size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
-
-	std::string message(messageBuffer, size);
-
-	LocalFree(messageBuffer);
-
-	return message;
-}
-
-
-std::string WSAGetLastErrorMsg(int errCode)
-{
-	char* szMessage = NULL;
-	LPSTR messageBuffer = nullptr;
-
-	size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL, errCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
-
-	std::string message(messageBuffer, size);
-
-	LocalFree(messageBuffer);
-
-	return message;
 }

@@ -50,13 +50,23 @@ void SendEvent::operator()(int32 errorCode, DWORD writeBytes)
 	network->Flush();
 }
 
-ConnectEvent::ConnectEvent(shared_ptr<TcpNetwork> networkIn, EndPoint _endPoint)
+ConnectEvent::ConnectEvent(shared_ptr<TcpNetwork> networkIn, EndPoint _endPoint, OnConnectFunc _onConnected, OnConnectFailFunc _onConnectFailed)
 	: 
-	network(networkIn), endPoint(_endPoint)
+	network(networkIn), endPoint(_endPoint), onConnected(_onConnected), onConnectFailed(_onConnectFailed)
 {}
 
 void ConnectEvent::operator()(int32 errorCode, DWORD)
 {
+	if (errorCode != 0)
+	{
+		onConnectFailed(errorCode);
+
+		return;
+	}
+
+	network->SetConnected(endPoint);
+
+	onConnected(network);
 }
 
 DisconnectEvent::DisconnectEvent(shared_ptr<TcpNetwork> networkIn)

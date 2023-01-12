@@ -17,7 +17,7 @@ private:
 	TcpActiveSocket _socket;
 	SessionWeakPtr  _session;
 	EndPoint		_endPoint;
-	unique_ptr<Handshake>  _handshake;
+	HandshakePtr    _handshake;
 
 public:
 	TcpNetwork(ServiceBase& ServiceBase);
@@ -26,17 +26,19 @@ public:
 
 	void AttachSession(SessionPtr session);
 
-	void ProcessHandshake();
-
-	void RequireHandshake(Handshake* handshake);
+	void RequireHandshake(HandshakePtr handshake);
 
 	void SendAsync(const BufferSegment& segment);
 
 	void DisconnectAsync();
 	
-	void ConnectAsync(const EndPoint& endPoint);
+	void ConnectAsync(const EndPoint& endPoint, const OnConnectFunc& onConnected, const OnConnectFailFunc& onConnectFailed);
 
 	void Start();
+
+	void Close();
+
+	static shared_ptr<TcpNetwork> Create(ServiceBase& serviceBase);
 public:
 	SessionPtr GetSession() { return _session.lock(); }
 

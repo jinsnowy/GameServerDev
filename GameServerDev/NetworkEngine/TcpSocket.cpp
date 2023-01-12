@@ -40,6 +40,11 @@ bool TcpSocket::SetTcpNoDelay(bool flag)
 	return NetUtils::SetTcpNoDelay(_socket, flag);
 }
 
+bool TcpSocket::IsOk()
+{
+	return NetUtils::IsOk(_socket);
+}
+
 void TcpSocket::Dispose()
 {
 	if (_disposed.exchange(true) == false)

@@ -1,3 +1,4 @@
+#pragma once
 #include "Singleton.h"
 #include "Session.h"
 
@@ -7,11 +8,11 @@ public:
 	SessionManager();
 	~SessionManager();
 
-	void addSession(const shared_ptr<Session> sessionPtr);
+	void AddSession(SessionPtrCRef sessionPtr);
 
-	void removeSession(const shared_ptr<Session> sessionPtr);
+	void RemoveSession(SessionPtrCRef sessionPtr);
 
-	vector<shared_ptr<Session>> getSessions();
+	vector<shared_ptr<Session>> GetSessions();
 
 private:
 	StdMutex _sync;

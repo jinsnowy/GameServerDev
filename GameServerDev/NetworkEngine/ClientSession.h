@@ -3,10 +3,11 @@
 
 class ClientSession : public Session
 {
-public:
-	ClientSession();
+private:
+	ServiceBase& _serviceBase;
 
-	void SetConnector(shared_ptr<TcpNetwork> connector);
+public:
+	ClientSession(ServiceBase& _serviceBase);
 
 	bool Connect(const char* address, uint16 port);
 
@@ -22,7 +23,4 @@ protected:
 	virtual void OnConnected() override;
 
 	virtual void OnDisconnected() override;
-
-private:
-	shared_ptr<TcpNetwork> _connector;
 };

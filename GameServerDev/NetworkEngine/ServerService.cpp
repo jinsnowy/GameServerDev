@@ -1,11 +1,9 @@
 #include "pch.h"
 #include "ServerService.h"
 #include "TcpListener.h"
-#include "Handshake.h"
 #include "SessionManager.h"
+#include "Handshake.h"
 #include "TcpNetwork.h"
-#include "LoginSession.h"
-#include "LoginSessionManager.h"
 
 ServerService::ServerService(const ServerServiceParam& param)
 	:
@@ -20,18 +18,16 @@ void ServerService::Start()
 {
     ServiceBase::Start();
 
-    auto loginManager = LoginSessionManager::GetInstance();
-    loginManager->SetSessionFactory(_sessionFactory);
-    loginManager->Start();
-
     ListenerConfig config;
     config.bindPort = 12321;
     config.backLog = 10;
     config.acceptCount = 1;
-    config.onAccept = [this, loginManager](const shared_ptr<TcpNetwork>& network)
+    config.onAccept = [this](const shared_ptr<TcpNetwork>& network)
     {
-        auto loginSession = loginManager->NewLogin();
-        network->AttachSession(loginSession);
+        auto session = _sessionFactory();
+        network->AttachSession(session);
+
+        SessionManager::GetInstance()->AddSession(session);
 
         return true;
     };

@@ -24,6 +24,7 @@ public:
 	bool SetSendBufferSize(int32 size);
 	bool SetTcpNoDelay(bool flag);
 
+	bool IsOk();
 	void Dispose();
 	bool IsDisposed();
 	void Close();

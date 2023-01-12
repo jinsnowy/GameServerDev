@@ -51,7 +51,6 @@ public:
 		return true;
 	}
 
-
 	template<typename AsyncIoCompleteRoutine>
 	bool ConnectAsync(const EndPoint& endPoint, AsyncIoCompleteRoutine&& callback)
 	{

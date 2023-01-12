@@ -59,13 +59,13 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 		return false;
 	}
 
+	network->SetConnected(endPoint);
+
 	if (!_config.onAccept(network))
 	{
 		LOG_ERROR("session rejected");
 		return false;
 	}
-
-	network->SetConnected(endPoint);
 
 	return true;
 }

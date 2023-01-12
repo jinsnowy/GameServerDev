@@ -7,6 +7,8 @@ private:
 	UserProtocol::Player _player;
 
 public:
+	PlayerSession(ServiceBase& _serviceBase);
+
 	virtual void OnConnected() override;
 
 	void SetPlayer(UserProtocol::Player player) { _player = player; }

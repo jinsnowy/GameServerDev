@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Session.h"
 #include "TcpNetwork.h"
-#include "LoginSessionManager.h"
-#include "LoginSession.h"
 #include "InternalPacketHandler.h"
 
 void InternalPacketHandler::onClientHello(SessionPtrCRef session, PKT_CLIENT_HELLO* pkt)

@@ -24,9 +24,12 @@ struct SendEvent
 struct ConnectEvent
 {
 	shared_ptr<TcpNetwork> network;
-	EndPoint endPoint;
 
-	ConnectEvent(shared_ptr<TcpNetwork>  networkIn, EndPoint _endPoint);
+	EndPoint endPoint;
+	OnConnectFunc onConnected;
+	OnConnectFailFunc onConnectFailed;
+
+	ConnectEvent(shared_ptr<TcpNetwork> networkIn, EndPoint _endPoint, OnConnectFunc _onConnected, OnConnectFailFunc _onConnectFailed);
 
 	void operator()(int32 errorCode, DWORD);
 };

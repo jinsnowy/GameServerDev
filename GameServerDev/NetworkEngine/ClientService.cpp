@@ -21,14 +21,10 @@ void ClientService::Start()
 
 	for (int i = 0; i < _clientNum; ++i)
 	{
-		auto connector = make_shared<TcpNetwork>(*this);
-		auto clientSession = _sessionFactory();
-		clientSession->SetConnector(connector);
-
-		auto clientHandshake = new ClientHandshake(connector);
-		connector->RequireHandshake(clientHandshake);
+		auto clientSession = _sessionFactory(*this);
 
 		clientSession->ConnectAsync(_endPoint);
+
 		_clients.push_back(clientSession);
 	}
 }
@@ -37,6 +33,9 @@ void ClientService::Broadcast(BufferSegment buffer)
 {
 	for (auto& client : _clients)
 	{
-		client->SendAsync(buffer);
+		if (client->IsConnected())
+		{
+			client->SendAsync(buffer);
+		}
 	}
 }

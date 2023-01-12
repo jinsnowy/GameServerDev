@@ -26,4 +26,6 @@ public:
 	void Pend(const BufferSegment& segment);
 
 	WriteData Flush();
+
+	void Clear();
 };

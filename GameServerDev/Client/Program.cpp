@@ -3,6 +3,8 @@
 #include <TcpSocket.h>
 #include <MemoryPool.h>
 
+#include "GamePacketInstaller.h"
+#include "ClientPacketHandler.h"
 #include "ClientService.h"
 #include "PlayerSession.h"
 
@@ -12,8 +14,9 @@ int main(int argc, char** argv)
 {
     NetUtils::Initialize();
     MemoryPool::Initialize();
+    GamePacketInstaller::Install<ClientPacketHandler>();
 
-    ClientSessionFactory sessionFactory = []() { return shared_ptr<ClientSession>(new PlayerSession()); };
+    ClientSessionFactory sessionFactory = [](ServiceBase& serviceBase) { return shared_ptr<ClientSession>(new PlayerSession(serviceBase)); };
     ClientServiceParam param(100, 1, "127.0.0.1", 12321, sessionFactory);
     ClientService service(param);
     service.Start();

@@ -36,21 +36,16 @@ void TcpNetwork::AttachSession(SessionPtr session)
 	}
 }
 
-void TcpNetwork::ProcessHandshake()
+void TcpNetwork::RequireHandshake(HandshakePtr handshake)
 {
-	if (_handshake)
-	{
-		_handshake->Process();
-	}
-}
-
-void TcpNetwork::RequireHandshake(Handshake* handshake)
-{
-	_handshake.reset(handshake);
+	_handshake = std::move(handshake);
 }
 
 void TcpNetwork::Recv(DWORD recvBytes)
 {
+	static InternalPacketHandler InternalPacketHandler;
+	static PacketHandler* GamePacketHandler = GamePacketInstaller::GetHandler();
+
 	if (!_recvBuffer.OnDataRecv(recvBytes))
 	{
 		DisconnectOnError("recv buffer overflows");
@@ -64,8 +59,6 @@ void TcpNetwork::Recv(DWORD recvBytes)
 		return;
 	}
 
-	PacketHandler* handler = nullptr;
-
 	while (_recvBuffer.IsHeaderReadable())
 	{
 		CHAR* bufferToRead = _recvBuffer.GetBufferPtrRead();
@@ -77,16 +70,12 @@ void TcpNetwork::Recv(DWORD recvBytes)
 			break;
 		}
 
-		static InternalPacketHandler internalPacketHandler;
-
-		if (internalPacketHandler.IsValidProtocol(header.protocol))
+		if (InternalPacketHandler.IsValidProtocol(header.protocol))
 		{
-			internalPacketHandler.HandleRecv(shared_from_this(), header, bufferToRead);
+			InternalPacketHandler.HandleRecv(shared_from_this(), header, bufferToRead);
 
 			continue;
 		}
-
-		static PacketHandler* GamePacketHandler = GamePacketInstaller::GetHandler();
 
 		SessionPtr session = _session.lock();
 
@@ -122,7 +111,7 @@ void TcpNetwork::DisconnectAsync()
 	}
 }
 
-void TcpNetwork::ConnectAsync(const EndPoint& endPoint)
+void TcpNetwork::ConnectAsync(const EndPoint& endPoint, const OnConnectFunc& onConnected, const OnConnectFailFunc& onConnectFailed)
 {
 	if (NetUtils::SetReuseAddress(_socket.GetSocket(), true) == false)
 	{
@@ -136,7 +125,7 @@ void TcpNetwork::ConnectAsync(const EndPoint& endPoint)
 		return;
 	}
 
-	if (!_socket.ConnectAsync(endPoint, ConnectEvent(shared_from_this(), endPoint)))
+	if (!_socket.ConnectAsync(endPoint, ConnectEvent(shared_from_this(), endPoint, onConnected, onConnectFailed)))
 	{
 		LOG_ERROR("connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
 	}
@@ -144,7 +133,33 @@ void TcpNetwork::ConnectAsync(const EndPoint& endPoint)
 
 void TcpNetwork::Start()
 {
+	_recvBuffer.Clear();
+	_sendBuffer.Clear();
+	_pending = false;
+
 	RegisterRecv();
+}
+
+void TcpNetwork::Close()
+{
+	if (_socket.IsOk())
+	{
+		DisconnectAsync();
+
+		return;
+	}
+
+	if (_connected)
+	{
+		LOG_WARN("closing already errored socket...");
+
+		SetDisconnected();
+	}
+}
+
+shared_ptr<TcpNetwork> TcpNetwork::Create(ServiceBase& serviceBase)
+{
+	return make_shared<TcpNetwork>(serviceBase);
 }
 
 void TcpNetwork::SetDisconnected()

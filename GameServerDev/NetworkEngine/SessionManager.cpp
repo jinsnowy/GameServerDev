@@ -9,22 +9,23 @@ SessionManager::~SessionManager()
 {
 }
 
-void SessionManager::addSession(const shared_ptr<Session> sessionPtr)
+void SessionManager::AddSession(SessionPtrCRef sessionPtr)
 {
-	_sessionContainer.emplace(sessionPtr->GetSessionId(),sessionPtr);
+	_sessionContainer.emplace(sessionPtr->GetSessionId(), sessionPtr);
 }
 
-void SessionManager::removeSession(const shared_ptr<Session> sessionPtr)
+void SessionManager::RemoveSession(SessionPtrCRef sessionPtr)
 {
 	_sessionContainer.erase(sessionPtr->GetSessionId());
 }
 
-vector<shared_ptr<Session>> SessionManager::getSessions()
+vector<shared_ptr<Session>> SessionManager::GetSessions()
 {
 	vector<shared_ptr<Session>> sessions;
 
 	{
 		StdWriteLock lk(_sync);
+
 		for (auto& pair : _sessionContainer)
 		{
 			sessions.push_back(pair.second);

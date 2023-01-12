@@ -27,6 +27,9 @@ protected:
 	virtual void OnConnected();
 	virtual void OnDisconnected();
 
+	virtual void AttachNetwork(shared_ptr<TcpNetwork> network) sealed;
+	virtual void DetachNetwork() sealed;
+
 public:
 	EndPoint	 GetEndPoint();
 	string		 GetEndPointDesc() { return GetEndPoint().ToString(); }
@@ -37,7 +40,4 @@ public:
 
 private:
 	SessionID _sessionId;
-
-	void AttachNetwork(shared_ptr<TcpNetwork> network);
-	void DetachNetwork();
 };

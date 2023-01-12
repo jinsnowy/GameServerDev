@@ -11,9 +11,11 @@ void ServerPacketHandler::onHeartbeat(SessionPtrCRef session, UserProtocol::HEAR
 
 void ServerPacketHandler::onTest(SessionPtrCRef session, UserProtocol::TEST pkt)
 {
-	auto player = session->GetShared<UserSession>()->GetPlayer();
+	LOG_INFO("Session(%lld) : %s", session->GetSessionId(), pkt.text().c_str());
 
-	Utils::SharedGlobal<Room>()->Enqueue(&Room::Broadcast, BufferSegment::Serialize(pkt));
+	//auto player = session->GetShared<UserSession>()->GetPlayer();
+
+	//Utils::SharedGlobal<Room>()->Enqueue(&Room::Broadcast, BufferSegment::Serialize(pkt));
 }
 
 void ServerPacketHandler::onLoginRequest(SessionPtrCRef session, UserProtocol::LOGIN_REQUEST pkt)
