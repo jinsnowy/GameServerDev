@@ -3,22 +3,22 @@
 
 Logger* Logger::GLogger = Logger::GetInstance();
 
-static const char* GetTag(ELogLevel level)
+static const wchar_t* GetTag(ELogLevel level)
 {
 	switch (level)
 	{
 	case ELogLevel::Info:
-		return "Info";
+		return L"Info";
 	case ELogLevel::Debug:
-		return "Debug";
+		return L"Debug";
 	case ELogLevel::Warn:
-		return "Warn";
+		return L"Warn";
 	case ELogLevel::Error:
-		return "Error";
+		return L"Error";
 	case ELogLevel::Fatal:
-		return "Fatal";
+		return L"Fatal";
 	default:
-		return "Unknown";
+		return L"Unknown";
 	}
 }
 
@@ -30,8 +30,9 @@ Logger::Logger()
 	mWorker([this]() { this->flush(); }),
 	mLogLevel(ELogLevel::Info)
 {
-	char buffer[MAX_PATH];
-	::GetModuleFileName(NULL, buffer, MAX_PATH);
+	wchar_t buffer[MAX_PATH];
+	::GetModuleFileNameW(NULL, buffer, MAX_PATH);
+
 	basePath = buffer;
 
 	size_t pos = basePath.find_last_of('\\');
@@ -62,28 +63,22 @@ void Logger::SetFlushDuration(int durationMs)
 	mFlushDurationMilliSec = durationMs;
 }
 
-void Logger::Out(ELogLevel level, std::thread::id thread_id, int line, const char* function, const char* fmt, ...)
+void Logger::Out(ELogLevel level, std::thread::id thread_id, int line, const wchar_t* function, const wchar_t* fmt, ...)
 {
 	if (level < mLogLevel)
 		return;
 
 	DateTime now = DateTime::Now();
 
-	const char* threadIdStr = StdThreadIdStr::Get();
-
-	std::string logstr;
+	wchar_t logBuffer[1024];
 	va_list arg_ptr;
 	va_start(arg_ptr, fmt);
-	int size = vsnprintf(nullptr, 0, fmt, arg_ptr) + 1;
-	if (size > 1)
-	{
-		logstr.resize(size, '\0');
-		vsnprintf(&logstr[0], size, fmt, arg_ptr);
-		logstr.pop_back();
-	}
+	_vsnwprintf_s(logBuffer, std::size(logBuffer), fmt, arg_ptr);
 	va_end(arg_ptr);
 
-	std::string message = String::Format("[%s] [%s] %s [%d] : %s\n", now.ToString().c_str(), threadIdStr, function, line, logstr.c_str());
+	size_t threadId = StdThreadId::Get();
+	wstring log = logBuffer;
+	wstring message = String::Format(L"[%s][%zd][%s](%d) : %s\n", now.ToString().c_str(), threadId, function, line, log.c_str());
 
 	{
 		std::lock_guard<std::mutex> lk(mSync);
@@ -91,15 +86,15 @@ void Logger::Out(ELogLevel level, std::thread::id thread_id, int line, const cha
 	}
 }
 
-void Logger::write(const std::string& logs)
+void Logger::write(const std::wstring& logs)
 {
 	try 
 	{
 		if (mOutFile.is_open() == false)
 		{
 			DateTime now = DateTime::Now();
-			std::string log_file_name = String::Format("%s%d.%d.%d.log", programName.c_str(), now.Year(), now.Month(), now.Day());
-			std::string log_file_path = String::Format("%s\\%s", basePath.c_str(), log_file_name.c_str());
+			std::wstring log_file_name = String::Format(L"%s%d.%d.%d.log", programName.c_str(), now.Year(), now.Month(), now.Day());
+			std::wstring log_file_path = String::Format(L"%s\\%s", basePath.c_str(), log_file_name.c_str());
 
 			mOutFile.open(log_file_path, std::ios_base::out | std::ios_base::app);
 		}
@@ -114,7 +109,7 @@ void Logger::write(const std::string& logs)
 
 		if (mConsoleLog)
 		{
-			std::cout << logs;
+			std::wcout << logs;
 		}
 	}
 	catch (std::exception e)
@@ -125,8 +120,10 @@ void Logger::write(const std::string& logs)
 
 void Logger::flush()
 {
-	std::string logs;
+	std::wstring logs;
+
 	const auto duration = std::chrono::milliseconds(mFlushDurationMilliSec);
+
 	while (!mExitFlag)
 	{
 		std::unique_lock<std::mutex> lk(mSync);
@@ -138,7 +135,7 @@ void Logger::flush()
 			logs = mBuffer.str();
 		}
 
-		mBuffer.str("");
+		mBuffer.str(L"");
 
 		lk.unlock();
 	

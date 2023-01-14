@@ -48,12 +48,12 @@ AlarmPtr Alarm::Create(const string& tag, uint32 periodMs, TaskPtr task, bool pe
     return shared_ptr<Alarm>(pool_new<Alarm>(tag, periodMs, std::move(task), periodic), pool_delete<Alarm>);
 }
 
-void RegisterAlarm(string tag, uint32 periodMs, TaskPtr task, bool periodic)
+void Alarm::Register(string tag, uint32 periodMs, TaskPtr task, bool periodic)
 {
     AlarmManager::GetInstance()->Register(Alarm::Create(std::move(tag), periodMs, std::move(task), periodic));
 }
 
-void RemoveAlarm(string tag)
+void Alarm::Remove(string tag)
 {
     AlarmManager::GetInstance()->RemoveAlarm(tag);
 }

@@ -18,7 +18,7 @@ bool ClientSession::Connect(const EndPoint& endPoint)
 {
 	if (IsConnected())
 	{
-		LOG_INFO("already connected");
+		LOG_INFO(L"already connected");
 		return true;
 	}
 
@@ -38,7 +38,7 @@ bool ClientSession::Reconnect(const EndPoint& endPoint)
 		Disconnect();
 	}
 
-	LOG_INFO("reconnect ...");
+	LOG_INFO(L"reconnect ...");
 
 	return Connect(endPoint);
 }
@@ -47,7 +47,7 @@ void ClientSession::ConnectAsync(const EndPoint& endPoint)
 {
 	if (IsConnected())
 	{
-		LOG_INFO("already connected");
+		LOG_INFO(L"already connected");
 		return;
 	}
 
@@ -60,7 +60,7 @@ void ClientSession::ConnectAsync(const EndPoint& endPoint)
 
 	const auto onConnectFailed = [](int32 errorCode)
 	{
-		LOG_ERROR("Connect Failed Error Code : %d, Desc : %S", errorCode, Utils::WSAGetLastErrorMsg(errorCode));
+		LOG_ERROR(L"Connect Failed Error Code : %d, Desc : %s", errorCode, Utils::WSAGetLastErrorMsg(errorCode).c_str());
 	};
 
 	connector->ConnectAsync(endPoint, onConnected, onConnectFailed);

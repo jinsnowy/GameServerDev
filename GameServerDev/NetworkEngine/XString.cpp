@@ -4,8 +4,8 @@
 std::string String::Format(const char* fmt, ...)
 {
 	va_list arg_ptr;
-
 	va_start(arg_ptr, fmt);
+
 	int size = vsnprintf(nullptr, 0, fmt, arg_ptr) + 1;
 	if (size <= 1) {
 		va_end(arg_ptr);
@@ -15,9 +15,22 @@ std::string String::Format(const char* fmt, ...)
 	std::string s(size, '\0');
 	vsnprintf(&s[0], size, fmt, arg_ptr);
 	s.pop_back();
+
 	va_end(arg_ptr);
 
 	return s;
+}
+
+std::wstring String::Format(const wchar_t* fmt, ...)
+{
+	wchar_t buffer[1024];
+
+	va_list arg_ptr;
+	va_start(arg_ptr, fmt);
+	_vsnwprintf_s(buffer, std::size(buffer), fmt, arg_ptr);
+	va_end(arg_ptr);
+
+	return buffer;
 }
 
 std::wstring String::ToWide(const std::string& str)
@@ -31,6 +44,7 @@ std::wstring String::ToWide(const std::string& str)
 
 	size_t szNumberOfConverted = str.size();
 	wchar_t buffer[DEFAULT_BUF_SIZE];
+	ZeroMemory(&buffer, sizeof(buffer));
 	mbstowcs_s(&szNumberOfConverted, buffer, str.c_str(), DEFAULT_BUF_SIZE);
 
 	return buffer;
@@ -47,6 +61,7 @@ std::string String::ToNarrow(const std::wstring& str)
 
 	size_t szNumberOfConverted = str.size();
 	CHAR buffer[DEFAULT_BUF_SIZE];
+	ZeroMemory(&buffer, sizeof(buffer));
 	wcstombs_s(&szNumberOfConverted, buffer, str.c_str(), DEFAULT_BUF_SIZE);
 
 	return buffer;

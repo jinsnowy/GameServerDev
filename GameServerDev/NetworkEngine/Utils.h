@@ -3,8 +3,8 @@
 class Utils
 {
 public:
-	static std::string WSAGetLastErrorMsg();
-	static std::string WSAGetLastErrorMsg(int errCode);
+	static std::wstring WSAGetLastErrorMsg();
+	static std::wstring WSAGetLastErrorMsg(int errCode);
 
 	template<typename T>
 	static shared_ptr<T> SharedGlobal()

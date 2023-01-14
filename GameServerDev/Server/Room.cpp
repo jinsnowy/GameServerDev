@@ -13,11 +13,11 @@ void Room::Enter(PlayerPtr player)
 
 	auto timer = Timer::startNew();
 
-	RegisterAlarm(player->name, pnow, MakeTask([pnow, timer]() {
+	Alarm::Register(player->name, pnow, MakeTask([pnow, timer]() {
 		
 		auto tick = (uint32)timer.Count<std::chrono::milliseconds>();
 
-		LOG_INFO("[Alarm Test] expected : %u ms result : %u ms ", pnow, tick);
+		LOG_INFO(L"[Alarm Test] expected : %u ms result : %u ms ", pnow, tick);
 
 	}), false);
 }

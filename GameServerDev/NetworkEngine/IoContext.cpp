@@ -37,7 +37,7 @@ void IoContext::Dispatch(DWORD timeOutMs)
 	{
 		if (_disposed)
 		{
-			LOG_INFO("iocp ends");
+			LOG_INFO(L"iocp ends");
 			return;
 		}
 

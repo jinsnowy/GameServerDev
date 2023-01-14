@@ -14,6 +14,6 @@ public:
 	int Day() const { return tm_mday; }
 	int Month() const { return tm_mon + 1; }
 
-	std::string ToString(const char* format = "%Y-%m-%d %H:%M:%S") const;
-	std::string ToSqlString() const;
+	std::wstring ToString(const wchar_t* format = L"%Y-%m-%d %H:%M:%S") const;
+	std::wstring ToSqlString() const;
 };

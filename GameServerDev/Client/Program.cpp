@@ -17,7 +17,7 @@ int main(int argc, char** argv)
     GamePacketInstaller::Install<ClientPacketHandler>();
 
     ClientSessionFactory sessionFactory = [](ServiceBase& serviceBase) { return shared_ptr<ClientSession>(new PlayerSession(serviceBase)); };
-    ClientServiceParam param(100, 1, "127.0.0.1", 12321, sessionFactory);
+    ClientServiceParam param(20, 1, "127.0.0.1", 12321, sessionFactory);
     ClientService service(param);
     service.Start();
     service.Run([&]() 
@@ -27,9 +27,9 @@ int main(int argc, char** argv)
             UserProtocol::TEST test;
             test.set_text("hello world!");
 
-            service.Broadcast(BufferSegment::Serialize(test));
+            service.Broadcast(Serializer::SerializeProtoBuf(test));
 
-            std::this_thread::sleep_for(200ms);
+            std::this_thread::sleep_for(1s);
         }
     });
 

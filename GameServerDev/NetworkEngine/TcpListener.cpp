@@ -34,7 +34,7 @@ bool TcpListener::Start()
 		RegisterAccpet();
 	}
 
-	LOG_INFO("listen... %s", _listenerNetwork.GetBindAddress().ToString().c_str());
+	LOG_INFO(L"listen... %s", _listenerNetwork.GetBindAddress().ToString().c_str());
 
 	return true;
 }
@@ -48,14 +48,14 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 {
 	if (!_listenerNetwork.UpdateAcceptSocket(network->GetSocket()))
 	{
-		LOG_ERROR("cannot update socket : %s", get_last_err_msg());
+		LOG_ERROR(L"cannot update socket : %s", get_last_err_msg());
 		return false;
 	}
 
 	EndPoint endPoint;
 	if (!NetUtils::GetEndPoint(network->GetSocket(), endPoint))
 	{
-		LOG_ERROR("cannot get address : %s", get_last_err_msg());
+		LOG_ERROR(L"cannot get address : %s", get_last_err_msg());
 		return false;
 	}
 
@@ -63,7 +63,6 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 
 	if (!_config.onAccept(network))
 	{
-		LOG_ERROR("session rejected");
 		return false;
 	}
 
@@ -77,6 +76,6 @@ void TcpListener::RegisterAccpet()
 
 	if (!_listenerNetwork.AcceptAsync(shared_from_this(), network, bufferPtr))
 	{
-		LOG_ERROR("accept error : %s", get_last_err_msg());
+		LOG_ERROR(L"accept error : %s", get_last_err_msg());
 	}
 }

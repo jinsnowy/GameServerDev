@@ -7,6 +7,7 @@ class String
 {
 public:
 	static std::string Format(const char* fmt, ...);
+	static std::wstring Format(const wchar_t* fmt, ...);
 
 	static std::wstring ToWide(const std::string& str);
 	static std::string ToNarrow(const std::wstring& str);

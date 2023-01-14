@@ -20,7 +20,7 @@ private:
 	HandshakePtr    _handshake;
 
 public:
-	TcpNetwork(ServiceBase& ServiceBase);
+	TcpNetwork(ServiceBase& serviceBase);
 
 	~TcpNetwork();
 
@@ -36,7 +36,7 @@ public:
 
 	void Start();
 
-	void Close();
+	void CloseBy(const wchar_t* reason = L"");
 
 	static shared_ptr<TcpNetwork> Create(ServiceBase& serviceBase);
 public:
@@ -63,9 +63,9 @@ private:
 	
 	void RegisterRecv(bool init = false);
 
-	void DisconnectOnError(const char* reason = "");
+	void SendCloseBy(const wchar_t* reason);
 
-	void HandleError(int32 errorCode);
+	void HandleError(int32 errorCode, IoType ioType);
 
 private:
 	atomic<bool>			_connected;

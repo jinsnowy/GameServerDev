@@ -212,6 +212,7 @@ CALL GenProtocols.bat</Command>
     <ClInclude Include="NetworkStream.h" />
     <ClInclude Include="PoolObject.h" />
     <ClInclude Include="SendBuffer.h" />
+    <ClInclude Include="Serializer.h" />
     <ClInclude Include="TcpActiveSocket.h" />
     <ClInclude Include="TcpListenerNetwork.h" />
     <ClInclude Include="TcpListenerSocket.h" />
@@ -281,6 +282,7 @@ CALL GenProtocols.bat</Command>
     <ClCompile Include="Protocol.cpp" />
     <ClCompile Include="SehException.cpp" />
     <ClCompile Include="SendBuffer.cpp" />
+    <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="TcpActiveSocket.cpp" />
     <ClCompile Include="TcpListenerNetwork.cpp" />
     <ClCompile Include="TcpListenerSocket.cpp" />

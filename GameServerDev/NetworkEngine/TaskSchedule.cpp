@@ -30,7 +30,7 @@ void TaskSchedule::Flush(int64& timeOutMs)
 
 	thread_local Timer timer = Timer::startNew();
 
-	// LOG_INFO("Enter %llu tasks", tasks.size());
+	// LOG_INFO(L"Enter %llu tasks", tasks.size());
 
 	while (timeOutMs > 0 && tasks.empty() == false)
 	{
@@ -44,7 +44,7 @@ void TaskSchedule::Flush(int64& timeOutMs)
 		timeOutMs -= timer.Count<std::chrono::milliseconds>();
 	}
 
-	// LOG_INFO("Leave %llu tasks", tasks.size());
+	// LOG_INFO(L"Leave %llu tasks", tasks.size());
 	
 	if (tasks.empty() == false)
 	{

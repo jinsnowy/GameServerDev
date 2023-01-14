@@ -7,7 +7,7 @@ struct StdThreadId
 
 struct StdThreadIdStr
 {
-	static const char* Get();
+	static const wchar_t* Get();
 };
 
 class StdMutex

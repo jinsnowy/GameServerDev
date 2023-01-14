@@ -40,7 +40,14 @@ private:
 	string		     _tag;
 	uint32			 _periodMs;
 	uint64		     _nextTick;
-};
 
-void RegisterAlarm(string tag, uint32 periodMs, TaskPtr task, bool periodic = true);
-void RemoveAlarm(string tag);
+public:
+	template<typename F, typename ...Args>
+	static void Register(string tag, uint32 periodMs, bool periodic, F&& fIn, Args&&... argsIn)
+	{
+		Register(tag, periodMs, MakeTask(std::forward<F>(fIn), std::forward<Args>(argsIn)...), periodic);
+	}
+
+	static void Register(string tag, uint32 periodMs, TaskPtr task, bool periodic = true);
+	static void Remove(string tag);
+};

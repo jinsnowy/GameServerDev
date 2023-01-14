@@ -18,14 +18,14 @@ DateTime DateTime::UtcNow()
 	return date;
 }
 
-std::string DateTime::ToString(const char* format) const
+std::wstring DateTime::ToString(const wchar_t* format) const
 {
-	std::ostringstream oss;
+	std::wostringstream oss;
 	oss << std::put_time((tm*)this, format);
 	return oss.str();
 }
 
-std::string DateTime::ToSqlString() const
+std::wstring DateTime::ToSqlString() const
 {
-	return ToString("%Y-%m-%d %H:%M:%S");
+	return ToString(L"%Y-%m-%d %H:%M:%S");
 }

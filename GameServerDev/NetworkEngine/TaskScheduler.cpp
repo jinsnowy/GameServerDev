@@ -15,6 +15,7 @@ TaskScheduler::~TaskScheduler()
 void TaskScheduler::Poll(int64 timeOutMs)
 {
 	TaskSchedule* schedule;
+
 	while (timeOutMs > 0) 
 	{
 		{
@@ -43,12 +44,8 @@ void TaskScheduler::Schedule(TaskSchedule* schedule)
 
 void TaskScheduler::ReSchedule(TaskSchedule* _schedule)
 {
-	{
-		StdWriteLock lk(_mtx);
-		_global_que.push_front(_schedule);
-	}
-
-	// LOG_INFO("ReScheduled %llu", _schedule->tasks.size());
+	StdWriteLock lk(_mtx);
+	_global_que.push_front(_schedule);
 }
 
 void TaskScheduler::HighPrioritySchedule(TaskSchedule* _schedule)

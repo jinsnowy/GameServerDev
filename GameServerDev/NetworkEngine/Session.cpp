@@ -11,7 +11,7 @@ Session::Session()
 
 Session::~Session()
 {
-	LOG_INFO("~Session()");
+	LOG_INFO(L"~Session()");
 }
 
 void Session::SendAsync(const BufferSegment& segment)
@@ -26,13 +26,13 @@ void Session::AttachNetwork(shared_ptr<TcpNetwork> network)
 {
 	if (_network != nullptr && _network->IsConnected())
 	{
-		_network->DisconnectAsync();
+		_network->CloseBy(L"attach new network");
 		_network = nullptr;
 	}
 
 	_network = network;
 
-	if (_network)
+	if (_network && _network->IsConnected())
 	{
 		OnConnected();
 	}
@@ -77,16 +77,16 @@ void Session::DisconnectAsync()
 
 void Session::OnConnected()
 {
-	static atomic<SessionID> sessionIDGen = 0;
+	static atomic<SessionID> sessionIDGen = 1;
 
 	SetSessionId(sessionIDGen.fetch_add(1));
 
-	LOG_INFO("sessionId %lld connected to %s", GetSessionId(), GetEndPointDesc().c_str());
+	LOG_INFO(L"sessionId %lld connected to %s", GetSessionId(), GetEndPointDesc().c_str());
 }
 
 void Session::OnDisconnected()
 {
-	LOG_INFO("disconnected from %s", GetEndPointDesc().c_str());
+	LOG_INFO(L"disconnected from %s", GetEndPointDesc().c_str());
 }
 
 EndPoint Session::GetEndPoint()

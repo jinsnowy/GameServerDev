@@ -32,7 +32,7 @@ protected:
 
 public:
 	EndPoint	 GetEndPoint();
-	string		 GetEndPointDesc() { return GetEndPoint().ToString(); }
+	wstring		 GetEndPointDesc() { return GetEndPoint().ToString(); }
 	NetworkPtr	 GetNetwork() { return _network; }
 
 	SessionID	 GetSessionId() { return _sessionId; }

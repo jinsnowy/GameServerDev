@@ -22,11 +22,11 @@ private:
 	bool mConsoleLog;
 	int  mFlushDurationMilliSec;
 
-	std::string basePath;
-	std::string programName;
+	std::wstring basePath;
+	std::wstring programName;
 
-	std::ofstream mOutFile;
-	std::stringstream mBuffer;
+	std::wofstream mOutFile;
+	std::wstringstream mBuffer;
 
 	std::condition_variable mCV;
 	std::thread mWorker;
@@ -45,12 +45,10 @@ public:
 
 	void SetloggerLevel(ELogLevel eloggerlevel) { mLogLevel = eloggerlevel; }
 
-	void SetProgramName(const char* name) { programName = name; }
-
-	void Out(ELogLevel level, std::thread::id thread_id, int line, const char* function, const char* fmt, ...);
+	void Out(ELogLevel level, std::thread::id thread_id, int line, const wchar_t* function, const wchar_t* fmt, ...);
 	
 private:
-	void write(const std::string& log);
+	void write(const std::wstring& log);
 
 	void flush();
 
@@ -58,10 +56,10 @@ public:
 	static Logger* GLogger;
 };
 
-#define LOG_FATAL(fmt, ...) Logger::GLogger->Out(ELogLevel::Fatal, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_ERROR(fmt, ...) Logger::GLogger->Out(ELogLevel::Error, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_WARN(fmt, ...) Logger::GLogger->Out(ELogLevel::Warn, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_DEBUG(fmt, ...) Logger::GLogger->Out(ELogLevel::Debug, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
-#define LOG_INFO(fmt, ...) Logger::GLogger->Out(ELogLevel::Info, std::this_thread::get_id(), __LINE__, __FUNCTION__, fmt, __VA_ARGS__)
+#define LOG_FATAL(fmt, ...) Logger::GLogger->Out(ELogLevel::Fatal, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
+#define LOG_ERROR(fmt, ...) Logger::GLogger->Out(ELogLevel::Error, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
+#define LOG_WARN(fmt, ...) Logger::GLogger->Out(ELogLevel::Warn, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
+#define LOG_DEBUG(fmt, ...) Logger::GLogger->Out(ELogLevel::Debug, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
+#define LOG_INFO(fmt, ...) Logger::GLogger->Out(ELogLevel::Info, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
 
 #endif

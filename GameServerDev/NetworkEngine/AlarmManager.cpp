@@ -7,7 +7,7 @@ AlarmManager::AlarmManager()
 {
 	_shorttermScheduler = make_shared<AlarmManager::AlarmScheduler>(
 	[](TaskSchedule* schedule) {
-			TaskScheduler::GetInstance()->HighPrioritySchedule(schedule);
+		TaskScheduler::GetInstance()->HighPrioritySchedule(schedule);
 	});
 
 	_longtermScheduler = make_shared<AlarmManager::AlarmScheduler>(
@@ -113,7 +113,7 @@ bool AlarmManager::AddAlarm(AlarmPtr alarm)
 
 	StdWriteLock lk(_mtx);
 	if (_alarms.find(tag) != _alarms.end()) {
-		LOG_ERROR("failed to register : tag %s exists", tag.c_str());
+		LOG_ERROR(L"failed to register : tag %s exists", tag.c_str());
 		return false;
 	}
 

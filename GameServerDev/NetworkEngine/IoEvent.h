@@ -26,7 +26,7 @@ struct IoEvent : WSAOVERLAPPED
 	{
 	}
 
-	~IoEvent() { /*LOG_INFO("~IoEvent %s", getIoType(ioType)); */ }
+	~IoEvent() { /*LOG_INFO(L"~IoEvent %s", getIoType(ioType)); */ }
 
 	void operator()(int32 errorID, DWORD bytesTransferred) { task(errorID, bytesTransferred); }
 

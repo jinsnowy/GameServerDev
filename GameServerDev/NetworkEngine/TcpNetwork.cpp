@@ -6,9 +6,9 @@
 #include "GamePacketInstaller.h"
 #include "Handshake.h"
 
-TcpNetwork::TcpNetwork(ServiceBase& ServiceBase)
+TcpNetwork::TcpNetwork(ServiceBase& serviceBase)
 	:
-	_socket(ServiceBase),
+	_socket(serviceBase),
 	_connected(false),
 	_pending(false),
 	_session()
@@ -48,14 +48,7 @@ void TcpNetwork::Recv(DWORD recvBytes)
 
 	if (!_recvBuffer.OnDataRecv(recvBytes))
 	{
-		DisconnectOnError("recv buffer overflows");
-		return;
-	}
-	
-	auto session = _session.lock();
-	if (session == nullptr)
-	{
-		DisconnectOnError("session disposed");
+		CloseBy(L"recv buffer overflows");
 		return;
 	}
 
@@ -79,15 +72,19 @@ void TcpNetwork::Recv(DWORD recvBytes)
 
 		SessionPtr session = _session.lock();
 
-		if (GamePacketHandler->IsValidProtocol(header.protocol) && session)
+		if (session == nullptr) 
 		{
-			GamePacketHandler->HandleRecv(session, header, bufferToRead);
+			CloseBy(L"null session");
+			return;
 		}
-		else
+
+		if (GamePacketHandler->IsValidProtocol(header.protocol) == false)
 		{
-			DisconnectOnError("unknown protocol");
-			break;
+			CloseBy(L"unknown protocol");
+			return;	
 		}
+
+		GamePacketHandler->HandleRecv(session, header, bufferToRead);
 	}
 
 	_recvBuffer.Rotate();
@@ -95,6 +92,10 @@ void TcpNetwork::Recv(DWORD recvBytes)
 
 void TcpNetwork::SendAsync(const BufferSegment& segment)
 {
+	if (_connected == false) {
+		return;
+	}
+
 	_sendBuffer.Pend(segment);
 	
 	if (_pending.exchange(true) == false)
@@ -107,7 +108,7 @@ void TcpNetwork::DisconnectAsync()
 {
 	if (false == _socket.DisconnectAsync(DisconnectEvent(shared_from_this())))
 	{
-		LOG_ERROR("disconnect failed %s", get_last_err_msg());
+		LOG_ERROR(L"disconnect failed %s", get_last_err_msg());
 	}
 }
 
@@ -115,19 +116,19 @@ void TcpNetwork::ConnectAsync(const EndPoint& endPoint, const OnConnectFunc& onC
 {
 	if (NetUtils::SetReuseAddress(_socket.GetSocket(), true) == false)
 	{
-		LOG_ERROR("connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
+		LOG_ERROR(L"connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
 		return;
 	}
 
 	if (NetUtils::BindAnyAddress(_socket.GetSocket(), 0) == false)
 	{
-		LOG_ERROR("connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
+		LOG_ERROR(L"connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
 		return;
 	}
 
 	if (!_socket.ConnectAsync(endPoint, ConnectEvent(shared_from_this(), endPoint, onConnected, onConnectFailed)))
 	{
-		LOG_ERROR("connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
+		LOG_ERROR(L"connect failed to %s, %s", endPoint.ToString().c_str(), get_last_err_msg());
 	}
 }
 
@@ -140,10 +141,12 @@ void TcpNetwork::Start()
 	RegisterRecv();
 }
 
-void TcpNetwork::Close()
+void TcpNetwork::CloseBy(const wchar_t* reason)
 {
 	if (_socket.IsOk())
 	{
+		SendCloseBy(reason);
+
 		DisconnectAsync();
 
 		return;
@@ -151,8 +154,6 @@ void TcpNetwork::Close()
 
 	if (_connected)
 	{
-		LOG_WARN("closing already errored socket...");
-
 		SetDisconnected();
 	}
 }
@@ -190,7 +191,7 @@ void TcpNetwork::Flush()
 	{
 		int32 errCode = ::WSAGetLastError();
 
-		HandleError(errCode);
+		HandleError(errCode, IO_WRITE);
 	}
 }
 
@@ -227,31 +228,32 @@ void TcpNetwork::RegisterRecv(bool init)
 	{
 		int32 errCode = ::WSAGetLastError();
 
-		HandleError(errCode);
+		HandleError(errCode, IO_READ);
 	}
 }
 
-void TcpNetwork::DisconnectOnError(const char* reason)
+void TcpNetwork::SendCloseBy(const wchar_t* reason)
 {
-	if (!IsConnected())
-		return;
-
-	if (!_socket.DisconnectAsync(DisconnectEvent(shared_from_this())))
+	if (lstrlenW(reason) > 0)
 	{
-		LOG_ERROR("disconnect failed on %s : %s", reason, get_last_err_msg());
+		SendAsync(Serializer::SerializeStruct(PKT_CLOSE_BY(reason)));
 	}
 }
 
-void TcpNetwork::HandleError(int32 errorCode)
+void TcpNetwork::HandleError(int32 errorCode, IoType ioType)
 {
 	switch (errorCode)
 	{
 	case WSAECONNRESET:
 	case WSAECONNABORTED:
-		DisconnectOnError("connection reset");
+		CloseBy(L"connection reset");
 		break;
 	default:
-		LOG_ERROR("handle error %s", get_last_err_msg_code(errorCode));
+	{
+		wstring reason = get_last_err_msg_code(errorCode);
+		LOG_ERROR(L"handle error reason : %s", reason.c_str());
+		CloseBy(reason.c_str());
 		break;
+	}
 	}
 }

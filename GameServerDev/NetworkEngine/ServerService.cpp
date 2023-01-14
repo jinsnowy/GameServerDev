@@ -4,6 +4,7 @@
 #include "SessionManager.h"
 #include "Handshake.h"
 #include "TcpNetwork.h"
+#include "Alarm.h"
 
 ServerService::ServerService(const ServerServiceParam& param)
 	:
@@ -36,6 +37,14 @@ void ServerService::Start()
     {
         return make_shared<TcpNetwork>(ServiceBase);
     };
+
+    Alarm::Register("health check", 1000, true, []()
+    {
+        auto sessions = SessionManager::GetInstance()->GetSessions();
+
+        LOG_INFO(L"session count %zd", sessions.size());
+    });
+
 
     auto listener = make_shared<TcpListener>(*this, config);
     if (!listener->Start())

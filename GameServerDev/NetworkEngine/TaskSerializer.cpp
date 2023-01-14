@@ -53,7 +53,7 @@ void TaskSerializer::Submit()
 		schedule->tasks = std::move(_tasks);
 	}
 
-	LOG_INFO("submit %d tasks", count);
+	LOG_INFO(L"submit %d tasks", count);
 
 	schedule->taskCreator = shared_from_this();
 

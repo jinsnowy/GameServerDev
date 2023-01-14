@@ -13,13 +13,13 @@ void RecvEvent::operator()(int32 errorCode, DWORD recvBytes)
 {
 	if (recvBytes == 0)
 	{
-		network->DisconnectOnError("recv 0");
+		network->CloseBy();
 		return;
 	}
 
 	if (errorCode != 0)
 	{
-		network->HandleError(errorCode);
+		network->HandleError(errorCode, IO_READ);
 		return;
 	}
 
@@ -37,13 +37,13 @@ void SendEvent::operator()(int32 errorCode, DWORD writeBytes)
 {
 	if (writeBytes == 0)
 	{
-		network->DisconnectOnError("write 0");
+		network->CloseBy();
 		return;
 	}
 
 	if (errorCode != 0)
 	{
-		network->HandleError(errorCode);
+		network->HandleError(errorCode, IO_WRITE);
 		return;
 	}
 
@@ -79,7 +79,7 @@ void DisconnectEvent::operator()(int32 errorCode, DWORD)
 {
 	if (errorCode != 0)
 	{
-		LOG_ERROR("disconnect error : %s", get_last_err_msg());
+		LOG_ERROR(L"disconnect error : %s", get_last_err_msg());
 	}
 
 	network->SetDisconnected();
@@ -94,14 +94,14 @@ void AcceptEvent::operator()(int32 errorCode, DWORD)
 {
 	if (errorCode != 0)
 	{
-		LOG_ERROR("OnAccept Error : %s", get_last_err_msg_code(errorCode));
+		LOG_ERROR(L"OnAccept Error : %s", get_last_err_msg_code(errorCode));
 		listenerPtr->RegisterAccpet();
 		return;
 	}
 
 	if (!listenerPtr->ProcessAccept(networkPtr))
 	{
-		LOG_ERROR("cannot process accept");
+		LOG_ERROR(L"cannot process accept");
 		listenerPtr->RegisterAccpet();
 		return;
 	}

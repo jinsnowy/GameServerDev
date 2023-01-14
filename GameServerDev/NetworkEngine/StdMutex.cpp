@@ -19,15 +19,15 @@ size_t StdThreadId::Get()
 	return threadId.Id;
 }
 
-const char* StdThreadIdStr::Get()
+const wchar_t* StdThreadIdStr::Get()
 {
 	struct StdThreadIdStrInit
 	{
-		string IdStr;
+		wstring IdStr;
 
 		StdThreadIdStrInit()
 		{
-			stringstream ss;
+			wstringstream ss;
 			ss << std::this_thread::get_id();
 			IdStr = ss.str();
 		}

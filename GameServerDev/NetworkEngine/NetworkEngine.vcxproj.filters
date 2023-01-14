@@ -61,6 +61,9 @@
     <Filter Include="Exception">
       <UniqueIdentifier>{9da139e9-891d-4d83-99c7-7951b21f0a97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Serializer">
+      <UniqueIdentifier>{0b7c5e29-1fed-4501-95b4-936698baeddb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -256,6 +259,9 @@
     <ClInclude Include="GamePacketInstaller.h">
       <Filter>Protocol</Filter>
     </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Serializer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -420,6 +426,9 @@
     </ClCompile>
     <ClCompile Include="GamePacketInstaller.cpp">
       <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializer.cpp">
+      <Filter>Serializer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

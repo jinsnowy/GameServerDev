@@ -31,11 +31,15 @@ void ClientService::Start()
 
 void ClientService::Broadcast(BufferSegment buffer)
 {
+	int count = 0;
 	for (auto& client : _clients)
 	{
 		if (client->IsConnected())
 		{
+			++count;
 			client->SendAsync(buffer);
 		}
 	}
+
+	LOG_INFO(L"client %d connected", count);
 }

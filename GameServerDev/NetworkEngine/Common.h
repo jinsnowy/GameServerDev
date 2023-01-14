@@ -13,3 +13,4 @@
 #include "PacketHeader.h"
 #include "PacketHandler.h"
 #include "BufferSource.h"
+#include "Serializer.h"

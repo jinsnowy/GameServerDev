@@ -57,7 +57,7 @@ bool Xml::read(const std::string& rootName, const std::string& filePath)
 	{
 		if (err != tinyxml2::XMLError::XML_SUCCESS)
 		{
-			LOG_ERROR("XML parsing error %s", tinyxml2::XMLDocument::ErrorIDToName(err));
+			LOG_ERROR(L"XML parsing error %s", tinyxml2::XMLDocument::ErrorIDToName(err));
 			return true;
 		}
 
@@ -115,7 +115,7 @@ bool Xml::read(const std::string& rootName, const std::string& filePath)
 	}
 	catch (std::exception e)
 	{
-		LOG_ERROR("XML parsing exception %s", e.what());
+		LOG_ERROR(L"XML parsing exception %s", e.what());
 	}
 
 	return false;

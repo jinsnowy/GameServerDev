@@ -259,7 +259,7 @@ void DBConnection::HandleError(SQLRETURN ret)
 		if (errorRet == SQL_SUCCESS || errorRet == SQL_SUCCESS_WITH_INFO)
 			return;
 
-		LOG_INFO("SQL Handle Error Message : %S", errMsg);
+		LOG_INFO(L"SQL Handle Error Message : %S", errMsg);
 
 		index++;
 	}

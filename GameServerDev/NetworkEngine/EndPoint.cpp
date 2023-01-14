@@ -27,14 +27,14 @@ EndPoint::EndPoint(const char* ipAddress, uint16 port)
     mInfo.sin_port = htons(port);
 }
 
-std::string EndPoint::GetIpAddress() const
+std::wstring EndPoint::GetIpAddress() const
 {
-	return inet_ntoa(mInfo.sin_addr);
+	return String::ToWide(inet_ntoa(mInfo.sin_addr));
 }
 
-std::string EndPoint::GetPort() const
+std::wstring EndPoint::GetPort() const
 {
-	return std::to_string(ntohs(mInfo.sin_port));
+	return std::to_wstring(ntohs(mInfo.sin_port));
 }
 
 const SOCKADDR* EndPoint::GetSockAddr() const
@@ -42,9 +42,9 @@ const SOCKADDR* EndPoint::GetSockAddr() const
 	return (const SOCKADDR*)(&mInfo);
 }
 
-std::string EndPoint::ToString() const
+std::wstring EndPoint::ToString() const
 {
-	return String::Format("%s:%s", GetIpAddress().c_str(), GetPort().c_str());
+	return String::Format(L"%s:%s", GetIpAddress().c_str(), GetPort().c_str());
 }
 
 bool EndPoint::Resolve(const char* hostAddress, uint16 port, EndPoint& endPoint)

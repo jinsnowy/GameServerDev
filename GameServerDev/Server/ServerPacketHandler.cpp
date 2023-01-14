@@ -11,11 +11,11 @@ void ServerPacketHandler::onHeartbeat(SessionPtrCRef session, UserProtocol::HEAR
 
 void ServerPacketHandler::onTest(SessionPtrCRef session, UserProtocol::TEST pkt)
 {
-	LOG_INFO("Session(%lld) : %s", session->GetSessionId(), pkt.text().c_str());
+	// LOG_INFO(L"Session (%lld) : %S", session->GetSessionId(), pkt.text().c_str());
 
-	//auto player = session->GetShared<UserSession>()->GetPlayer();
+	// auto player = session->GetShared<UserSession>()->GetPlayer();
 
-	//Utils::SharedGlobal<Room>()->Enqueue(&Room::Broadcast, BufferSegment::Serialize(pkt));
+	// Utils::SharedGlobal<Room>()->Enqueue(&Room::Broadcast, BufferSegment::Serialize(pkt));
 }
 
 void ServerPacketHandler::onLoginRequest(SessionPtrCRef session, UserProtocol::LOGIN_REQUEST pkt)
@@ -25,7 +25,7 @@ void ServerPacketHandler::onLoginRequest(SessionPtrCRef session, UserProtocol::L
 	UserProtocol::LOGIN_RESPONSE response;
 	*response.mutable_player() = pkt.player();
 
-	session->SendAsync(BufferSegment::Serialize(response));
+	session->SendAsync(Serializer::SerializeProtoBuf(response));
 }
 
 void ServerPacketHandler::onEnterRoomRequest(SessionPtrCRef session, UserProtocol::ENTER_ROOM_REQUEST pkt)
@@ -36,5 +36,5 @@ void ServerPacketHandler::onEnterRoomRequest(SessionPtrCRef session, UserProtoco
 
 	UserProtocol::ENTER_ROOM_RESPONSE response;
 	response.set_id(0);
-	session->SendAsync(BufferSegment::Serialize(response));
+	session->SendAsync(Serializer::SerializeProtoBuf(response));
 }
