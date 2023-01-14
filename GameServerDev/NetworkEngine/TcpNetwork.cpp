@@ -46,48 +46,40 @@ void TcpNetwork::Recv(DWORD recvBytes)
 	static InternalPacketHandler InternalPacketHandler;
 	static PacketHandler* GamePacketHandler = GamePacketInstaller::GetHandler();
 
-	if (!_recvBuffer.Read(recvBytes))
+	if (_recvBuffer.Read(recvBytes) == false)
 	{
 		CloseBy(L"recv buffer overflows");
 		return;
 	}
 
-	if (_recvBuffer.IsHeaderReadable() == false) {
-		return;
-	}
-
-	CHAR* bufferToRead = nullptr;
-	PacketHeader* header = nullptr;
-
-	for (bufferToRead = _recvBuffer.GetBufferPtrRead(), header = PacketHeader::Peek(bufferToRead);
-		_recvBuffer.IsReadable(header->size);
-		_recvBuffer.Move(header->size))
+	for (CHAR* bufferToRead = _recvBuffer.GetBufferPtrRead(); _recvBuffer.IsHeaderReadable(); _recvBuffer.Next())
 	{
-		if (InternalPacketHandler.IsValidProtocol(header->protocol))
+		for (PacketHeader* header = PacketHeader::Peek(bufferToRead); _recvBuffer.IsReadable(header->size); _recvBuffer.Move(header->size))
 		{
-			InternalPacketHandler.HandleRecv(shared_from_this(), *header, bufferToRead);
+			if (InternalPacketHandler.IsValidProtocol(header->protocol))
+			{
+				InternalPacketHandler.HandleRecv(shared_from_this(), *header, bufferToRead);
 
-			continue;
+				continue;
+			}
+
+			SessionPtr session = _session.lock();
+
+			if (session == nullptr)
+			{
+				CloseBy(L"null session");
+				return;
+			}
+
+			if (GamePacketHandler->IsValidProtocol(header->protocol) == false)
+			{
+				CloseBy(L"unknown protocol");
+				return;
+			}
+
+			GamePacketHandler->HandleRecv(session, *header, bufferToRead);
 		}
-
-		SessionPtr session = _session.lock();
-
-		if (session == nullptr) 
-		{
-			CloseBy(L"null session");
-			return;
-		}
-
-		if (GamePacketHandler->IsValidProtocol(header->protocol) == false)
-		{
-			CloseBy(L"unknown protocol");
-			return;	
-		}
-
-		GamePacketHandler->HandleRecv(session, *header, bufferToRead);
 	}
-
-	_recvBuffer.Next();
 }
 
 void TcpNetwork::SendAsync(const BufferSegment& segment)
