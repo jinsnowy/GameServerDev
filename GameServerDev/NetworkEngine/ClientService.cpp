@@ -43,3 +43,11 @@ void ClientService::Broadcast(BufferSegment buffer)
 
 	LOG_INFO(L"client %d connected", count);
 }
+
+void ClientService::ForEach(function<void(SessionPtr)> func)
+{
+	for (auto& client : _clients)
+	{
+		func(client);
+	}
+}

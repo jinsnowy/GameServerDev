@@ -12,8 +12,8 @@ struct PacketHeader
 	PacketHeader(const PacketHeader& rhs) : protocol(rhs.protocol), size(rhs.size) {}
 	PacketHeader& operator=(const PacketHeader& rhs) { protocol = rhs.protocol; size = rhs.size; return *this; }
 
-	static PacketHeader Peek(void* buf)
+	static PacketHeader* Peek(void* buf)
 	{
-		return *reinterpret_cast<PacketHeader*>(buf);
+		return reinterpret_cast<PacketHeader*>(buf);
 	}
 };

@@ -25,11 +25,11 @@ AlarmManager::AlarmScheduler::AlarmScheduler(function<void(TaskSchedule*)> sched
 	_pending(false),
 	_schedule_func(schedule_func)
 {
-	_check_schedule = new TaskSchedule();
+	_schedule_holder = new TaskSchedule();
 }
 
 AlarmManager::AlarmScheduler::~AlarmScheduler() {
-	delete _check_schedule;
+	delete _schedule_holder;
 }
 
 void AlarmManager::Register(AlarmPtr alarm)
@@ -57,7 +57,7 @@ void AlarmManager::AlarmScheduler::Push(AlarmPtr alarm)
 	}
 }
 
-void AlarmManager::AlarmScheduler::onCheckSchedule(AlarmQueue& alarmQueue)
+void AlarmManager::AlarmScheduler::Execute(AlarmQueue& alarmQueue)
 {
 	uint64 curTick = ::GetTickCount64();
 
@@ -70,39 +70,40 @@ void AlarmManager::AlarmScheduler::onCheckSchedule(AlarmQueue& alarmQueue)
 		}
 
 		if (alarm->IsEnabled()) {
-			ReSchedule(alarm);
+			Reschedule(alarm);
 		}
 	}
 }
 
 void AlarmManager::AlarmScheduler::Submit()
 {
-	do
+	TaskSchedule* submittedSchedule = nullptr;
+
 	{
 		StdWriteLock lk(_mtx);
 		if (_alarm_que.empty()) {
 			_pending.store(false);
 			return;
 		}
+		
+		submittedSchedule = _schedule_holder;
 
-		_check_schedule->tasks.push(MakeTask(&AlarmManager::AlarmScheduler::onCheckSchedule, this, std::move(_alarm_que)));
-	
-	} while (0);
+		_schedule_holder = new TaskSchedule();
+	}
 
-	_check_schedule->taskCreator = shared_from_this();
+	submittedSchedule->tasks.push(MakeTask(&AlarmManager::AlarmScheduler::Execute, this, std::move(_alarm_que)));
+	submittedSchedule->taskCreator = shared_from_this();
 
-	_schedule_func(_check_schedule);
-
-	_check_schedule = new TaskSchedule();
+	_schedule_func(submittedSchedule);
 }
 
-void AlarmManager::AlarmScheduler::ReSchedule(AlarmPtr alarm)
+void AlarmManager::AlarmScheduler::Reschedule(AlarmPtr alarm)
 {
 	StdWriteLock lk(_mtx);
 	_alarm_que.push(alarm);
 }
 
-void AlarmManager::AlarmScheduler::EndSchedule()
+void AlarmManager::AlarmScheduler::PostExecute()
 {
 	Submit();
 }

@@ -11,7 +11,15 @@ void ServerPacketHandler::onHeartbeat(SessionPtrCRef session, UserProtocol::HEAR
 
 void ServerPacketHandler::onTest(SessionPtrCRef session, UserProtocol::TEST pkt)
 {
-	// LOG_INFO(L"Session (%lld) : %S", session->GetSessionId(), pkt.text().c_str());
+	static map<SessionID, int> counter;
+	if (counter.find(session->GetSessionId()) == counter.end()) {
+		counter[session->GetSessionId()] = 0;
+	}
+
+	int count = counter[session->GetSessionId()]++;
+	if (count % 10 == 0) {
+		LOG_INFO(L"Session (%lld) : %S", session->GetSessionId(), pkt.text().c_str());
+	}
 
 	// auto player = session->GetShared<UserSession>()->GetPlayer();
 

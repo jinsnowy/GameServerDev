@@ -24,48 +24,42 @@ static const wchar_t* GetTag(ELogLevel level)
 
 Logger::Logger()
 	:
-	mExitFlag(false),
-	mConsoleLog(true),
-	mFlushDurationMilliSec(500),
-	mWorker([this]() { this->flush(); }),
-	mLogLevel(ELogLevel::Info)
+	_consoleLog(true),
+	_pending(false)
 {
 	wchar_t buffer[MAX_PATH];
 	::GetModuleFileNameW(NULL, buffer, MAX_PATH);
 
-	basePath = buffer;
+	_basePath = buffer;
 
-	size_t pos = basePath.find_last_of('\\');
-	basePath = basePath.substr(0, pos);
+	size_t pos = _basePath.find_last_of('\\');
+	_basePath = _basePath.substr(0, pos);
+
+	try
+	{
+		DateTime now = DateTime::Now();
+		std::wstring log_file_name = String::Format(L"%s%d.%d.%d.log", _programName.c_str(), now.Year(), now.Month(), now.Day());
+		std::wstring log_file_path = String::Format(L"%s\\%s", _basePath.c_str(), log_file_name.c_str());
+
+		_outFile.open(log_file_path, std::ios_base::out | std::ios_base::app);
+	}
+	catch (std::exception e)
+	{
+		std::cerr << "open file failed : " << e.what() << std::endl;
+	}
 }
 
 Logger::~Logger()
 {
+	if (_outFile.is_open())
 	{
-		std::lock_guard<std::mutex> lk(mSync);
-		mExitFlag = true;
-		mCV.notify_one();
+		_outFile.close();
 	}
-
-	if (mWorker.joinable())
-	{
-		mWorker.join();
-	}
-
-	if (mOutFile.is_open())
-	{
-		mOutFile.close();
-	}
-}
-
-void Logger::SetFlushDuration(int durationMs)
-{
-	mFlushDurationMilliSec = durationMs;
 }
 
 void Logger::Out(ELogLevel level, std::thread::id thread_id, int line, const wchar_t* function, const wchar_t* fmt, ...)
 {
-	if (level < mLogLevel)
+	if (level < _logLevel)
 		return;
 
 	DateTime now = DateTime::Now();
@@ -81,68 +75,45 @@ void Logger::Out(ELogLevel level, std::thread::id thread_id, int line, const wch
 	wstring message = String::Format(L"[%s][%zd][%s](%d) : %s\n", now.ToString().c_str(), threadId, function, line, log.c_str());
 
 	{
-		std::lock_guard<std::mutex> lk(mSync);
-		mBuffer << message;
+		lock_guard<mutex> lk(_mtx);
+		_que.emplace_back(level, std::move(message));
+	}
+
+	if (_pending.exchange(true) == false) {
+
+		vector<LogInfo> logs;
+		{
+			lock_guard<mutex> lk(_mtx);
+			logs = std::move(_que);
+		}
+	
+		Flush(std::move(logs));
 	}
 }
 
-void Logger::write(const std::wstring& logs)
+void Logger::Flush(vector<LogInfo> logs)
 {
 	try 
 	{
-		if (mOutFile.is_open() == false)
+		for (const auto& logInfo : logs)
 		{
-			DateTime now = DateTime::Now();
-			std::wstring log_file_name = String::Format(L"%s%d.%d.%d.log", programName.c_str(), now.Year(), now.Month(), now.Day());
-			std::wstring log_file_path = String::Format(L"%s\\%s", basePath.c_str(), log_file_name.c_str());
+			_outFile << logInfo.message;
 
-			mOutFile.open(log_file_path, std::ios_base::out | std::ios_base::app);
+			if (_consoleLog)
+			{
+				std::wcout << logInfo.message;
+			}
 		}
 
-		if (mOutFile.is_open() == false)
-		{
-			return;
-		}
-
-		mOutFile << logs;
-		mOutFile.flush();
-
-		if (mConsoleLog)
-		{
-			std::wcout << logs;
+		_outFile.flush();
+		if (_consoleLog) {
+			std::wcout.flush();
 		}
 	}
 	catch (std::exception e)
 	{
 		std::cerr << "log write failed : " << e.what() << std::endl;
 	}
-}
 
-void Logger::flush()
-{
-	std::wstring logs;
-
-	const auto duration = std::chrono::milliseconds(mFlushDurationMilliSec);
-
-	while (!mExitFlag)
-	{
-		std::unique_lock<std::mutex> lk(mSync);
-
-		mCV.wait_for(lk, duration, [this, &logs](){ return mExitFlag; });
-
-		if (logs.empty())
-		{
-			logs = mBuffer.str();
-		}
-
-		mBuffer.str(L"");
-
-		lk.unlock();
-	
-		if (!logs.empty())
-		{
-			write(logs);
-			logs.clear();
-		}
-	}
+	_pending.store(false);
 }

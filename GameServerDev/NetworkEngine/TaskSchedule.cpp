@@ -59,7 +59,7 @@ void TaskSchedule::Flush(int64& timeOutMs)
 void TaskSchedule::Done()
 {
 	if (taskCreator) {
-		taskCreator->EndSchedule();
+		taskCreator->PostExecute();
 	}
 
 	delete this;

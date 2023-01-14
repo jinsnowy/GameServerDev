@@ -32,4 +32,6 @@ public:
 	virtual void Start() override;
 
 	void Broadcast(BufferSegment buffer);
+
+	void ForEach(function<void(SessionPtr)> func);
 };

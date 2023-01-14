@@ -16,41 +16,40 @@ enum class ELogLevel
 
 class Logger : public ISingleton<Logger>
 {
+	struct LogInfo
+	{
+		ELogLevel level;
+		wstring message;
+	};
+
 	friend class ISingleton<Logger>;
 private:
-	bool mExitFlag;
-	bool mConsoleLog;
-	int  mFlushDurationMilliSec;
+	bool _consoleLog;
 
-	std::wstring basePath;
-	std::wstring programName;
+	std::wstring _basePath;
+	std::wstring _programName;
 
-	std::wofstream mOutFile;
-	std::wstringstream mBuffer;
+	std::wofstream _outFile;
+	std::wstringstream _buffer;
 
-	std::condition_variable mCV;
-	std::thread mWorker;
-	std::mutex  mSync;
-
-	ELogLevel mLogLevel;
+	mutex _mtx;
+	vector<LogInfo> _que;
+	atomic<bool> _pending;
+	ELogLevel _logLevel;
 private:
 	Logger();
 
 public:
 	~Logger();
 
-	void SetFlushDuration(int durationMs);
+	void SetConsolelogger(bool bConsolelogger) { _consoleLog = bConsolelogger; }
 
-	void SetConsolelogger(bool bConsolelogger) { mConsoleLog = bConsolelogger; }
-
-	void SetloggerLevel(ELogLevel eloggerlevel) { mLogLevel = eloggerlevel; }
+	void SetloggerLevel(ELogLevel eloggerlevel) { _logLevel = eloggerlevel; }
 
 	void Out(ELogLevel level, std::thread::id thread_id, int line, const wchar_t* function, const wchar_t* fmt, ...);
 	
 private:
-	void write(const std::wstring& log);
-
-	void flush();
+	void Flush(vector<LogInfo> logs);
 
 public:
 	static Logger* GLogger;

@@ -21,15 +21,22 @@ int main(int argc, char** argv)
     ClientService service(param);
     service.Start();
     service.Run([&]() 
-    {
+    {     
+        int packetNum = 0;
+
         while (1)
         {
-            UserProtocol::TEST test;
-            test.set_text("hello world!");
+            service.ForEach([&packetNum](SessionPtr session)
+            {            
+                UserProtocol::TEST test;
+                test.set_text(String::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
 
-            service.Broadcast(Serializer::SerializeProtoBuf(test));
+                session->SendAsync(Serializer::SerializeProtoBuf(test));
+            });
 
-            std::this_thread::sleep_for(1s);
+            std::this_thread::sleep_for(100ms);
+
+            ++packetNum;
         }
     });
 

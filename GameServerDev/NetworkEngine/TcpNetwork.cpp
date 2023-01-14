@@ -46,26 +46,26 @@ void TcpNetwork::Recv(DWORD recvBytes)
 	static InternalPacketHandler InternalPacketHandler;
 	static PacketHandler* GamePacketHandler = GamePacketInstaller::GetHandler();
 
-	if (!_recvBuffer.OnDataRecv(recvBytes))
+	if (!_recvBuffer.Read(recvBytes))
 	{
 		CloseBy(L"recv buffer overflows");
 		return;
 	}
 
-	while (_recvBuffer.IsHeaderReadable())
+	if (_recvBuffer.IsHeaderReadable() == false) {
+		return;
+	}
+
+	CHAR* bufferToRead = nullptr;
+	PacketHeader* header = nullptr;
+
+	for (bufferToRead = _recvBuffer.GetBufferPtrRead(), header = PacketHeader::Peek(bufferToRead);
+		_recvBuffer.IsReadable(header->size);
+		_recvBuffer.Move(header->size))
 	{
-		CHAR* bufferToRead = _recvBuffer.GetBufferPtrRead();
-
-		PacketHeader header = PacketHeader::Peek(bufferToRead);
-
-		if (!_recvBuffer.IsReadable(header.size))
+		if (InternalPacketHandler.IsValidProtocol(header->protocol))
 		{
-			break;
-		}
-
-		if (InternalPacketHandler.IsValidProtocol(header.protocol))
-		{
-			InternalPacketHandler.HandleRecv(shared_from_this(), header, bufferToRead);
+			InternalPacketHandler.HandleRecv(shared_from_this(), *header, bufferToRead);
 
 			continue;
 		}
@@ -78,16 +78,16 @@ void TcpNetwork::Recv(DWORD recvBytes)
 			return;
 		}
 
-		if (GamePacketHandler->IsValidProtocol(header.protocol) == false)
+		if (GamePacketHandler->IsValidProtocol(header->protocol) == false)
 		{
 			CloseBy(L"unknown protocol");
 			return;	
 		}
 
-		GamePacketHandler->HandleRecv(session, header, bufferToRead);
+		GamePacketHandler->HandleRecv(session, *header, bufferToRead);
 	}
 
-	_recvBuffer.Rotate();
+	_recvBuffer.Next();
 }
 
 void TcpNetwork::SendAsync(const BufferSegment& segment)
@@ -143,6 +143,8 @@ void TcpNetwork::Start()
 
 void TcpNetwork::CloseBy(const wchar_t* reason)
 {
+	LOG_WARN(L"Close By : %s", reason);
+
 	if (_socket.IsOk())
 	{
 		SendCloseBy(reason);
@@ -180,8 +182,6 @@ void TcpNetwork::SetConnected(EndPoint endPoint)
 	if (_connected.exchange(true) == false)
 	{
 		_endPoint = endPoint;
-
-		RegisterRecv(true);
 	}
 }
 
@@ -212,16 +212,11 @@ bool TcpNetwork::FlushInternal()
 	return _socket.WriteAsync(std::move(writeData.buffers), SendEvent(shared_from_this(), std::move(writeData.segments)));
 }
 
-void TcpNetwork::RegisterRecv(bool init)
+void TcpNetwork::RegisterRecv()
 {
 	if (!IsConnected()) 
 	{
 		return;
-	}
-
-	if (init)
-	{
-		_recvBuffer.Clear();
 	}
 
 	if (!_socket.ReadAsync(_recvBuffer.GetBufferPtr(), _recvBuffer.GetLen(), RecvEvent(shared_from_this())))

@@ -61,7 +61,7 @@ private:
 	
 	bool FlushInternal();
 	
-	void RegisterRecv(bool init = false);
+	void RegisterRecv();
 
 	void SendCloseBy(const wchar_t* reason);
 

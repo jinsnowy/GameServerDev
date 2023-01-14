@@ -20,7 +20,7 @@ private:
 		using AlarmQueue = priority_queue<AlarmPtr, deque<AlarmPtr>, LessNextTick>;
 	private:
 		atomic<bool>		   _pending;
-		TaskSchedule*		   _check_schedule;
+		TaskSchedule*		   _schedule_holder;
 		function<void(TaskSchedule*)> _schedule_func;
 
 		StdMutex  _mtx;
@@ -30,11 +30,11 @@ private:
 		~AlarmScheduler();
 
 		void Push(AlarmPtr alarm);
-		void onCheckSchedule(AlarmQueue& alarmQueue);
-		void ReSchedule(AlarmPtr alarm);
+		void Execute(AlarmQueue& alarmQueue);
+		void Reschedule(AlarmPtr alarm);
 
 		virtual void Submit() override;
-		virtual void EndSchedule() override;
+		virtual void PostExecute() override;
 	};
 
 	shared_ptr<AlarmScheduler> _longtermScheduler;

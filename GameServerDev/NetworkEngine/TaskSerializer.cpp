@@ -60,7 +60,7 @@ void TaskSerializer::Submit()
 	taskScheduler->Schedule(schedule);
 }
 
-void TaskSerializer::EndSchedule()
+void TaskSerializer::PostExecute()
 {
 	Submit();
 }

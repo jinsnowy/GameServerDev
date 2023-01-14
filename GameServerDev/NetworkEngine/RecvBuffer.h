@@ -14,9 +14,9 @@ public:
 	CHAR* GetBufferPtrRead() { return &_buffer[_readPos]; }
 	
 	void Clear();
-	void Rotate();
-	bool OnDataRecv(int32 recvBytes);
-	void Read(int32 readBytes);
+	void Next();
+	void Move(int32 recvBytes);
+	bool Read(int32 readBytes);
 	bool IsReadable(int32 bytes) { return _writePos - _readPos >= bytes; }
 	bool IsHeaderReadable() { return _writePos - _readPos >= sizeof(PacketHeader); }
 

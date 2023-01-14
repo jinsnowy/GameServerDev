@@ -66,6 +66,8 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 		return false;
 	}
 
+	network->Start();
+
 	return true;
 }
 

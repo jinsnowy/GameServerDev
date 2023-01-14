@@ -29,5 +29,5 @@ private:
 	void Push(TaskPtr task);
 
 	virtual void Submit() override;
-	virtual void EndSchedule() override;
+	virtual void PostExecute() override;
 };
