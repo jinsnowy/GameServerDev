@@ -4,6 +4,7 @@
 #include "SessionManager.h"
 #include "Handshake.h"
 #include "TcpNetwork.h"
+#include "TcpListenerBuilder.h"
 #include "Alarm.h"
 
 ServerService::ServerService(const ServerServiceParam& param)
@@ -19,24 +20,12 @@ void ServerService::Start()
 {
     ServiceBase::Start();
 
-    ListenerConfig config;
-    config.bindPort = 12321;
-    config.backLog = 10;
-    config.acceptCount = 1;
-    config.onAccept = [this](const shared_ptr<TcpNetwork>& network)
-    {
-        auto session = _sessionFactory();
-        network->AttachSession(session);
-
-        SessionManager::GetInstance()->AddSession(session);
-
-        return true;
-    };
-
-    config.networkFactory = [](ServiceBase& ServiceBase)
-    {
-        return make_shared<TcpNetwork>(ServiceBase);
-    };
+    TcpListenerBuilder builder;
+    builder.Port(_port)
+        .BackLog(_backLog)
+        .AcceptCount(10)
+        ._NetworkFactory([](ServiceBase& serviceBase) { return make_shared<TcpNetwork>(serviceBase); })
+        ._SessionFactory(_sessionFactory);
 
     Alarm::Register("health check", 1000, true, []()
     {
@@ -46,7 +35,7 @@ void ServerService::Start()
     });
 
 
-    auto listener = make_shared<TcpListener>(*this, config);
+    auto listener = builder.Build(*this);
     if (!listener->Start())
     {
         throw std::exception("TcpListener start failed");

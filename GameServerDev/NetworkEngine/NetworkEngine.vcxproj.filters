@@ -262,6 +262,9 @@
     <ClInclude Include="Serializer.h">
       <Filter>Serializer</Filter>
     </ClInclude>
+    <ClInclude Include="TcpListenerBuilder.h">
+      <Filter>Listener</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -429,6 +432,9 @@
     </ClCompile>
     <ClCompile Include="Serializer.cpp">
       <Filter>Serializer</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpListenerBuilder.cpp">
+      <Filter>Listener</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

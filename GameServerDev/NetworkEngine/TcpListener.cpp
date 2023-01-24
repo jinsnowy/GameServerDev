@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "TcpListener.h"
 #include "TcpNetwork.h"
+#include "SessionManager.h"
 
-TcpListener::TcpListener(ServiceBase& serviceBase, ListenerConfig config)
+TcpListener::TcpListener(ServiceBase& serviceBase)
 	:
 	_serviceBase(serviceBase),
 	_finished(false),
-	_config(config),
 	_listenerNetwork(serviceBase)
 {
 }
@@ -22,16 +22,16 @@ bool TcpListener::Start()
 		return false;
 	}
 
-	if (!_listenerNetwork.Bind(_config.bindPort)) {
+	if (!_listenerNetwork.Bind(_bindPort)) {
 		return false;
 	}
 
-	if (!_listenerNetwork.Listen(_config.backLog)) {
+	if (!_listenerNetwork.Listen(_backLog)) {
 		return false;
 	}
 
-	for (int32 i = 0; i < _config.acceptCount; ++i) {
-		RegisterAccpet();
+	for (int32 i = 0; i < _acceptCount; ++i) {
+		RegisterAccept();
 	}
 
 	LOG_INFO(L"listen... %s", _listenerNetwork.GetBindAddress().ToString().c_str());
@@ -61,7 +61,7 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 
 	network->SetConnected(endPoint);
 
-	if (!_config.onAccept(network))
+	if (!OnAccept(network))
 	{
 		return false;
 	}
@@ -71,13 +71,23 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 	return true;
 }
 
-void TcpListener::RegisterAccpet()
+void TcpListener::RegisterAccept()
 {
-	NetworkPtr network = _config.networkFactory(_serviceBase);
+	NetworkPtr network = _networkFactory(_serviceBase);
 	LPVOID bufferPtr = network->GetRecvBuffer().GetBufferPtr();
 
 	if (!_listenerNetwork.AcceptAsync(shared_from_this(), network, bufferPtr))
 	{
 		LOG_ERROR(L"accept error : %s", get_last_err_msg());
 	}
+}
+
+bool TcpListener::OnAccept(const NetworkPtr& network)
+{
+	auto session = _sessionFactory();
+	network->AttachSession(session);
+
+	SessionManager::GetInstance()->AddSession(session);
+
+	return true;
 }

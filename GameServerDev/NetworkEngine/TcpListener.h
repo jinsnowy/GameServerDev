@@ -2,26 +2,21 @@
 
 #include "TcpListenerNetwork.h"
 
-struct ListenerConfig
-{
-	uint16 bindPort;
-	int32  backLog;
-	int32  acceptCount;
-
-	NetworkFactory networkFactory;
-	OnAcceptFunc   onAccept;
-};
-
 class TcpListener : public std::enable_shared_from_this<TcpListener>
 {
 	friend struct AcceptEvent;
+	friend class TcpListenerBuilder;
 private:
 	ServiceBase&   _serviceBase;
 	atomic<bool>   _finished;
-	ListenerConfig _config;
+	uint16		   _bindPort;
+	int32		   _backLog;
+	int32		   _acceptCount;
+	NetworkFactory _networkFactory;
+	SessionFactory _sessionFactory;
 
 public:
-	TcpListener(ServiceBase& serviceBase, ListenerConfig config);
+	TcpListener(ServiceBase& serviceBase);
 	
 	~TcpListener();
 
@@ -30,9 +25,11 @@ public:
 	void Stop();
 
 private:
-	bool ProcessAccept(const NetworkPtr& session);
+	bool ProcessAccept(const NetworkPtr& network);
 
-	void RegisterAccpet();
+	void RegisterAccept();
+
+	bool OnAccept(const NetworkPtr& network);
 
 	TcpListenerNetwork _listenerNetwork;
 

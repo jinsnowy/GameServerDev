@@ -213,6 +213,7 @@ CALL GenProtocols.bat</Command>
     <ClInclude Include="SendBuffer.h" />
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="TcpActiveSocket.h" />
+    <ClInclude Include="TcpListenerBuilder.h" />
     <ClInclude Include="TcpListenerNetwork.h" />
     <ClInclude Include="TcpListenerSocket.h" />
     <ClInclude Include="XString.h" />
@@ -283,6 +284,7 @@ CALL GenProtocols.bat</Command>
     <ClCompile Include="SendBuffer.cpp" />
     <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="TcpActiveSocket.cpp" />
+    <ClCompile Include="TcpListenerBuilder.cpp" />
     <ClCompile Include="TcpListenerNetwork.cpp" />
     <ClCompile Include="TcpListenerSocket.cpp" />
     <ClCompile Include="XString.cpp" />

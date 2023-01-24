@@ -95,16 +95,16 @@ void AcceptEvent::operator()(int32 errorCode, DWORD)
 	if (errorCode != 0)
 	{
 		LOG_ERROR(L"OnAccept Error : %s", get_last_err_msg_code(errorCode));
-		listenerPtr->RegisterAccpet();
+		listenerPtr->RegisterAccept();
 		return;
 	}
 
 	if (!listenerPtr->ProcessAccept(networkPtr))
 	{
 		LOG_ERROR(L"cannot process accept");
-		listenerPtr->RegisterAccpet();
+		listenerPtr->RegisterAccept();
 		return;
 	}
 
-	listenerPtr->RegisterAccpet();
+	listenerPtr->RegisterAccept();
 }
