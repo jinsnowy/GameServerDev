@@ -34,12 +34,6 @@ TcpListenerBuilder& TcpListenerBuilder::_NetworkFactory(NetworkFactory networkFa
 	return *this;
 }
 
-TcpListenerBuilder& TcpListenerBuilder::_SessionFactory(SessionFactory sessionFactory)
-{
-	_sessionFactory = sessionFactory;
-	return *this;
-}
-
 shared_ptr<class TcpListener> TcpListenerBuilder::Build(ServiceBase& serviceBase)
 {
 	auto listener = make_shared<TcpListener>(serviceBase);
@@ -47,7 +41,6 @@ shared_ptr<class TcpListener> TcpListenerBuilder::Build(ServiceBase& serviceBase
 	listener->_backLog = _backLog;
 	listener->_acceptCount = _acceptCount;
 	listener->_networkFactory = _networkFactory;
-	listener->_sessionFactory = _sessionFactory;
 
 	return listener;
 }

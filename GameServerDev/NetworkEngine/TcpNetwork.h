@@ -3,9 +3,11 @@
 #include "TcpActiveSocket.h"
 
 class Handshake;
+class ServiceBase;
 class TcpNetwork : public std::enable_shared_from_this<TcpNetwork>
 {
 	friend class TcpListener;
+	friend class Handshake;
 	friend struct AcceptEvent;
 	friend struct ConnectEvent;
 	friend struct DisconnectEvent;
@@ -16,6 +18,7 @@ private:
 	SessionWeakPtr  _session;
 	EndPoint		_endPoint;
 	HandshakePtr    _handshake;
+	time_t			_connected_time;
 
 public:
 	TcpNetwork(ServiceBase& serviceBase);
@@ -23,8 +26,6 @@ public:
 	~TcpNetwork();
 
 	void AttachSession(SessionPtr session);
-
-	void RequireHandshake(HandshakePtr handshake);
 
 	void SendAsync(const BufferSegment& segment);
 
@@ -37,7 +38,10 @@ public:
 	void CloseBy(const wchar_t* reason = L"");
 
 	static shared_ptr<TcpNetwork> Create(ServiceBase& serviceBase);
+
 public:
+	ServiceBase& AssociateService();
+
 	SessionPtr GetSession() { return _session.lock(); }
 
 	SOCKET GetSocket() { return _socket.GetSocket(); };
@@ -47,6 +51,13 @@ public:
 	EndPoint GetEndPoint() { return _endPoint; }
 
 	bool IsConnected() { return _connected; }
+
+public:
+	void RequireHandshake(HandshakePtr handshake);
+
+	HandshakePtr& Handshake() { return _handshake; }
+
+	void SetAuthenticated();
 
 private:
 	void SetDisconnected();
@@ -62,7 +73,6 @@ private:
 	void SendCloseBy(const wchar_t* reason);
 
 	void HandleError(int32 errorCode, IoType ioType);
-
 private:
 	atomic<bool>			_connected;
 	atomic<bool>			_pending;

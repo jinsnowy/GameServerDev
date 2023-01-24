@@ -7,6 +7,7 @@
 #include "ClientPacketHandler.h"
 #include "ClientService.h"
 #include "PlayerSession.h"
+#include "SessionManager.h"
 
 using namespace std;
 
@@ -16,9 +17,11 @@ int main(int argc, char** argv)
     MemoryPool::Initialize();
     GamePacketInstaller::Install<ClientPacketHandler>();
 
-    ClientSessionFactory sessionFactory = [](ServiceBase& serviceBase) { return shared_ptr<ClientSession>(new PlayerSession(serviceBase)); };
-    ClientServiceParam param(20, 1, "127.0.0.1", 12321, sessionFactory);
-    ClientService service(param);
+    SessionFactory sessionFactory = Session::CreateSessionFactory<PlayerSession>();
+    SessionManager sessionManager(sessionFactory);
+
+    ClientServiceParam param(1, 1, "127.0.0.1", 12321);
+    ClientService service(sessionManager, param);
     service.Start();
     service.Run([&]() 
     {     

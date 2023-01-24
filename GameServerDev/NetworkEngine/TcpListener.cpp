@@ -2,12 +2,16 @@
 #include "TcpListener.h"
 #include "TcpNetwork.h"
 #include "SessionManager.h"
+#include "ServiceBase.h"
 
 TcpListener::TcpListener(ServiceBase& serviceBase)
 	:
 	_serviceBase(serviceBase),
 	_finished(false),
-	_listenerNetwork(serviceBase)
+	_listenerNetwork(serviceBase),
+	_acceptCount(10),
+	_bindPort(9190),
+	_backLog(10)
 {
 }
 
@@ -60,12 +64,6 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 	}
 
 	network->SetConnected(endPoint);
-
-	if (!OnAccept(network))
-	{
-		return false;
-	}
-
 	network->Start();
 
 	return true;
@@ -80,14 +78,4 @@ void TcpListener::RegisterAccept()
 	{
 		LOG_ERROR(L"accept error : %s", get_last_err_msg());
 	}
-}
-
-bool TcpListener::OnAccept(const NetworkPtr& network)
-{
-	auto session = _sessionFactory();
-	network->AttachSession(session);
-
-	SessionManager::GetInstance()->AddSession(session);
-
-	return true;
 }

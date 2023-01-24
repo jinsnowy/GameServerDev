@@ -50,7 +50,6 @@ using namespace std;
 #include "TaskAsync.h"
 #include "Alarm.h"
 
-#define OUT
-
+#pragma comment(lib, "Rpcrt4.lib")
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "cryptlib.lib")

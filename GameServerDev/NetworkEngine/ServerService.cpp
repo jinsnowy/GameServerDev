@@ -1,18 +1,19 @@
 #include "pch.h"
 #include "ServerService.h"
-#include "TcpListener.h"
-#include "SessionManager.h"
-#include "Handshake.h"
+#include "ServerHandshake.h"
+
 #include "TcpNetwork.h"
+#include "TcpListener.h"
 #include "TcpListenerBuilder.h"
+#include "SessionManager.h"
+
 #include "Alarm.h"
 
-ServerService::ServerService(const ServerServiceParam& param)
+ServerService::ServerService(SessionManager& sessionManager, const ServerServiceParam& param)
 	:
-	ServiceBase(std::thread::hardware_concurrency()),
+	ServiceBase(sessionManager, std::thread::hardware_concurrency()),
 	_port(param.port),
-	_backLog(param.backLog),
-    _sessionFactory(param.sessionFactory)
+	_backLog(param.backLog)
 {
 }
 
@@ -20,20 +21,27 @@ void ServerService::Start()
 {
     ServiceBase::Start();
 
+    auto networkFactory = [](ServiceBase& serviceBase) 
+    {
+        auto network = TcpNetwork::Create(serviceBase);
+        auto handshake = Handshake::Create<ServerHandshake>(network);
+        network->RequireHandshake(MOVE(handshake));
+
+        return network;
+    };
+
     TcpListenerBuilder builder;
     builder.Port(_port)
         .BackLog(_backLog)
         .AcceptCount(10)
-        ._NetworkFactory([](ServiceBase& serviceBase) { return make_shared<TcpNetwork>(serviceBase); })
-        ._SessionFactory(_sessionFactory);
+        ._NetworkFactory(networkFactory);
 
-    Alarm::Register("health check", 1000, true, []()
-    {
-        auto sessions = SessionManager::GetInstance()->GetSessions();
+    //Alarm::Register("health check", 1000, true, []()
+    //{
+    //    auto sessions = SessionManager::GetInstance()->GetSessions();
 
-        LOG_INFO(L"session count %zd", sessions.size());
-    });
-
+    //    LOG_INFO(L"session count %zd", sessions.size());
+    //});
 
     auto listener = builder.Build(*this);
     if (!listener->Start())

@@ -265,6 +265,21 @@
     <ClInclude Include="TcpListenerBuilder.h">
       <Filter>Listener</Filter>
     </ClInclude>
+    <ClInclude Include="Authenticate.h">
+      <Filter>Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="StringBuffer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeUtils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientHandshake.h">
+      <Filter>Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerHandshake.h">
+      <Filter>Handshake</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -435,6 +450,21 @@
     </ClCompile>
     <ClCompile Include="TcpListenerBuilder.cpp">
       <Filter>Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="Authenticate.cpp">
+      <Filter>Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="StringBuffer.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeUtils.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientHandshake.cpp">
+      <Filter>Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerHandshake.cpp">
+      <Filter>Handshake</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,5 @@
 #pragma once
 #include "ServiceBase.h"
-#include "ClientSession.h"
 
 struct ClientServiceParam
 {
@@ -8,12 +7,11 @@ struct ClientServiceParam
 	uint16 port;
 	int clientNum;
 	int workerNum;
-	ClientSessionFactory sessionFactory;
 
-	ClientServiceParam(int _clientNum, int _workerNum, const char* _address, uint16 _port, ClientSessionFactory _sessionFactory)
+	ClientServiceParam(int _clientNum, int _workerNum, const char* _address, uint16 _port)
 		:
 		clientNum(_clientNum), workerNum(_workerNum),
-		address(_address), port(_port), sessionFactory(_sessionFactory)
+		address(_address), port(_port)
 	{}
 };
 
@@ -23,11 +21,9 @@ class ClientService : public ServiceBase
 private:
 	int _clientNum;
 	EndPoint _endPoint;
-	ClientSessionFactory _sessionFactory;
-	vector<shared_ptr<ClientSession>> _clients;
 
 public:
-	ClientService(const ClientServiceParam& param);
+	ClientService(SessionManager& sessionManager, const ClientServiceParam& param);
 
 	virtual void Start() override;
 

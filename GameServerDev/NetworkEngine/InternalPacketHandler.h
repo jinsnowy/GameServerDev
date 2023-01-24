@@ -17,6 +17,12 @@ public:
 		case CLOSE_BY:
 			OnCloseBy(network, Interpret<PKT_CLOSE_BY>(buffer));
 			break;
+		case CLIENT_HELLO:
+		case SERVER_HELLO:
+		case AUTH_REQUEST:
+		case AUTH_RESPONSE:
+			OnHandshakePacket(network, buffer);
+			break;
 		}
 	}
 
@@ -25,7 +31,5 @@ private:
 	T* interpret(CHAR* buffer) { return reinterpret_cast<T*>(buffer); }
 
 	static void OnCloseBy(NetworkPtrCRef network, PKT_CLOSE_BY* pkt);
-
-	static void onClientHello(SessionPtrCRef session, PKT_CLIENT_HELLO* pkt);
-	static void onServerHello(SessionPtrCRef session, PKT_SERVER_HELLO* pkt);
+	static void OnHandshakePacket(NetworkPtrCRef session, CHAR* buffer);
 };

@@ -52,7 +52,7 @@ int main(int argc, char ** argv)
    //     
    //     int32 gold = 100;
    //     dbBind.BindParam(0, gold);
-   //     WCHAR name[100] = L"À±È¿Áø";
+   //     WCHAR name[100] = L"---";
    //     dbBind.BindParam(1, name);
    //     TIMESTAMP_STRUCT ts = { 2021, 6, 5 };
    //     dbBind.BindParam(2, ts);
@@ -94,9 +94,11 @@ int main(int argc, char ** argv)
 
 	GamePacketInstaller::Install<ServerPacketHandler>();
 
-	ServerSessionFactory sessionFactory = []() { return std::shared_ptr<ServerSession>(new UserSession()); };
-	ServerServiceParam param(12321, 10, sessionFactory);
-	ServerService service(param);
+	SessionFactory sessionFactory = Session::CreateSessionFactory<UserSession>();
+	SessionManager sessionManager(sessionFactory);
+
+	ServerServiceParam param(12321, 10);
+	ServerService service(sessionManager, param);
 	service.Start();
 	service.Run(Process);
 

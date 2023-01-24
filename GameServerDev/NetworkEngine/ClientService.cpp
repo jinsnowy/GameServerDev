@@ -1,15 +1,15 @@
 #include "pch.h"
 #include "ClientService.h"
 #include "ClientSession.h"
-#include "Handshake.h"
+#include "ClientHandshake.h"
 #include "TcpNetwork.h"
+#include "SessionManager.h"
 
-ClientService::ClientService(const ClientServiceParam& param)
+ClientService::ClientService(SessionManager& sessionManager, const ClientServiceParam& param)
 	:
-	ServiceBase(param.workerNum),
+	ServiceBase(sessionManager, param.workerNum),
 	_clientNum(param.clientNum),
-	_endPoint(param.address, param.port),
-	_sessionFactory(param.sessionFactory)
+	_endPoint(param.address, param.port)
 {
 }
 
@@ -19,20 +19,31 @@ void ClientService::Start()
 
 	std::this_thread::sleep_for(2s);
 
+	const auto connectorFactory = [this]()
+	{
+		auto network = TcpNetwork::Create(*this);
+		auto handshake = Handshake::Create<ClientHandshake>(network);
+		network->RequireHandshake(MOVE(handshake));
+
+		return network;
+	};
+
 	for (int i = 0; i < _clientNum; ++i)
 	{
-		auto clientSession = _sessionFactory(*this);
+		auto clientSession = _sessionManager.NewSession()->GetShared<ClientSession>();
+
+		clientSession->_connectorFactory = connectorFactory;
 
 		clientSession->ConnectAsync(_endPoint);
-
-		_clients.push_back(clientSession);
 	}
 }
 
 void ClientService::Broadcast(BufferSegment buffer)
 {
 	int count = 0;
-	for (auto& client : _clients)
+	auto clients = _sessionManager.GetSessions();
+
+	for (auto& client : clients)
 	{
 		if (client->IsConnected())
 		{
@@ -46,7 +57,9 @@ void ClientService::Broadcast(BufferSegment buffer)
 
 void ClientService::ForEach(function<void(SessionPtr)> func)
 {
-	for (auto& client : _clients)
+	auto clients = _sessionManager.GetSessions();
+
+	for (auto& client : clients)
 	{
 		func(client);
 	}

@@ -7,7 +7,7 @@ private:
 	UserProtocol::Player _player;
 
 public:
-	PlayerSession(ServiceBase& _serviceBase);
+	PlayerSession();
 
 	virtual void OnConnected() override;
 

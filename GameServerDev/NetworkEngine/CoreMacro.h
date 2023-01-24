@@ -14,7 +14,12 @@
 #define size32(val)		static_cast<int32>(sizeof(val))
 #define NO_COPY_AND_ASSIGN(Class)\
 	Class(const Class&) = delete;\
-	void operator=(const Class&) = delete;\
+	void operator=(const Class&) = delete;
+
+#define WRITE_LOCK(mtx) StdWriteLock lk(mtx);
+#define READ_LOCK(mtx) StdReadLock lk(mtx);
+
+#define MOVE(inst) std::move(inst)
 
 #define CRASH(cause)						\
 {											\

@@ -13,7 +13,6 @@ private:
 	int32		   _backLog;
 	int32		   _acceptCount;
 	NetworkFactory _networkFactory;
-	SessionFactory _sessionFactory;
 
 public:
 	TcpListener(ServiceBase& serviceBase);
@@ -29,9 +28,5 @@ private:
 
 	void RegisterAccept();
 
-	bool OnAccept(const NetworkPtr& network);
-
 	TcpListenerNetwork _listenerNetwork;
-
-	vector<NetworkPtr> _acceptNetworks;
 };

@@ -3,32 +3,36 @@
 class TcpNetwork;
 class Handshake
 {
+	friend class TcpNetwork;
 protected:
-	weak_ptr<TcpNetwork>		_network;
+	enum State
+	{
+		Init,
+		Hello,
+		Auth,
+	};
+
+	State _state;
+	weak_ptr<TcpNetwork> _network;
 
 public:
-	Handshake(shared_ptr<TcpNetwork> network);
+	Handshake(NetworkPtr network);
 
 	void Process();
 
-protected:
-	virtual void onProcess(shared_ptr<TcpNetwork> network) abstract;
-};
+	virtual void OnRecv(PacketHeader* packet);
 
-class ClientHandshake : public Handshake
-{
-public:
-	ClientHandshake(shared_ptr<TcpNetwork> network);
+	virtual void OnAuth();
 
-protected:
-	virtual void onProcess(shared_ptr<TcpNetwork> network) override;
-};
+	template<typename T, typename = std::enable_if_t<std::is_base_of_v<Handshake, T>>>
+	static unique_ptr<Handshake> Create(NetworkPtr network) {
+		return unique_ptr<Handshake>(new T(network));
+	}
 
-class ServerHandshake : public Handshake
-{
-public:
-	ServerHandshake(shared_ptr<TcpNetwork> network);
+	void SetState(State state) { _state = state; }
 
 protected:
-	virtual void onProcess(shared_ptr<TcpNetwork> network) override;
+	wstring _uuid;
+
+	virtual void OnProcess(NetworkPtr network) abstract;
 };

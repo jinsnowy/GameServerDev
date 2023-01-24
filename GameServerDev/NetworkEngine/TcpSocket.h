@@ -16,6 +16,7 @@ public:
 	TcpSocket(ServiceBase& service);
 	virtual ~TcpSocket();
 
+	ServiceBase& Service() { return _service; }
 	SOCKET   GetSocket() { return _socket; }
 
 	bool SetLinger(uint16 onoff, uint16 linger);

@@ -27,6 +27,7 @@ using NetworkPtrCRef = const std::shared_ptr<class TcpNetwork>&;
 using ListenerPtr = std::shared_ptr<class TcpListener>;
 using SessionFactory = std::function<SessionPtr()>;
 using NetworkFactory = std::function<NetworkPtr(class ServiceBase&)>;
+using ConnectorFactory = std::function<NetworkPtr()>;
 
 using OnAcceptFunc = std::function<bool(NetworkPtr)>;
 using OnConnectFunc = std::function<void(NetworkPtr)>;

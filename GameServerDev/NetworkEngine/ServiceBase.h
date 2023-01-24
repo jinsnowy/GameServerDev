@@ -3,10 +3,11 @@
 #include "IoContext.h"
 
 class IoContext;
+class SessionManager;
 class ServiceBase
 {
 public:
-	ServiceBase(int threadWorkerNum);
+	ServiceBase(SessionManager& sessionManager, int threadWorkerNum);
 
 	~ServiceBase();
 
@@ -16,8 +17,14 @@ public:
 
 	IoContext& GetContext() { return _ioContext; }
 
+	virtual void OnConnectedNetwork(NetworkPtr network);
+	virtual void OnDisconnectedNetwork(NetworkPtr network);
+	virtual void OnAuthNetwork(NetworkPtr network);
+
 protected:
-	virtual void stop();
+	SessionManager& _sessionManager;
+
+	virtual void Stop();
 
 private:
 	IoContext	   _ioContext;
@@ -26,4 +33,13 @@ private:
 
 private:
 	void ProcessCore();
+
+private:
+	StdMutex _mtx;
+	unordered_map<wstring, NetworkPtr> _acceptNetworks;
+
+	void AddNetwork(NetworkPtr network);
+	void RemoveNetwork(NetworkPtr network);
+
+	vector<NetworkPtr> GetNetworks();
 };

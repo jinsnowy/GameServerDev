@@ -26,6 +26,24 @@ std::wstring Utils::WSAGetLastErrorMsg(int errCode)
 	return String::ToWide(std::system_category().message(errCode));
 }
 
+std::wstring Utils::GenerateUUID()
+{
+	wstring out;
+	UUID uuid;
+	UuidCreate(&uuid);
+
+	wchar_t* str;
+	UuidToStringW(&uuid, (RPC_WSTR*)&str);
+
+	size_t len = lstrlenW(str);
+	out.resize(len);
+	wmemcpy(out.data(), str, len);
+
+	RpcStringFreeW((RPC_WSTR*)&str);
+
+	return out;
+}
+
 std::wstring Utils::GenerateSHA512Hash(const std::wstring& target)
 {
 	string msg = String::ToNarrow(target);
@@ -181,8 +199,8 @@ void Utils::TestGenTime()
 
 		rsa.GenerateRandomWithKeySize(prng, bits);
 
-		unsigned long elapsed = timer.GetCurrentTimerValue();
-		unsigned long ticks = timer.TicksPerSecond();
+		unsigned long elapsed = (unsigned long)timer.GetCurrentTimerValue();
+		unsigned long ticks = (unsigned long)timer.TicksPerSecond();
 		unsigned long seconds = elapsed / ticks;
 
 		// days, hours, minutes, seconds, 100th seconds

@@ -2,9 +2,15 @@
 #include "ClientSession.h"
 #include "TcpNetwork.h"
 
-ClientSession::ClientSession(ServiceBase& serviceBase)
+ClientSession::ClientSession()
 	:
-	_serviceBase(serviceBase),
+	Session()
+{
+}
+
+ClientSession::ClientSession(ConnectorFactory connectorFactory)
+	:
+	_connectorFactory(connectorFactory),
 	Session()
 {
 }
@@ -51,7 +57,7 @@ void ClientSession::ConnectAsync(const EndPoint& endPoint)
 		return;
 	}
 
-	auto connector = TcpNetwork::Create(_serviceBase);
+	auto connector = _connectorFactory();
 
 	const auto onConnected = [session = shared_from_this()](NetworkPtr network)
 	{

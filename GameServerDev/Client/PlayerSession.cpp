@@ -3,9 +3,9 @@
 #include "TcpNetwork.h"
 #include "ClientPacketHandler.h"
 
-PlayerSession::PlayerSession(ServiceBase& _serviceBase)
+PlayerSession::PlayerSession()
 	:
-	ClientSession(_serviceBase)
+	ClientSession()
 {
 }
 

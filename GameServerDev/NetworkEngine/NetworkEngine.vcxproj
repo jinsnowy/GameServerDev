@@ -195,7 +195,9 @@ CALL GenProtocols.bat</Command>
   <ItemGroup>
     <ClInclude Include="Alarm.h" />
     <ClInclude Include="AlarmManager.h" />
+    <ClInclude Include="Authenticate.h" />
     <ClInclude Include="BufferSegment.h" />
+    <ClInclude Include="ClientHandshake.h" />
     <ClInclude Include="ClientService.h" />
     <ClInclude Include="ClientSession.h" />
     <ClInclude Include="CoreMacro.h" />
@@ -212,10 +214,13 @@ CALL GenProtocols.bat</Command>
     <ClInclude Include="PoolObject.h" />
     <ClInclude Include="SendBuffer.h" />
     <ClInclude Include="Serializer.h" />
+    <ClInclude Include="ServerHandshake.h" />
+    <ClInclude Include="StringBuffer.h" />
     <ClInclude Include="TcpActiveSocket.h" />
     <ClInclude Include="TcpListenerBuilder.h" />
     <ClInclude Include="TcpListenerNetwork.h" />
     <ClInclude Include="TcpListenerSocket.h" />
+    <ClInclude Include="TimeUtils.h" />
     <ClInclude Include="XString.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAsync.h" />
@@ -264,7 +269,9 @@ CALL GenProtocols.bat</Command>
   <ItemGroup>
     <ClCompile Include="Alarm.cpp" />
     <ClCompile Include="AlarmManager.cpp" />
+    <ClCompile Include="Authenticate.cpp" />
     <ClCompile Include="BufferSegment.cpp" />
+    <ClCompile Include="ClientHandshake.cpp" />
     <ClCompile Include="ClientService.cpp" />
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="DateTime.cpp" />
@@ -283,10 +290,13 @@ CALL GenProtocols.bat</Command>
     <ClCompile Include="SehException.cpp" />
     <ClCompile Include="SendBuffer.cpp" />
     <ClCompile Include="Serializer.cpp" />
+    <ClCompile Include="ServerHandshake.cpp" />
+    <ClCompile Include="StringBuffer.cpp" />
     <ClCompile Include="TcpActiveSocket.cpp" />
     <ClCompile Include="TcpListenerBuilder.cpp" />
     <ClCompile Include="TcpListenerNetwork.cpp" />
     <ClCompile Include="TcpListenerSocket.cpp" />
+    <ClCompile Include="TimeUtils.cpp" />
     <ClCompile Include="XString.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskAsync.cpp" />

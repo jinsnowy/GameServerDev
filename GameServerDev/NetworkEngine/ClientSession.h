@@ -3,11 +3,14 @@
 
 class ClientSession : public Session
 {
+	friend class ClientService;
 private:
-	ServiceBase& _serviceBase;
+	ConnectorFactory _connectorFactory;
 
 public:
-	ClientSession(ServiceBase& _serviceBase);
+	ClientSession();
+
+	ClientSession(ConnectorFactory connectorFactory);
 
 	bool Connect(const char* address, uint16 port);
 

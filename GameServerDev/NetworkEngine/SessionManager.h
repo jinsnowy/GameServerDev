@@ -2,19 +2,25 @@
 #include "Singleton.h"
 #include "Session.h"
 
-class SessionManager : public ISingleton<SessionManager>
+class SessionManager
 {
+	friend class ServiceBase;
+private:
+	SessionFactory _sessionFactory;
+
 public:
-	SessionManager();
-	~SessionManager();
+	SessionManager(SessionFactory sessionFactory);
+	
+	virtual ~SessionManager();
 
-	void AddSession(SessionPtrCRef sessionPtr);
-
-	void RemoveSession(SessionPtrCRef sessionPtr);
+	SessionPtr NewSession();
 
 	vector<shared_ptr<Session>> GetSessions();
 
 private:
 	StdMutex _sync;
 	std::map<SessionID, shared_ptr<Session>> _sessionContainer;
+
+	void AddSession(SessionPtrCRef sessionPtr);
+	void RemoveSession(SessionPtrCRef sessionPtr);
 };

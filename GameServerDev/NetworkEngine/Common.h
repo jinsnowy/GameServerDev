@@ -14,3 +14,5 @@
 #include "PacketHandler.h"
 #include "BufferSource.h"
 #include "Serializer.h"
+#include "StringBuffer.h"
+#include "TimeUtils.h"

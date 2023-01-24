@@ -11,11 +11,12 @@ DateTime DateTime::Now()
 
 DateTime DateTime::UtcNow()
 {
-	auto t = std::time(NULL);
-	auto date = DateTime();
-	gmtime_s((tm*)&date, &t);
+	return DateTime(std::time(NULL));
+}
 
-	return date;
+DateTime::DateTime(time_t t)
+{
+	gmtime_s((tm*)this, &t);
 }
 
 std::wstring DateTime::ToString(const wchar_t* format) const
@@ -28,4 +29,8 @@ std::wstring DateTime::ToString(const wchar_t* format) const
 std::wstring DateTime::ToSqlString() const
 {
 	return ToString(L"%Y-%m-%d %H:%M:%S");
+}
+
+DateTime::DateTime()
+{
 }

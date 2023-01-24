@@ -5,6 +5,7 @@
 #include "InternalPacketHandler.h"
 #include "GamePacketInstaller.h"
 #include "Handshake.h"
+#include "ServiceBase.h"
 
 TcpNetwork::TcpNetwork(ServiceBase& serviceBase)
 	:
@@ -39,6 +40,7 @@ void TcpNetwork::AttachSession(SessionPtr session)
 void TcpNetwork::RequireHandshake(HandshakePtr handshake)
 {
 	_handshake = std::move(handshake);
+	ASSERT_CRASH(_handshake != nullptr && _handshake->_network.lock().get() == this);
 }
 
 void TcpNetwork::Recv(DWORD recvBytes)
@@ -131,6 +133,10 @@ void TcpNetwork::Start()
 	_pending = false;
 
 	RegisterRecv();
+
+	if (_handshake) {
+		_handshake->Process();
+	}
 }
 
 void TcpNetwork::CloseBy(const wchar_t* reason)
@@ -157,6 +163,11 @@ shared_ptr<TcpNetwork> TcpNetwork::Create(ServiceBase& serviceBase)
 	return make_shared<TcpNetwork>(serviceBase);
 }
 
+void TcpNetwork::SetAuthenticated()
+{
+	AssociateService().OnAuthNetwork(shared_from_this());
+}
+
 void TcpNetwork::SetDisconnected()
 {
 	if (_connected.exchange(false) == true)
@@ -166,6 +177,8 @@ void TcpNetwork::SetDisconnected()
 		{
 			session->DetachNetwork();
 		}
+
+		AssociateService().OnDisconnectedNetwork(shared_from_this());
 	}
 }
 
@@ -174,6 +187,10 @@ void TcpNetwork::SetConnected(EndPoint endPoint)
 	if (_connected.exchange(true) == false)
 	{
 		_endPoint = endPoint;
+
+		_connected_time = TimeUtils::UtcNow();
+
+		AssociateService().OnConnectedNetwork(shared_from_this());
 	}
 }
 
@@ -240,4 +257,9 @@ void TcpNetwork::HandleError(int32 errorCode, IoType ioType)
 		break;
 	}
 	}
+}
+
+ServiceBase& TcpNetwork::AssociateService()
+{
+	return _socket.Service();
 }

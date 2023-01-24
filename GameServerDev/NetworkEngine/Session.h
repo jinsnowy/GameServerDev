@@ -21,6 +21,11 @@ public:
 
 	void DisconnectAsync();
 
+	template<typename T, typename = enable_if_t<is_base_of_v<Session, T>>>
+	static SessionFactory CreateSessionFactory() {
+		return []() { return SessionPtr(new T()); };
+	}
+
 protected:
 	shared_ptr<TcpNetwork> _network;
 

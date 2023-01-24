@@ -65,6 +65,7 @@ void ConnectEvent::operator()(int32 errorCode, DWORD)
 	}
 
 	network->SetConnected(endPoint);
+	network->Start();
 
 	onConnected(network);
 }
