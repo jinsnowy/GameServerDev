@@ -46,15 +46,16 @@ void TcpNetwork::Recv(DWORD recvBytes)
 	static InternalPacketHandler InternalPacketHandler;
 	static PacketHandler* GamePacketHandler = GamePacketInstaller::GetHandler();
 
-	if (_recvBuffer.Read(recvBytes) == false)
+	RecvBuffer& recvBuffer = _stream.Recv();
+	if (recvBuffer.Read(recvBytes) == false)
 	{
 		CloseBy(L"recv buffer overflows");
 		return;
 	}
 
-	for (CHAR* bufferToRead = _recvBuffer.GetBufferPtrRead(); _recvBuffer.IsHeaderReadable(); _recvBuffer.Next())
+	for (CHAR* bufferToRead = recvBuffer.GetBufferPtrRead(); recvBuffer.IsHeaderReadable(); recvBuffer.Next())
 	{
-		for (PacketHeader* header = PacketHeader::Peek(bufferToRead); _recvBuffer.IsReadable(header->size); _recvBuffer.Move(header->size))
+		for (PacketHeader* header = PacketHeader::Peek(bufferToRead); recvBuffer.IsReadable(header->size); recvBuffer.Move(header->size))
 		{
 			if (InternalPacketHandler.IsValidProtocol(header->protocol))
 			{
@@ -88,11 +89,11 @@ void TcpNetwork::SendAsync(const BufferSegment& segment)
 		return;
 	}
 
-	_sendBuffer.Pend(segment);
+	_stream.Pend(segment);
 	
 	if (_pending.exchange(true) == false)
 	{
-		Flush();
+		RegisterSend();
 	}
 }
 
@@ -126,8 +127,7 @@ void TcpNetwork::ConnectAsync(const EndPoint& endPoint, const OnConnectFunc& onC
 
 void TcpNetwork::Start()
 {
-	_recvBuffer.Clear();
-	_sendBuffer.Clear();
+	_stream.Clear();
 	_pending = false;
 
 	RegisterRecv();
@@ -177,31 +177,26 @@ void TcpNetwork::SetConnected(EndPoint endPoint)
 	}
 }
 
-void TcpNetwork::Flush()
+void TcpNetwork::RegisterSend()
 {
-	if (FlushInternal() == false)
+	if (IsConnected() == false)
+	{
+		return;
+	}
+
+	WriteData writeData = _stream.Flush();
+	if (writeData.IsEmpty())
+	{
+		_pending.store(false);
+		return;
+	}
+
+	if (!_socket.WriteAsync(std::move(writeData.buffers), SendEvent(shared_from_this(), std::move(writeData.segments))))
 	{
 		int32 errCode = ::WSAGetLastError();
 
 		HandleError(errCode, IO_WRITE);
 	}
-}
-
-bool TcpNetwork::FlushInternal()
-{
-	if (IsConnected() == false)
-	{
-		return true;
-	}
-
-	WriteData writeData = _sendBuffer.Flush();
-	if (writeData.IsEmpty())
-	{
-		_pending.store(false);
-		return true;
-	}
-	
-	return _socket.WriteAsync(std::move(writeData.buffers), SendEvent(shared_from_this(), std::move(writeData.segments)));
 }
 
 void TcpNetwork::RegisterRecv()
@@ -211,7 +206,9 @@ void TcpNetwork::RegisterRecv()
 		return;
 	}
 
-	if (!_socket.ReadAsync(_recvBuffer.GetBufferPtr(), _recvBuffer.GetLen(), RecvEvent(shared_from_this())))
+	RecvBuffer& recvBuffer = _stream.Recv();
+
+	if (!_socket.ReadAsync(recvBuffer.GetBufferPtr(), recvBuffer.GetFreeSize(), RecvEvent(shared_from_this())))
 	{
 		int32 errCode = ::WSAGetLastError();
 

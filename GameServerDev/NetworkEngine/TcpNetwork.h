@@ -1,8 +1,6 @@
 #pragma once
-
+#include "NetworkStream.h"
 #include "TcpActiveSocket.h"
-#include "RecvBuffer.h"
-#include "SendBuffer.h"
 
 class Handshake;
 class TcpNetwork : public std::enable_shared_from_this<TcpNetwork>
@@ -44,7 +42,7 @@ public:
 
 	SOCKET GetSocket() { return _socket.GetSocket(); };
 
-	RecvBuffer& GetRecvBuffer() { return _recvBuffer; }
+	RecvBuffer& GetRecvBuffer() { return _stream.Recv(); }
 
 	EndPoint GetEndPoint() { return _endPoint; }
 
@@ -57,9 +55,7 @@ private:
 
 	void Recv(DWORD bytes);
 
-	void Flush();
-	
-	bool FlushInternal();
+	void RegisterSend();
 	
 	void RegisterRecv();
 
@@ -70,6 +66,5 @@ private:
 private:
 	atomic<bool>			_connected;
 	atomic<bool>			_pending;
-	RecvBuffer				_recvBuffer;
-	SendBuffer				_sendBuffer;
+	NetworkStream			_stream;
 };

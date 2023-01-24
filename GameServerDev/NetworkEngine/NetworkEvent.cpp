@@ -47,7 +47,7 @@ void SendEvent::operator()(int32 errorCode, DWORD writeBytes)
 		return;
 	}
 
-	network->Flush();
+	network->RegisterSend();
 }
 
 ConnectEvent::ConnectEvent(shared_ptr<TcpNetwork> networkIn, EndPoint _endPoint, OnConnectFunc _onConnected, OnConnectFailFunc _onConnectFailed)

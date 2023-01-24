@@ -8,9 +8,11 @@ class RecvBuffer
 	};
 public:
 	RecvBuffer();
+	NO_COPY_AND_ASSIGN(RecvBuffer);
 
 	CHAR* GetBufferPtr() { return &_buffer[_writePos]; }
-	int32 GetLen() { return BUFFER_SIZE - _writePos; }
+	int32 GetFreeSize() { return BUFFER_SIZE - _writePos; }
+	int32 GetDataSize() { return _writePos - _readPos; }
 	CHAR* GetBufferPtrRead() { return &_buffer[_readPos]; }
 	
 	void Clear();

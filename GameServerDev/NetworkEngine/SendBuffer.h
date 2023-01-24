@@ -23,9 +23,13 @@ public:
 
 	~SendBuffer();
 
+	bool IsEmpty() { return _writeData.IsEmpty(); }
+
 	void Pend(const BufferSegment& segment);
 
 	WriteData Flush();
 
 	void Clear();
+
+	NO_COPY_AND_ASSIGN(SendBuffer);
 };

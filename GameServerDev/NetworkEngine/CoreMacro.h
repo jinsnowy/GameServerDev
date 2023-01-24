@@ -12,6 +12,9 @@
 #define get_last_err_msg_code(errCode) Utils::WSAGetLastErrorMsg(errCode).c_str()
 #define size16(val)		static_cast<int16>(sizeof(val))
 #define size32(val)		static_cast<int32>(sizeof(val))
+#define NO_COPY_AND_ASSIGN(Class)\
+	Class(const Class&) = delete;\
+	void operator=(const Class&) = delete;\
 
 #define CRASH(cause)						\
 {											\
