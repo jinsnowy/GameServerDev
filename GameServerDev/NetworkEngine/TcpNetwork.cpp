@@ -7,12 +7,15 @@
 #include "Handshake.h"
 #include "ServiceBase.h"
 
+using namespace packet;
+
 TcpNetwork::TcpNetwork(ServiceBase& serviceBase)
 	:
 	_socket(serviceBase),
 	_connected(false),
 	_pending(false),
-	_session()
+	_session(),
+	_connected_time(0)
 {
 }
 
@@ -85,7 +88,7 @@ void TcpNetwork::Recv(DWORD recvBytes)
 	}
 }
 
-void TcpNetwork::SendAsync(const BufferSegment& segment)
+void TcpNetwork::SendAsyncInternal(const BufferSegment& segment)
 {
 	if (_connected == false) {
 		return;
@@ -212,7 +215,7 @@ void TcpNetwork::RegisterSend()
 	{
 		int32 errCode = ::WSAGetLastError();
 
-		HandleError(errCode, IO_WRITE);
+		HandleError(errCode, IoType::IO_WRITE);
 	}
 }
 
@@ -229,7 +232,7 @@ void TcpNetwork::RegisterRecv()
 	{
 		int32 errCode = ::WSAGetLastError();
 
-		HandleError(errCode, IO_READ);
+		HandleError(errCode, IoType::IO_READ);
 	}
 }
 

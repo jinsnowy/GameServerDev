@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <crtdbg.h>
 #include <TcpSocket.h>
 #include <MemoryPool.h>
 
@@ -10,6 +9,7 @@
 #include "SessionManager.h"
 
 using namespace std;
+using namespace packet;
 
 int main(int argc, char** argv)
 {
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
         {
             service.ForEach([&packetNum](SessionPtr session)
             {            
-                UserProtocol::TEST test;
+                UserProtocol::Test test;
                 test.set_text(String::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
 
                 session->SendAsync(Serializer::SerializeProtoBuf(test));

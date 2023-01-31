@@ -14,7 +14,7 @@ public:
 	static BufferSegment SerializeProtoBuf(const T& pkt)
 	{
 		int pktLen = (int)pkt.ByteSizeLong();
-		auto segment = SerializePacketHeader(Protocol::GetProtocol<T>(), pktLen);
+		auto segment = SerializePacketHeader(packet::Protocol::GetProtocol<T>(), pktLen);
 
 		if (!pkt.SerializeToArray(segment.buf + sizeof(PacketHeader), pktLen))
 		{

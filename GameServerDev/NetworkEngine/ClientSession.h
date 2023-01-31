@@ -26,4 +26,8 @@ protected:
 	virtual void OnConnected() override;
 
 	virtual void OnDisconnected() override;
+
+private:
+	static void OnNetworkConnectSuccess(SessionPtr session, NetworkPtr network);
+	static void OnNetworkConnectFailed(int32 errorCode);
 };

@@ -19,7 +19,7 @@ public:
 
 private:
 	StdMutex _sync;
-	std::map<SessionID, shared_ptr<Session>> _sessionContainer;
+	std::vector<shared_ptr<Session>> _sessionContainer;
 
 	void AddSession(SessionPtrCRef sessionPtr);
 	void RemoveSession(SessionPtrCRef sessionPtr);

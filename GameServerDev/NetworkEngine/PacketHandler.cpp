@@ -1,4 +1,4 @@
 #include "pch.h"
 #include "PacketHandler.h"
 
-vector<PacketHandler*> PacketHandler::s_PacketHandler = {};
+vector<packet::PacketHandler*> packet::PacketHandler::s_PacketHandler = {};

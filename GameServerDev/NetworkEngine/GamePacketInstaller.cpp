@@ -1,4 +1,4 @@
 #include "pch.h"
 #include "GamePacketInstaller.h"
 
-PacketHandler* GamePacketInstaller::GPacketHandler = nullptr;
+packet::PacketHandler* packet::GamePacketInstaller::GPacketHandler = nullptr;

@@ -15,7 +15,7 @@ void ClientHandshake::OnProcess(NetworkPtr network)
 	SetState(Init);
 
 	PKT_CLIENT_HELLO hello;
-	network->SendAsync(Serializer::SerializeStruct(hello));
+	network->SendAsync(hello);
 }
 
 void ClientHandshake::OnRecv(PacketHeader* packet)
@@ -37,7 +37,7 @@ void ClientHandshake::OnRecv(PacketHeader* packet)
 		auto auth_request = PKT_AUTH_REQUEST();
 		auth_request.uuid.CopyFrom(uuid);
 
-		network->SendAsync(Serializer::SerializeStruct(auth_request));
+		network->SendAsync(auth_request);
 		SetState(Hello);
 	}
 	else if (protocol == AUTH_RESPONSE)

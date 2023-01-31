@@ -19,27 +19,18 @@ SessionPtr SessionManager::NewSession()
 void SessionManager::AddSession(SessionPtrCRef sessionPtr)
 {
 	WRITE_LOCK(_sync);
-	_sessionContainer.emplace(sessionPtr->GetSessionId(), sessionPtr);
+	_sessionContainer.emplace_back(sessionPtr);
 }
 
 void SessionManager::RemoveSession(SessionPtrCRef sessionPtr)
 {
 	WRITE_LOCK(_sync);
-	_sessionContainer.erase(sessionPtr->GetSessionId());
+	_sessionContainer.erase(std::find(_sessionContainer.begin(), _sessionContainer.end(), sessionPtr));
 }
 
 vector<shared_ptr<Session>> SessionManager::GetSessions()
 {
-	vector<shared_ptr<Session>> sessions;
+	WRITE_LOCK(_sync);
 
-	{
-		WRITE_LOCK(_sync);
-
-		for (auto& pair : _sessionContainer)
-		{
-			sessions.push_back(pair.second);
-		}
-	}
-
-	return sessions;
+	return _sessionContainer;
 }

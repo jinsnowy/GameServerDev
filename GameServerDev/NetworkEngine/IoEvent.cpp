@@ -5,16 +5,16 @@ const char* GetIoTypeStr(IoType type)
 {
 	switch (type)
 	{
-	case IO_READ:
-		return "IO_READ";
-	case IO_WRITE:
-		return "IO_WRITE";
-	case IO_CONNECT:
-		return "IO_CONNECT";
-	case IO_DISCONNECT:
-		return "IO_DISCONNECT";
-	case IO_ACCEPT:
-		return "IO_ACCEPT";
+	case IoType::IO_READ:
+		return "IoType::IO_READ";
+	case IoType::IO_WRITE:
+		return "IoType::IO_WRITE";
+	case IoType::IO_CONNECT:
+		return "IoType::IO_CONNECT";
+	case IoType::IO_DISCONNECT:
+		return "IoType::IO_DISCONNECT";
+	case IoType::IO_ACCEPT:
+		return "IoType::IO_ACCEPT";
 	default:
 		return "IO_NONE";
 	}

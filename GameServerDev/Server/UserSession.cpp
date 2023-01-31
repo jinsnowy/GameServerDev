@@ -11,10 +11,3 @@ void UserSession::OnConnected()
 {
 	ServerSession::OnConnected();
 }
-
-void UserSession::SetPlayer(UserProtocol::Player player)
-{
-	_player = make_shared<Player>(*this);
-	_player->playerId = player.id();
-	_player->name = player.name();
-}

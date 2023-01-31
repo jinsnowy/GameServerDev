@@ -19,7 +19,7 @@ void RecvEvent::operator()(int32 errorCode, DWORD recvBytes)
 
 	if (errorCode != 0)
 	{
-		network->HandleError(errorCode, IO_READ);
+		network->HandleError(errorCode, IoType::IO_READ);
 		return;
 	}
 
@@ -43,7 +43,7 @@ void SendEvent::operator()(int32 errorCode, DWORD writeBytes)
 
 	if (errorCode != 0)
 	{
-		network->HandleError(errorCode, IO_WRITE);
+		network->HandleError(errorCode, IoType::IO_WRITE);
 		return;
 	}
 

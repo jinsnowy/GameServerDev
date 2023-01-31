@@ -28,7 +28,7 @@ void ServerHandshake::OnRecv(PacketHeader* packet)
 		_uuid = Utils::GenerateUUID();
 		PKT_SERVER_HELLO hello;
 		hello.uuid.Set(_uuid);
-		network->SendAsync(Serializer::SerializeStruct(hello));
+		network->SendAsync(hello);
 		SetState(Hello);
 	}
 	else if (protocol == AUTH_REQUEST)
@@ -48,6 +48,6 @@ void ServerHandshake::OnRecv(PacketHeader* packet)
 			SetState(Auth);
 		}
 
-		network->SendAsync(Serializer::SerializeStruct(response));
+		network->SendAsync(response);
 	}
 }

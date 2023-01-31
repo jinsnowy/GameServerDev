@@ -15,6 +15,7 @@
 #include "DBBind.h"
 
 using namespace std;
+using namespace packet;
 
 static void Process();
 

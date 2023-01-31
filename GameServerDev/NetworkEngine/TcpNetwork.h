@@ -27,7 +27,15 @@ public:
 
 	void AttachSession(SessionPtr session);
 
-	void SendAsync(const BufferSegment& segment);
+	template <typename T, typename = std::enable_if_t<std::is_copy_constructible_v<T>&& std::is_copy_assignable_v<T> && (!std::is_polymorphic_v<T>)>>
+	void SendAsync(const T& message) {
+		if constexpr (std::is_same_v<T, BufferSegment>) {
+			SendAsyncInternal(message);
+		}
+		else {
+			SendAsyncInternal(Serializer::SerializeStruct(message));
+		}
+	}
 
 	void DisconnectAsync();
 	
@@ -60,6 +68,8 @@ public:
 	void SetAuthenticated();
 
 private:
+	void SendAsyncInternal(const BufferSegment& segment);
+
 	void SetDisconnected();
 
 	void SetConnected(EndPoint endPoint);

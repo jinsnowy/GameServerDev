@@ -3,37 +3,24 @@ package UserProtocol;
 
 import "Struct.proto";
 
-message HEARTBEAT
+message Heartbeat
 {
 	uint64 sessionId = 1;
 	int64 time = 2;
 }
 
-message TEST
+message Test
 {
 	string text = 1;
 }
 
-message LOGIN_REQUEST
+message LoginRequest
 {
-	Player player = 1;
+	string username = 1;
+	string password = 2;
 }
 
-message LOGIN_RESPONSE
+message LoginResponse
 {
-	Player player = 1;
-}
-
-message ENTER_ROOM_REQUEST
-{
-}
-
-message ENTER_ROOM_RESPONSE
-{
-	int32 id = 1;
-}
-
-message CLIENT_MOVE_FORWARD
-{
-	int32 id = 1;
+	bool success = 1;
 }

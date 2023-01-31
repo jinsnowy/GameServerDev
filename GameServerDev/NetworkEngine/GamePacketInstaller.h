@@ -1,21 +1,24 @@
 #pragma once
 
-class GamePacketInstaller
+namespace packet
 {
-public:
-	template<typename T, typename = enable_if_t<is_base_of_v<PacketHandler, T>>>
-	static void Install()
+	class GamePacketInstaller
 	{
-		static T handler;
+	public:
+		template<typename T, typename = enable_if_t<is_base_of_v<PacketHandler, T>>>
+		static void Install()
+		{
+			static T handler;
 
-		GPacketHandler = &handler;
-	}
+			GPacketHandler = &handler;
+		}
 
-	static PacketHandler* GetHandler()
-	{
-		return GPacketHandler;
-	}
+		static PacketHandler* GetHandler()
+		{
+			return GPacketHandler;
+		}
 
-private:
-	static PacketHandler* GPacketHandler;
-};
+	private:
+		static PacketHandler* GPacketHandler;
+	};
+}

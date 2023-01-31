@@ -59,17 +59,9 @@ void ClientSession::ConnectAsync(const EndPoint& endPoint)
 
 	auto connector = _connectorFactory();
 
-	const auto onConnected = [session = shared_from_this()](NetworkPtr network)
-	{
-		network->AttachSession(session);
-	};
-
-	const auto onConnectFailed = [](int32 errorCode)
-	{
-		LOG_ERROR(L"Connect Failed Error Code : %d, Desc : %s", errorCode, Utils::WSAGetLastErrorMsg(errorCode).c_str());
-	};
-
-	connector->ConnectAsync(endPoint, onConnected, onConnectFailed);
+	connector->ConnectAsync(endPoint, 
+		std::bind(OnNetworkConnectSuccess, shared_from_this(), std::placeholders::_1),
+		OnNetworkConnectFailed);
 }
 
 void ClientSession::ReconnectAsync(const EndPoint& endPoint)
@@ -90,4 +82,14 @@ void ClientSession::OnConnected()
 void ClientSession::OnDisconnected()
 {
 	Session::OnDisconnected();
+}
+
+void ClientSession::OnNetworkConnectSuccess(SessionPtr session, NetworkPtr network)
+{
+	network->AttachSession(session);
+}
+
+void ClientSession::OnNetworkConnectFailed(int32 errorCode)
+{
+	LOG_ERROR(L"Connect Failed Error Code : %d, Desc : %s", errorCode, Utils::WSAGetLastErrorMsg(errorCode).c_str());
 }

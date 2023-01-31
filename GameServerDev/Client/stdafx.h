@@ -1,7 +1,12 @@
 #pragma once
 
-#include <CorePch.h>
+#include <networkengine\CorePch.h>
+
+#pragma warning( push )
+#pragma warning(disable : 4946)
+#pragma warning(disable : 4251)
 #include "protocol/UserProtocolHandler.h"
+#pragma warning( pop ) 
 
 #ifdef _DEBUG
 #pragma comment(lib, "NetworkEngined.lib")

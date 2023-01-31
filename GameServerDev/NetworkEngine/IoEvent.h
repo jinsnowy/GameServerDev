@@ -2,7 +2,7 @@
 
 #include "MemoryPool.h"
 
-enum IoType
+enum class IoType
 {
 	IO_READ,
 	IO_WRITE,
@@ -34,16 +34,16 @@ struct IoEvent : WSAOVERLAPPED
 };
 
 template<typename T>
-IoEvent* MakeWriteTask(T&& callback) { return pool_new<IoEvent>(IO_WRITE, std::forward<T>(callback)); }
+IoEvent* MakeWriteTask(T&& callback) { return pool_new<IoEvent>(IoType::IO_WRITE, std::forward<T>(callback)); }
 
 template<typename T>
-IoEvent* MakeReadTask(T&& callback) { return pool_new<IoEvent>(IO_READ, std::forward<T>(callback)); }
+IoEvent* MakeReadTask(T&& callback) { return pool_new<IoEvent>(IoType::IO_READ, std::forward<T>(callback)); }
 
 template<typename T>
-IoEvent* MakeConnectTask(T&& callback) { return pool_new<IoEvent>(IO_CONNECT, std::forward<T>(callback)); }
+IoEvent* MakeConnectTask(T&& callback) { return pool_new<IoEvent>(IoType::IO_CONNECT, std::forward<T>(callback)); }
 
 template<typename T>
-IoEvent* MakeDisconnectTask(T&& callback) { return pool_new<IoEvent>(IO_DISCONNECT, std::forward<T>(callback)); }
+IoEvent* MakeDisconnectTask(T&& callback) { return pool_new<IoEvent>(IoType::IO_DISCONNECT, std::forward<T>(callback)); }
 
 template<typename T>
-IoEvent* MakeAcceptTask(T&& callback) { return pool_new<IoEvent>(IO_ACCEPT, std::forward<T>(callback)); }
+IoEvent* MakeAcceptTask(T&& callback) { return pool_new<IoEvent>(IoType::IO_ACCEPT, std::forward<T>(callback)); }

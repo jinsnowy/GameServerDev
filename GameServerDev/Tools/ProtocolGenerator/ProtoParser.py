@@ -26,8 +26,11 @@ class ProtoParser():
 			pkt_name = line.split()[1]
 			pkt_name_res = ""
 			pkt_name_items = pkt_name.split('_')
-			for item in pkt_name_items:
-				pkt_name_res += item[0].upper() + item[1:].lower()
+			if len(pkt_name_items) > 1:
+				for item in pkt_name_items:
+					pkt_name_res += item[0].upper() + item[1:].lower()
+			else:
+				pkt_name_res = pkt_name[0].upper() + pkt_name[1:]
 
 			self.total_pkt.append(Packet(pkt_name, pkt_name_res, self.id))
 			self.id += 1

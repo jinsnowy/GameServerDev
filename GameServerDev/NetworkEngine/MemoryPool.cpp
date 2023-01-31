@@ -6,11 +6,6 @@ MemoryPool* MemoryPool::s_memoryPool[MemoryPool::LARGEST_MEMORY_SIZE + 1] = {};
 
 void MemoryPool::Initialize()
 {
-
-#ifdef _DEBUG
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#endif
-
 	struct MemoryPoolInit
 	{
 		MemoryPoolInit()
