@@ -13,6 +13,11 @@ Repository::~Repository()
 
 void Repository::Add(std::shared_ptr<Entity> entity)
 {
+	int id = entity->_id;
+	if (id == Entity::kInvalidId) {
+		throw repositoy_exception("entity has invalid id");
+	}
+
 	StdWriteLock lk(_mtx);
 
 	_entities[entity->id()] = entity;
@@ -40,6 +45,8 @@ void Repository::Remove(std::shared_ptr<Entity> entity)
 
 std::shared_ptr<Entity> Repository::Find(int id)
 {
+	StdReadLock lk(_mtx);
+
 	if (auto iter = _entities.find(id); iter != _entities.end()) {
 		return iter->second;
 	}
@@ -49,10 +56,12 @@ std::shared_ptr<Entity> Repository::Find(int id)
 
 bool Repository::Exists(int id)
 {
+	StdReadLock lk(_mtx);
 	return _entities.find(id) != _entities.end();
 }
 
 void Repository::Clear()
 {
+	StdWriteLock lk(_mtx);
 	_entities.clear();
 }
