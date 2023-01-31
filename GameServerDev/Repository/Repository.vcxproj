@@ -175,15 +175,18 @@ CALL CopyRepositoryHeader.bat</Command>
     <ClInclude Include="AccountEntity.h" />
     <ClInclude Include="AccountRepository.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityException.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PersistentRepository.h" />
     <ClInclude Include="Repository.h" />
+    <ClInclude Include="RepositoryException.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AccountEntity.cpp" />
     <ClCompile Include="AccountRepository.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityException.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -192,6 +195,7 @@ CALL CopyRepositoryHeader.bat</Command>
     </ClCompile>
     <ClCompile Include="PersistentRepository.cpp" />
     <ClCompile Include="Repository.cpp" />
+    <ClCompile Include="RepositoryException.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

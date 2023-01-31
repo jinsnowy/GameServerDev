@@ -15,7 +15,7 @@ public:
 };
 
 TEST_F(AccountTest, Account_계정_생성_테스트) {
-	auto transaction = dbConn.StartTransaction();
+	auto transaction = dbConn->StartTransaction();
 
 	wstring my_username = L"hello";
 	wstring my_password = L"world";
@@ -28,11 +28,11 @@ TEST_F(AccountTest, Account_계정_생성_테스트) {
 
 	LOG_INFO(L"계정 테스트 생성 성공");
 
-	transaction.Rollback();
+	transaction->Rollback();
 }
 
 TEST_F(AccountTest, Account_계정_삭제_테스트) {
-	auto transaction = dbConn.StartTransaction();
+	auto transaction = dbConn->StartTransaction();
 
 	wstring my_username = L"hello";
 	wstring my_password = L"world";
@@ -45,11 +45,11 @@ TEST_F(AccountTest, Account_계정_삭제_테스트) {
 
 	ASSERT_TRUE(account->valid() == false);
 
-	transaction.Rollback();
+	transaction->Rollback();
 }
 
 TEST_F(AccountTest, Account_동일_이름_생성_테스트) {
-	auto transaction = dbConn.StartTransaction();
+	auto transaction = dbConn->StartTransaction();
 
 	wstring my_username = L"hello";
 	wstring my_password = L"world";
@@ -58,9 +58,7 @@ TEST_F(AccountTest, Account_동일_이름_생성_테스트) {
 
 	ASSERT_TRUE(account->valid());
 
-	auto account2 = Create(my_username, my_password);
+	EXPECT_THROW(Create(my_username, my_password), entity_persist_exception);
 
-	ASSERT_TRUE(account2 == nullptr);
-
-	transaction.Rollback();
+	transaction->Rollback();
 }

@@ -1,17 +1,19 @@
 #include "stdafx.h"
-#include "TcpListener.h"
-#include "ServerService.h"
-#include "ServerSession.h"
-#include "protocol\UserProtocol.pb.h"
-#include "GamePacketInstaller.h"
-#include "ServerPacketHandler.h"
 
-#include "SessionManager.h"
+#include "ServerPacketHandler.h"
 #include "UserSession.h"
 #include "Room.h"
-#include "TaskScheduler.h"
-#include "networkengine/GlobalConfig.h"
-#include "networkengine/DatabaseManager.h"
+
+#include "Protocol/UserProtocol.pb.h"
+
+#include "Engine/GamePacketInstaller.h"
+#include "Engine/TcpListener.h"
+#include "Engine/ServerService.h"
+#include "Engine/ServerSession.h"
+#include "Engine/SessionManager.h"
+#include "Engine/TaskScheduler.h"
+#include "Engine/GlobalConfig.h"
+#include "Engine/DatabaseManager.h"
 
 using namespace std;
 using namespace packet;

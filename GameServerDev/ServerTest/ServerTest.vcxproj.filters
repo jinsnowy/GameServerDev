@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="IntegrateTest.cpp">
+      <Filter>TestBase</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseTest.cpp">
+      <Filter>TestBase</Filter>
+    </ClCompile>
+    <ClCompile Include="test_account.cpp">
+      <Filter>DatabaseTest</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="IntegrateTest.h">
+      <Filter>TestBase</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseTest.h">
+      <Filter>TestBase</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="TestBase">
+      <UniqueIdentifier>{0c483ba9-57dc-435c-8f10-62b14760e323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DatabaseTest">
+      <UniqueIdentifier>{d7a4dc71-0da2-4c47-a6bc-0f507ca0b7b2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

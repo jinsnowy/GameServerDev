@@ -6,5 +6,6 @@ class AccountRepository : public PersistentRepository<AccountEntity>
 {
 public:
 	AccountRepository();
+
 	~AccountRepository();
 };

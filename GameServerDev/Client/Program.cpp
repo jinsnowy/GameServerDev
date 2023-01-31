@@ -1,12 +1,11 @@
 #include "stdafx.h"
-#include <TcpSocket.h>
-#include <MemoryPool.h>
 
-#include "GamePacketInstaller.h"
+#include "Engine/GamePacketInstaller.h"
+#include "Engine/ClientService.h"
+#include "Engine/SessionManager.h"
+
 #include "ClientPacketHandler.h"
-#include "ClientService.h"
 #include "PlayerSession.h"
-#include "SessionManager.h"
 
 using namespace std;
 using namespace packet;

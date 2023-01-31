@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "IntegrateTest.h"
-#include "GlobalConfig.h"
+#include "Engine/GlobalConfig.h"
 
 IntegrateTest::IntegrateTest()
 {
@@ -26,7 +26,7 @@ void IntegrateTest::TearDown()
 	dbManager.Destroy();
 }
 
-DBConnectionPtr IntegrateTest::GetDBConnection()
+DBConnectionSourcePtr IntegrateTest::GetDBConnection()
 {
 	return dbManager.GetConnection();
 }

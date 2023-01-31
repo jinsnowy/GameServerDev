@@ -1,3 +1,3 @@
-xcopy GameServerDev\Repository\*.h Include\repository  /S  /Y
+xcopy GameServerDev\Repository\*.h Include\Repository  /S  /Y
 
 IF ERRORLEVEL 1 PAUSE

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Room.h"
-#include "Session.h"
+#include "Engine/Session.h"
+
 //
 //void Room::Enter(PlayerPtr player)
 //{

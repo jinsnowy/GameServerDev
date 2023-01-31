@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Entity.h"
+#include "EntityException.h"
 
 Entity::Entity()
 	:
@@ -11,12 +12,21 @@ Entity::~Entity()
 {
 }
 
-bool Entity::Persist(DBConnectionPtr& db_conn)
+void Entity::persist(DBConnectionSourcePtr& db_conn)
 {
 	if (_pending_perish == true) {
-		return Remove(db_conn);
+		if (Remove(db_conn) == false) {
+			throw entity_persist_exception(PERSIST_ACTION::REMOVE, shared_from_this());
+		}
+	}
+	else if (_id == kInvalidId) {
+		if (Create(db_conn) == false) {
+			throw entity_persist_exception(PERSIST_ACTION::CREATE, shared_from_this());
+		}
 	}
 	else {
-		return Create(db_conn);
+		if (Update(db_conn) == false) {
+			throw entity_persist_exception(PERSIST_ACTION::UPDATE, shared_from_this());
+		}
 	}
 }

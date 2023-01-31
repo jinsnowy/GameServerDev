@@ -1,9 +1,12 @@
 #pragma once
 
+#include <Engine/StdMutex.h>
+
 class Entity;
 class Repository
 {
 private:
+	StdMutex _mtx;
 	std::unordered_map<int, std::shared_ptr<Entity>> _entities;
 
 protected:
@@ -11,9 +14,9 @@ protected:
 
 	virtual ~Repository();
 
-	bool Add(std::shared_ptr<Entity> entity);
+	void Add(std::shared_ptr<Entity> entity);
 
-	bool Remove(std::shared_ptr<Entity> entity);
+	void Remove(std::shared_ptr<Entity> entity);
 
 	std::shared_ptr<Entity> Find(int id);
 
@@ -22,5 +25,5 @@ public:
 
 	bool Exists(int id);
 
-	void _Clear();
+	void Clear();
 };

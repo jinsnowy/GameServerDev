@@ -1,12 +1,14 @@
 #pragma once
-#include "Protocol.h"
-#include "PacketHeader.h"
-#include "PacketHandler.h"
+
 #pragma warning( push )
 #pragma warning(disable : 4946)
 #pragma warning(disable : 4251)
 #include "{{parser.package_name}}.pb.h"
 #pragma warning( pop ) 
+
+#include "Engine/Protocol.h"
+#include "Engine/PacketHeader.h"
+#include "Engine/PacketHandler.h"
 
 namespace packet
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DBConnection.h"
+#include "Engine/DBConnection.h"
 #include "Repository.h"
 #include "Entity.h"
 
@@ -9,26 +9,25 @@ class PersistentRepository : public Repository
 {
 public:
 	template <typename ...Args>
-	std::shared_ptr<T> Create(DBConnectionPtr& db_conn, Args&&... args) {
+	std::shared_ptr<T> Create(DBConnectionSourcePtr& db_conn, Args&&... args) {
 		auto entity = std::make_shared<T>(std::forward<Args>(args)...);
-		if (entity->Persist(db_conn) == true && Repository::Add(entity)) {
-			return entity;
-		}
-
-		return nullptr;
+		entity->persist();
+		Repository::Add(entity);
+		return entity;
 	}
 	
-	bool Remove(DBConnectionPtr& db_conn, shared_ptr<T> entity) {
-		if (Repository::Remove(entity) && entity->Persist(db_conn)) {
-			return true;
-		}
-
-		return false;
+	void Remove(DBConnectionSourcePtr& db_conn, shared_ptr<T> entity) {
+		Repository::Remove(entity);
+		entity->persist(db_conn);
 	}
 
 	std::shared_ptr<T> Find(int id) {
+		return static_pointer_cast<T>(Repository::Find(id));
+	}
+
+	std::shared_ptr<T> Fetch(int id) {
 		std::shared_ptr<T> entity;
-		if (entity = Repository::Find(id); entity != nullptr) {
+		if (entity = Find(id); entity != nullptr) {
 			return entity;
 		}
 

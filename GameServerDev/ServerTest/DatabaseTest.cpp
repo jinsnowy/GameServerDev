@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "DatabaseTest.h"
-#include "GlobalConfig.h"
+#include "Engine/GlobalConfig.h"
 
 DatabaseTest::DatabaseTest()
 {
@@ -22,6 +22,6 @@ void DatabaseTest::SetUp()
 
 void DatabaseTest::TearDown()
 {
-	dbConn.Clear();
+	dbConn->release();
 	dbManager.Destroy();
 }

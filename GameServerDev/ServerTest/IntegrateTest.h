@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DatabaseManager.h"
+#include "Engine/DatabaseManager.h"
 
 class IntegrateTest : public ::testing::Test
 {
@@ -13,7 +13,7 @@ public:
 	virtual void TearDown() override;
 
 protected:
-	DBConnectionPtr GetDBConnection();
+	DBConnectionSourcePtr GetDBConnection();
 
 private:
 	DatabaseManager dbManager;

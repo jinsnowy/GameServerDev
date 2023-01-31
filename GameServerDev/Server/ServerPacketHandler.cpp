@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "ServerPacketHandler.h"
-#include "protocol\UserProtocol.pb.h"
-#include "Session.h"
+
+#include "Engine/Session.h"
+
 #include "Room.h"
 #include "UserSession.h"
 
