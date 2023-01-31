@@ -2,7 +2,11 @@
 #include "Protocol.h"
 #include "PacketHeader.h"
 #include "PacketHandler.h"
+#pragma warning( push )
+#pragma warning(disable : 4946)
+#pragma warning(disable : 4251)
 #include "{{parser.package_name}}.pb.h"
+#pragma warning( pop ) 
 
 namespace packet
 {

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DBConnection.h"
+#include "DBConnectionPool.h"
 
 DBConnection::DBConnection()
 {
@@ -23,10 +24,9 @@ bool DBConnection::Connect(SQLHDBC henv, LPCWSTR connectionString)
 	SQLRETURN ret = ::SQLDriverConnectW(_connection, NULL, (SQLWCHAR*)stringBuffer, _countof(stringBuffer), (SQLWCHAR*)resultString, _countof(resultString), &resultStringLen, SQL_DRIVER_NOPROMPT);
 	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
 	{
-		HandleError(ret);
+		LOG_ERROR(L"[SQLCONNECT Failed] : %s", GetErrorMessage(ret).c_str());
 		return false;
 	}
-
 
 	if (::SQLAllocHandle(SQL_HANDLE_STMT, _connection, &_statement) != SQL_SUCCESS)
 		return false;
@@ -49,13 +49,14 @@ void DBConnection::Clear()
 	}
 }
 
-bool DBConnection::Execute(LPCWSTR query)
+bool DBConnection::Execute(LPCWSTR query, wstring& errorMessage)
 {
-	SQLRETURN ret = ::SQLExecDirectW(_statement, (SQLWCHAR*)query, SQL_NTSL);
-	if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO)
+	SQLRETURN returnCode = ::SQLExecDirectW(_statement, (SQLWCHAR*)query, SQL_NTSL);
+	if (returnCode == SQL_SUCCESS || returnCode == SQL_SUCCESS_WITH_INFO)
 		return true;
-	
-	HandleError(ret);
+
+	errorMessage = GetErrorMessage(returnCode);
+
 	return false;
 }
 
@@ -71,7 +72,7 @@ bool DBConnection::Fetch()
 	case SQL_NO_DATA:
 		return false;
 	case SQL_ERROR:
-		HandleError(ret);
+		LOG_ERROR(L"[Fetch] error : %s", GetErrorMessage(ret).c_str());
 		return false;
 	default:
 		return true;
@@ -94,6 +95,45 @@ void DBConnection::Unbind()
 	::SQLFreeStmt(_statement, SQL_UNBIND);
 	::SQLFreeStmt(_statement, SQL_RESET_PARAMS);
 	::SQLFreeStmt(_statement, SQL_CLOSE);
+}
+
+void DBConnection::BeginTransaction()
+{
+	SQLRETURN returnCode = ::SQLExecDirectW(_statement, (SQLWCHAR*)L"BEGIN TRAN", SQL_NTSL);
+	if (returnCode == SQL_SUCCESS || returnCode == SQL_SUCCESS_WITH_INFO)
+	{
+		return;
+	}
+
+	LOG_ERROR(L"[BeginTransaction Failed] : %s", GetErrorMessage(returnCode));
+
+	throw std::runtime_error("cannot start transaction");
+}
+
+void DBConnection::Commit()
+{
+	SQLRETURN returnCode = ::SQLExecDirectW(_statement, (SQLWCHAR*)L"COMMIT TRAN", SQL_NTSL);
+	if (returnCode == SQL_SUCCESS || returnCode == SQL_SUCCESS_WITH_INFO)
+	{
+		return;
+	}
+
+	LOG_ERROR(L"[Commit Failed] : %s", GetErrorMessage(returnCode));
+
+	throw std::runtime_error("cannot commit");
+}
+
+void DBConnection::Rollback()
+{
+	SQLRETURN returnCode = ::SQLExecDirectW(_statement, (SQLWCHAR*)L"ROLLBACK TRAN", SQL_NTSL);
+	if (returnCode == SQL_SUCCESS || returnCode == SQL_SUCCESS_WITH_INFO)
+	{
+		return;
+	}
+
+	LOG_ERROR(L"[Rollback Failed] : %s", GetErrorMessage(returnCode));
+
+	throw std::runtime_error("cannot rollback");
 }
 
 bool DBConnection::BindParam(int32 paramIndex, bool* value, SQLLEN* index)
@@ -218,7 +258,7 @@ bool DBConnection::BindParam(SQLUSMALLINT paramIndex, SQLSMALLINT cType, SQLSMAL
 	SQLRETURN ret = ::SQLBindParameter(_statement, paramIndex, SQL_PARAM_INPUT, cType, sqlType, len, 0, ptr, 0, index);
 	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
 	{
-		HandleError(ret);
+		LOG_ERROR(L"[BindParam] error : %s", GetErrorMessage(ret).c_str());
 		return false;
 	}
 
@@ -230,17 +270,17 @@ bool DBConnection::BindCol(SQLUSMALLINT columnIndex, SQLSMALLINT cType, SQLULEN 
 	SQLRETURN ret = ::SQLBindCol(_statement, columnIndex, cType, value, len, index);
 	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
 	{
-		HandleError(ret);
+		LOG_ERROR(L"[BindParam] error : %s", GetErrorMessage(ret).c_str());
 		return false;
 	}
 
 	return true;
 }
 
-void DBConnection::HandleError(SQLRETURN ret)
+wstring DBConnection::GetErrorMessage(SQLRETURN ret)
 {
 	if (ret == SQL_SUCCESS)
-		return;
+		return L"success";
 
 	SQLSMALLINT index = 1;
 	SQLWCHAR sqlState[MAX_PATH] = {};
@@ -249,18 +289,87 @@ void DBConnection::HandleError(SQLRETURN ret)
 	SQLSMALLINT msgLen = 0;
 	SQLRETURN errorRet = 0;
 
-	while (true)
+	wstringstream wss;
+	while (index < 5)
 	{
 		errorRet = ::SQLGetDiagRecW(SQL_HANDLE_STMT, _statement, index, sqlState, &nativeErr, errMsg, _countof(errMsg), &msgLen);
-		
+
 		if (errorRet == SQL_NO_DATA)
-			return;
-	
+			break;
+
 		if (errorRet == SQL_SUCCESS || errorRet == SQL_SUCCESS_WITH_INFO)
-			return;
+		{
+			wss << errMsg;
+		}
 
-		LOG_INFO(L"SQL Handle Error Message : %S", errMsg);
+		++index;
+	}
 
-		index++;
+	return wss.str();
+}
+
+DBConnectionPtr::DBConnectionPtr()
+{
+}
+
+DBConnectionPtr::DBConnectionPtr(DBConnectionPool* poolIn, DBConnection* connIn)
+	:
+	impl(make_shared<Impl>(poolIn, connIn))
+{}
+
+DBConnectionPtr::~DBConnectionPtr()
+{
+}
+
+DBTransaction DBConnectionPtr::StartTransaction()
+{
+	impl->conn->BeginTransaction();
+	return DBTransaction(*this);
+}
+
+void DBConnectionPtr::Clear()
+{
+	impl.reset();
+}
+
+DBConnectionPtr::Impl::Impl(DBConnectionPool* poolIn, DBConnection* connIn)
+	:
+	pool(poolIn),
+	conn(connIn)
+{
+}
+
+DBConnectionPtr::Impl::~Impl()
+{
+	pool->Push(conn);
+}
+
+DBTransaction::DBTransaction(DBConnectionPtr connPtrIn)
+	:
+	committed(false),
+	rollbacked(false),
+	connPtr(connPtrIn)
+{
+}
+
+DBTransaction::~DBTransaction()
+{
+	if (committed == false) {
+		Rollback();
+	}
+}
+
+void DBTransaction::Commit()
+{
+	if (committed.exchange(true) == false) {
+		connPtr->Commit();
+	}
+}
+
+void DBTransaction::Rollback()
+{
+	if (rollbacked.exchange(true) == false) {
+		connPtr->Unbind();
+		connPtr->Rollback();
 	}
 }

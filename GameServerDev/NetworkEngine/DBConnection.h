@@ -17,10 +17,14 @@ public:
 	bool  Connect(SQLHDBC henv, LPCWSTR connectionString);
 	void  Clear();
 
-	bool  Execute(LPCWSTR query);
+	bool  Execute(LPCWSTR query, wstring& errorMessage);
 	bool  Fetch();
 	int32 GetRowCount();
 	void  Unbind();
+
+	void BeginTransaction();
+	void Commit();
+	void Rollback();
 
 public:
 	bool BindParam(int32 paramIndex, bool* value, SQLLEN* index);
@@ -48,9 +52,53 @@ public:
 private:
 	bool  BindParam(SQLUSMALLINT paramIndex, SQLSMALLINT cType,  SQLSMALLINT sqlType, SQLULEN len, SQLPOINTER ptr, SQLLEN* index);
 	bool  BindCol(SQLUSMALLINT columnIndex, SQLSMALLINT cType, SQLULEN len ,SQLPOINTER value, SQLLEN* index);
-	void  HandleError(SQLRETURN ret);
+	wstring  GetErrorMessage(SQLRETURN ret);
 
 private:
 	SQLHDBC _connection = SQL_NULL_HANDLE;
 	SQLHSTMT _statement = SQL_NULL_HANDLE;
+};
+
+class DBTransaction;
+class DBConnectionPool;
+class DBConnectionPtr
+{
+	struct Impl
+	{
+		DBConnectionPool* pool;
+		DBConnection* conn;
+
+		Impl(DBConnectionPool* poolIn, DBConnection* connIn);
+		~Impl();
+	};
+private:
+	std::shared_ptr<Impl> impl;
+
+public:
+	DBConnectionPtr();
+	DBConnectionPtr(DBConnectionPool* poolIn, DBConnection* connIn);
+	~DBConnectionPtr();
+
+	DBTransaction StartTransaction();
+
+	DBConnection* operator->() {
+		return impl->conn;
+	}
+
+	void Clear();
+};
+
+class DBTransaction
+{
+private:
+	atomic<bool> committed;
+	atomic<bool> rollbacked;
+	DBConnectionPtr connPtr;
+
+public:
+	DBTransaction(DBConnectionPtr connPtrIn);
+	~DBTransaction();
+
+	void Commit();
+	void Rollback();
 };

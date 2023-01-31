@@ -12,6 +12,8 @@ DBConnectionPool::~DBConnectionPool()
 
 bool DBConnectionPool::Connect(int32 connectionCount, LPCWSTR connectionString)
 {
+	_connStr = connectionString;
+
 	StdWriteLock lk(_mtx);
 
 	if (::SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &_environment) != SQL_SUCCESS)
@@ -51,21 +53,38 @@ void DBConnectionPool::Clear()
 	_connections.clear();
 }
 
-DBConnection* DBConnectionPool::Pop()
+DBConnectionPtr DBConnectionPool::GetConnection()
 {
 	StdWriteLock lk(_mtx);
 
-	if (_connections.empty())
-		return nullptr;
+	[[unlikely]]
+	if (_connections.empty()) {
+		DBConnection* conn = AddConnection();
+		if (conn == nullptr) {
+			LOG_ERROR(L"[DB] cannot make new connection");
+			throw std::runtime_error("cannot make new connection");
+		}
+
+		return DBConnectionPtr(this, conn);
+	}
 
 	auto conn = _connections.back();
 	_connections.pop_back();
 
-	return conn;
+	return DBConnectionPtr(this, conn);
 }
 
 void DBConnectionPool::Push(DBConnection* connection)
 {
 	StdWriteLock lk(_mtx);
 	_connections.push_back(connection);
+}
+
+DBConnection* DBConnectionPool::AddConnection()
+{
+	DBConnection* conn = new DBConnection();
+	if (conn->Connect(_environment, _connStr.c_str()) == false)
+		return nullptr;
+
+	return conn;
 }

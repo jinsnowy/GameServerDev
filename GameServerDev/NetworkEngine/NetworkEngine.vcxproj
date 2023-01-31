@@ -141,9 +141,7 @@
     </Link>
     <PostBuildEvent>
       <Command>CD $(SolutionDir)
-CALL GenPackets.bat
-CALL GenProtocols.bat
-CALL CopyHeader.bat</Command>
+CALL CopyEngineHeader.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -184,9 +182,7 @@ CALL CopyHeader.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>CD $(SolutionDir)
-CALL GenPackets.bat
-CALL GenProtocols.bat
-CALL CopyHeader.bat</Command>
+CALL CopyEngineHeader.bat</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -206,12 +202,12 @@ CALL CopyHeader.bat</Command>
     <ClInclude Include="ClientSession.h" />
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="CoreStruct.h" />
+    <ClInclude Include="DatabaseManager.h" />
     <ClInclude Include="DBBind.h" />
     <ClInclude Include="DBConnection.h" />
     <ClInclude Include="DBConnectionPool.h" />
-    <ClInclude Include="DBModel.h" />
-    <ClInclude Include="DBSynchronizer.h" />
     <ClInclude Include="GamePacketInstaller.h" />
+    <ClInclude Include="GlobalConfig.h" />
     <ClInclude Include="ITaskCreator.h" />
     <ClInclude Include="NetworkEvent.h" />
     <ClInclude Include="NetworkStream.h" />
@@ -278,12 +274,11 @@ CALL CopyHeader.bat</Command>
     <ClCompile Include="ClientHandshake.cpp" />
     <ClCompile Include="ClientService.cpp" />
     <ClCompile Include="ClientSession.cpp" />
+    <ClCompile Include="DatabaseManager.cpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="DBBind.cpp" />
     <ClCompile Include="DBConnection.cpp" />
     <ClCompile Include="DBConnectionPool.cpp" />
-    <ClCompile Include="DBModel.cpp" />
-    <ClCompile Include="DBSynchronizer.cpp" />
     <ClCompile Include="GamePacketInstaller.cpp" />
     <ClCompile Include="ITaskCreator.cpp" />
     <ClCompile Include="NetworkEvent.cpp" />
@@ -341,9 +336,6 @@ CALL CopyHeader.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PacketHandler.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\Config.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitignore" />

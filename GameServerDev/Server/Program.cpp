@@ -6,13 +6,12 @@
 #include "GamePacketInstaller.h"
 #include "ServerPacketHandler.h"
 
-
 #include "SessionManager.h"
 #include "UserSession.h"
 #include "Room.h"
 #include "TaskScheduler.h"
-#include "DBConnectionPool.h"
-#include "DBBind.h"
+#include "networkengine/GlobalConfig.h"
+#include "networkengine/DatabaseManager.h"
 
 using namespace std;
 using namespace packet;
@@ -24,7 +23,11 @@ int main(int argc, char ** argv)
     NetUtils::Initialize();
     MemoryPool::Initialize();
 
-    LPCWSTR connString = L"Driver={ODBC Driver 17 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDb;Trusted_Connection=Yes;";
+	DatabaseManager db;
+	DatabaseManager::Config config;
+	config.connCount = 1;
+	config.connstr = global::SqlConnString;
+	ASSERT_CRASH(db.Initialize(config));
 
    // bool result = DBConnectionPool::GetInstance()->Connect(1, connString);
    // 

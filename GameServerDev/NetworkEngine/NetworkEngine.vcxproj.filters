@@ -64,6 +64,9 @@
     <Filter Include="Serializer">
       <UniqueIdentifier>{0b7c5e29-1fed-4501-95b4-936698baeddb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GlobalConfig">
+      <UniqueIdentifier>{d4567bb0-9280-415d-a533-7ccdb2de5211}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -208,12 +211,6 @@
     <ClInclude Include="DBBind.h">
       <Filter>Database</Filter>
     </ClInclude>
-    <ClInclude Include="DBModel.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="DBSynchronizer.h">
-      <Filter>Database</Filter>
-    </ClInclude>
     <ClInclude Include="BufferSegment.h">
       <Filter>Buffer</Filter>
     </ClInclude>
@@ -279,6 +276,12 @@
     </ClInclude>
     <ClInclude Include="ServerHandshake.h">
       <Filter>Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseManager.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalConfig.h">
+      <Filter>GlobalConfig</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -400,12 +403,6 @@
     <ClCompile Include="DBBind.cpp">
       <Filter>Database</Filter>
     </ClCompile>
-    <ClCompile Include="DBModel.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
-    <ClCompile Include="DBSynchronizer.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
     <ClCompile Include="BufferSegment.cpp">
       <Filter>Buffer</Filter>
     </ClCompile>
@@ -466,9 +463,9 @@
     <ClCompile Include="ServerHandshake.cpp">
       <Filter>Handshake</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\Config.xml" />
+    <ClCompile Include="DatabaseManager.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\CopyGenerated.bat" />
