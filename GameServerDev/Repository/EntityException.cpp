@@ -23,6 +23,6 @@ entity_persist_exception::entity_persist_exception(PERSIST_ACTION action, const 
 	_action(action)
 {
 	const char* type_str = typeid(entity.get()).name();
-	_buffer = String::Format("%s type : %s, id : %d", action_str(action), type_str, entity->id());
-	_buffer_w = String::ToWide(_buffer);
+	_buffer = StringUtils::Format("%s type : %s, id : %d", action_str(action), type_str, entity->id());
+	_buffer_w = StringUtils::ToWide(_buffer);
 }

@@ -12,10 +12,10 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>ServerPacketHandler</Filter>
     </ClInclude>
-    <ClInclude Include="framework.h">
+    <ClInclude Include="pch.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="framework.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

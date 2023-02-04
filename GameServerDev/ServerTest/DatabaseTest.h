@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/DBUtils.h"
+#include "Engine/Database/DBUtils.h"
 
 class DatabaseTest : public ::testing::Test
 {

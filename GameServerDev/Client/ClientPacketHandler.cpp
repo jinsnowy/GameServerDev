@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ClientPacketHandler.h"
-#include "PlayerSession.h"
 
 using namespace packet;
 

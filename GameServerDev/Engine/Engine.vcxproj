@@ -80,12 +80,14 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)d</TargetName>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <IntDir>obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <IntDir>obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -125,7 +127,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;SOLUTION_DIR=R"($(SolutionDir))";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;SOLUTION_DIR=R"($(SolutionDir))";_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -161,7 +163,7 @@ CALL CopyEngineHeader.bat</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;SOLUTION_DIR=R"($(SolutionDir))";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;SOLUTION_DIR=R"($(SolutionDir))";_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -193,158 +195,170 @@ CALL CopyEngineHeader.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Alarm.h" />
-    <ClInclude Include="AlarmManager.h" />
-    <ClInclude Include="Authenticate.h" />
-    <ClInclude Include="BufferSegment.h" />
-    <ClInclude Include="ClientHandshake.h" />
-    <ClInclude Include="ClientService.h" />
-    <ClInclude Include="ClientSession.h" />
-    <ClInclude Include="CoreMacro.h" />
-    <ClInclude Include="CoreStruct.h" />
-    <ClInclude Include="DatabaseManager.h" />
-    <ClInclude Include="DBConnectionSource.h" />
-    <ClInclude Include="DBStatement.h" />
-    <ClInclude Include="DBConnection.h" />
-    <ClInclude Include="DBConnectionPool.h" />
-    <ClInclude Include="DBTransaction.h" />
-    <ClInclude Include="DBUtils.h" />
-    <ClInclude Include="GamePacketInstaller.h" />
-    <ClInclude Include="GlobalConfig.h" />
-    <ClInclude Include="ITaskCreator.h" />
-    <ClInclude Include="NetworkEvent.h" />
-    <ClInclude Include="NetworkStream.h" />
-    <ClInclude Include="PoolObject.h" />
-    <ClInclude Include="SendBuffer.h" />
-    <ClInclude Include="Serializer.h" />
-    <ClInclude Include="ServerHandshake.h" />
-    <ClInclude Include="StringBuffer.h" />
-    <ClInclude Include="TcpActiveSocket.h" />
-    <ClInclude Include="TcpListenerBuilder.h" />
-    <ClInclude Include="TcpListenerNetwork.h" />
-    <ClInclude Include="TcpListenerSocket.h" />
-    <ClInclude Include="TimeUtils.h" />
-    <ClInclude Include="XString.h" />
-    <ClInclude Include="Task.h" />
-    <ClInclude Include="TaskAsync.h" />
-    <ClInclude Include="TaskSchedule.h" />
-    <ClInclude Include="TaskScheduler.h" />
-    <ClInclude Include="TaskSerializer.h" />
-    <ClInclude Include="InternalPacketHandler.h" />
-    <ClInclude Include="InternalProtocol.h" />
-    <ClInclude Include="Handshake.h" />
-    <ClInclude Include="IoContext.h" />
-    <ClInclude Include="IoEvent.h" />
-    <ClInclude Include="ServiceBase.h" />
-    <ClInclude Include="TcpListener.h" />
-    <ClInclude Include="MemoryPool.h" />
-    <ClInclude Include="TcpNetwork.h" />
-    <ClInclude Include="PacketHeader.h" />
-    <ClInclude Include="RecvBuffer.h" />
-    <ClInclude Include="ServerService.h" />
-    <ClInclude Include="ServerSession.h" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="BufferSource.h" />
-    <ClInclude Include="SessionManager.h" />
-    <ClInclude Include="StdMutex.h" />
-    <ClInclude Include="Stl.h" />
-    <ClInclude Include="CorePch.h" />
-    <ClInclude Include="NetUtils.h" />
-    <ClInclude Include="TlsMemory.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="Xml.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="DateTime.h" />
-    <ClInclude Include="CoreDefine.h" />
-    <ClInclude Include="EndPoint.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Logger.h" />
-    <ClInclude Include="SehException.h" />
+    <ClInclude Include="Common\Common.h" />
+    <ClInclude Include="Common\Logger.h" />
+    <ClInclude Include="Common\Serializer.h" />
+    <ClInclude Include="Common\Singleton.h" />
+    <ClInclude Include="Common\StdMutex.h" />
+    <ClInclude Include="Common\StringBuffer.h" />
+    <ClInclude Include="Core\Buffer\BufferSegment.h" />
+    <ClInclude Include="Core\Buffer\BufferSource.h" />
+    <ClInclude Include="Core\Buffer\NetworkStream.h" />
+    <ClInclude Include="Core\Buffer\RecvBuffer.h" />
+    <ClInclude Include="Core\Buffer\SendBuffer.h" />
+    <ClInclude Include="Core\CoreDefine.h" />
+    <ClInclude Include="Core\CoreMacro.h" />
+    <ClInclude Include="Core\CorePch.h" />
+    <ClInclude Include="Core\CoreStl.h" />
+    <ClInclude Include="Core\CoreStruct.h" />
+    <ClInclude Include="Core\Exception\PacketException.h" />
+    <ClInclude Include="Core\Exception\SehException.h" />
+    <ClInclude Include="Core\framework.h" />
+    <ClInclude Include="Core\Handshake\Authenticate.h" />
+    <ClInclude Include="Core\Handshake\ClientHandshake.h" />
+    <ClInclude Include="Core\Handshake\Handshake.h" />
+    <ClInclude Include="Core\Handshake\ServerHandshake.h" />
+    <ClInclude Include="Core\Memory\MemoryPool.h" />
+    <ClInclude Include="Core\Memory\PoolObject.h" />
+    <ClInclude Include="Core\Memory\TlsMemory.h" />
+    <ClInclude Include="Core\Network\IO\IoContext.h" />
+    <ClInclude Include="Core\Network\IO\IoEvent.h" />
+    <ClInclude Include="Core\Network\Object\TcpListener.h" />
+    <ClInclude Include="Core\Network\Object\TcpListenerBuilder.h" />
+    <ClInclude Include="Core\Network\Object\TcpListenerNetwork.h" />
+    <ClInclude Include="Core\Network\Object\TcpNetwork.h" />
+    <ClInclude Include="Core\Network\Object\TcpNetworkEvent.h" />
+    <ClInclude Include="Core\Network\Socket\TcpActiveSocket.h" />
+    <ClInclude Include="Core\Network\Socket\TcpListenerSocket.h" />
+    <ClInclude Include="Core\Network\Socket\TcpSocket.h" />
+    <ClInclude Include="Core\Packet\GamePacketInstaller.h" />
+    <ClInclude Include="Core\Packet\InternalPacketHandler.h" />
+    <ClInclude Include="Core\Packet\PacketHandler.h" />
+    <ClInclude Include="Core\Packet\PacketHeader.h" />
+    <ClInclude Include="Core\Protocol\InternalProtocol.h" />
+    <ClInclude Include="Core\Protocol\Protocol.h" />
+    <ClInclude Include="Core\Service\ClientService.h" />
+    <ClInclude Include="Core\Service\ServerService.h" />
+    <ClInclude Include="Core\Service\ServiceBase.h" />
+    <ClInclude Include="Core\Session\ClientSession.h" />
+    <ClInclude Include="Core\Session\ServerSession.h" />
+    <ClInclude Include="Core\Session\Session.h" />
+    <ClInclude Include="Core\Session\SessionManager.h" />
+    <ClInclude Include="Core\Task\Alarm\Alarm.h" />
+    <ClInclude Include="Core\Task\Alarm\AlarmManager.h" />
+    <ClInclude Include="Core\Task\ITaskCreator.h" />
+    <ClInclude Include="Core\Task\Task.h" />
+    <ClInclude Include="Core\Task\TaskAsync.h" />
+    <ClInclude Include="Core\Task\TaskSchedule.h" />
+    <ClInclude Include="Core\Task\TaskScheduler.h" />
+    <ClInclude Include="Core\Task\TaskSerializer.h" />
+    <ClInclude Include="Database\DatabaseManager.h" />
+    <ClInclude Include="Database\DBConnection.h" />
+    <ClInclude Include="Database\DBConnectionPool.h" />
+    <ClInclude Include="Database\DBConnectionSource.h" />
+    <ClInclude Include="Database\DBStatement.h" />
+    <ClInclude Include="Database\DBTransaction.h" />
+    <ClInclude Include="Database\DBUtils.h" />
+    <ClInclude Include="ThirdParty\MagicEnum\magic_enum.hpp" />
+    <ClInclude Include="ThirdParty\MagicEnum\magic_enum_containers.hpp" />
+    <ClInclude Include="ThirdParty\MagicEnum\magic_enum_format.hpp" />
+    <ClInclude Include="ThirdParty\MagicEnum\magic_enum_fuse.hpp" />
+    <ClInclude Include="ThirdParty\MagicEnum\magic_enum_switch.hpp" />
+    <ClInclude Include="ThirdParty\Tinyxml2\tinyxml2.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Singleton.h" />
-    <ClInclude Include="TcpSocket.h" />
-    <ClInclude Include="tinyxml2.h" />
-    <ClInclude Include="PacketHandler.h" />
-    <ClInclude Include="PacketException.h" />
-    <ClInclude Include="Protocol.h" />
+    <ClInclude Include="Types\DateTime.h" />
+    <ClInclude Include="Types\EndPoint.h" />
+    <ClInclude Include="Types\Timer.h" />
+    <ClInclude Include="Types\Types.h" />
+    <ClInclude Include="Utils\Crypto.h" />
+    <ClInclude Include="Utils\Enums.h" />
+    <ClInclude Include="Utils\NetUtils.h" />
+    <ClInclude Include="Utils\StringUtils.h" />
+    <ClInclude Include="Utils\SystemUtils.h" />
+    <ClInclude Include="Utils\TimeUtils.h" />
+    <ClInclude Include="Utils\Utils.h" />
+    <ClInclude Include="Utils\Xml.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Alarm.cpp" />
-    <ClCompile Include="AlarmManager.cpp" />
-    <ClCompile Include="Authenticate.cpp" />
-    <ClCompile Include="BufferSegment.cpp" />
-    <ClCompile Include="ClientHandshake.cpp" />
-    <ClCompile Include="ClientService.cpp" />
-    <ClCompile Include="ClientSession.cpp" />
-    <ClCompile Include="DatabaseManager.cpp" />
-    <ClCompile Include="DateTime.cpp" />
-    <ClCompile Include="DBConnectionSource.cpp" />
-    <ClCompile Include="DBStatement.cpp" />
-    <ClCompile Include="DBConnection.cpp" />
-    <ClCompile Include="DBConnectionPool.cpp" />
-    <ClCompile Include="DBTransaction.cpp" />
-    <ClCompile Include="GamePacketInstaller.cpp" />
-    <ClCompile Include="ITaskCreator.cpp" />
-    <ClCompile Include="NetworkEvent.cpp" />
-    <ClCompile Include="NetworkStream.cpp" />
-    <ClCompile Include="PacketHeader.cpp" />
-    <ClCompile Include="PoolObject.cpp" />
-    <ClCompile Include="Protocol.cpp" />
-    <ClCompile Include="SehException.cpp" />
-    <ClCompile Include="SendBuffer.cpp" />
-    <ClCompile Include="Serializer.cpp" />
-    <ClCompile Include="ServerHandshake.cpp" />
-    <ClCompile Include="StringBuffer.cpp" />
-    <ClCompile Include="TcpActiveSocket.cpp" />
-    <ClCompile Include="TcpListenerBuilder.cpp" />
-    <ClCompile Include="TcpListenerNetwork.cpp" />
-    <ClCompile Include="TcpListenerSocket.cpp" />
-    <ClCompile Include="TimeUtils.cpp" />
-    <ClCompile Include="XString.cpp" />
-    <ClCompile Include="Task.cpp" />
-    <ClCompile Include="TaskAsync.cpp" />
-    <ClCompile Include="TaskSchedule.cpp" />
-    <ClCompile Include="TaskScheduler.cpp" />
-    <ClCompile Include="TaskSerializer.cpp" />
-    <ClCompile Include="InternalPacketHandler.cpp" />
-    <ClCompile Include="InternalProtocol.cpp" />
-    <ClCompile Include="Handshake.cpp" />
-    <ClCompile Include="IoContext.cpp" />
-    <ClCompile Include="IoEvent.cpp" />
-    <ClCompile Include="ServiceBase.cpp" />
-    <ClCompile Include="TcpListener.cpp" />
-    <ClCompile Include="MemoryPool.cpp" />
-    <ClCompile Include="NetUtils.cpp" />
-    <ClCompile Include="TcpNetwork.cpp" />
-    <ClCompile Include="RecvBuffer.cpp" />
-    <ClCompile Include="ServerService.cpp" />
-    <ClCompile Include="ServerSession.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="BufferSource.cpp" />
-    <ClCompile Include="SessionManager.cpp" />
-    <ClCompile Include="StdMutex.cpp" />
-    <ClCompile Include="TlsMemory.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Xml.cpp" />
-    <ClCompile Include="EndPoint.cpp" />
-    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Common\Logger.cpp" />
+    <ClCompile Include="Common\Serializer.cpp" />
+    <ClCompile Include="Common\StdMutex.cpp" />
+    <ClCompile Include="Common\StringBuffer.cpp" />
+    <ClCompile Include="Core\Buffer\BufferSegment.cpp" />
+    <ClCompile Include="Core\Buffer\BufferSource.cpp" />
+    <ClCompile Include="Core\Buffer\NetworkStream.cpp" />
+    <ClCompile Include="Core\Buffer\RecvBuffer.cpp" />
+    <ClCompile Include="Core\Buffer\SendBuffer.cpp" />
+    <ClCompile Include="Core\CorePch.cpp" />
+    <ClCompile Include="Core\Exception\SehException.cpp" />
+    <ClCompile Include="Core\Handshake\Authenticate.cpp" />
+    <ClCompile Include="Core\Handshake\ClientHandshake.cpp" />
+    <ClCompile Include="Core\Handshake\Handshake.cpp" />
+    <ClCompile Include="Core\Handshake\ServerHandshake.cpp" />
+    <ClCompile Include="Core\Memory\MemoryPool.cpp" />
+    <ClCompile Include="Core\Memory\PoolObject.cpp" />
+    <ClCompile Include="Core\Memory\TlsMemory.cpp" />
+    <ClCompile Include="Core\Network\IO\IoContext.cpp" />
+    <ClCompile Include="Core\Network\IO\IoEvent.cpp" />
+    <ClCompile Include="Core\Network\Object\TcpListener.cpp" />
+    <ClCompile Include="Core\Network\Object\TcpListenerBuilder.cpp" />
+    <ClCompile Include="Core\Network\Object\TcpListenerNetwork.cpp" />
+    <ClCompile Include="Core\Network\Object\TcpNetwork.cpp" />
+    <ClCompile Include="Core\Network\Object\TcpNetworkEvent.cpp" />
+    <ClCompile Include="Core\Network\Socket\TcpActiveSocket.cpp" />
+    <ClCompile Include="Core\Network\Socket\TcpListenerSocket.cpp" />
+    <ClCompile Include="Core\Network\Socket\TcpSocket.cpp" />
+    <ClCompile Include="Core\Packet\GamePacketInstaller.cpp" />
+    <ClCompile Include="Core\Packet\InternalPacketHandler.cpp" />
+    <ClCompile Include="Core\Packet\PacketHandler.cpp" />
+    <ClCompile Include="Core\Packet\PacketHeader.cpp" />
+    <ClCompile Include="Core\Protocol\InternalProtocol.cpp" />
+    <ClCompile Include="Core\Protocol\Protocol.cpp" />
+    <ClCompile Include="Core\Service\ClientService.cpp" />
+    <ClCompile Include="Core\Service\ServerService.cpp" />
+    <ClCompile Include="Core\Service\ServiceBase.cpp" />
+    <ClCompile Include="Core\Session\ClientSession.cpp" />
+    <ClCompile Include="Core\Session\ServerSession.cpp" />
+    <ClCompile Include="Core\Session\Session.cpp" />
+    <ClCompile Include="Core\Session\SessionManager.cpp" />
+    <ClCompile Include="Core\Task\Alarm\Alarm.cpp" />
+    <ClCompile Include="Core\Task\Alarm\AlarmManager.cpp" />
+    <ClCompile Include="Core\Task\ITaskCreator.cpp" />
+    <ClCompile Include="Core\Task\Task.cpp" />
+    <ClCompile Include="Core\Task\TaskAsync.cpp" />
+    <ClCompile Include="Core\Task\TaskSchedule.cpp" />
+    <ClCompile Include="Core\Task\TaskScheduler.cpp" />
+    <ClCompile Include="Core\Task\TaskSerializer.cpp" />
+    <ClCompile Include="Database\DatabaseManager.cpp" />
+    <ClCompile Include="Database\DBConnection.cpp" />
+    <ClCompile Include="Database\DBConnectionPool.cpp" />
+    <ClCompile Include="Database\DBConnectionSource.cpp" />
+    <ClCompile Include="Database\DBStatement.cpp" />
+    <ClCompile Include="Database\DBTransaction.cpp" />
+    <ClCompile Include="ThirdParty\Tinyxml2\tinyxml2.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4005</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4005</DisableSpecificWarnings>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TcpSocket.cpp" />
-    <ClCompile Include="tinyxml2.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PacketHandler.cpp" />
+    <ClCompile Include="Types\DateTime.cpp" />
+    <ClCompile Include="Types\EndPoint.cpp" />
+    <ClCompile Include="Utils\Crypto.cpp" />
+    <ClCompile Include="Utils\Enums.cpp" />
+    <ClCompile Include="Utils\NetUtils.cpp" />
+    <ClCompile Include="Utils\StringUtils.cpp" />
+    <ClCompile Include="Utils\SystemUtils.cpp" />
+    <ClCompile Include="Utils\TimeUtils.cpp" />
+    <ClCompile Include="Utils\Xml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitignore" />
-    <None Include="..\..\CopyGenerated.bat" />
     <None Include="..\..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

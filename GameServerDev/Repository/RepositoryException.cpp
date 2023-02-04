@@ -4,6 +4,6 @@
 repositoy_exception::repositoy_exception(const char* reason)
 	:
 	_buffer(reason),
-	_buffer_w(String::ToWide(reason))
+	_buffer_w(StringUtils::ToWide(reason))
 {
 }

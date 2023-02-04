@@ -6,14 +6,14 @@
 
 #include "Protocol/UserProtocol.pb.h"
 
-#include "Engine/GamePacketInstaller.h"
-#include "Engine/TcpListener.h"
-#include "Engine/ServerService.h"
-#include "Engine/ServerSession.h"
-#include "Engine/SessionManager.h"
-#include "Engine/TaskScheduler.h"
+#include "Engine/Core/Packet/GamePacketInstaller.h"
+#include "Engine/Core/Network/Object/TcpListener.h"
+#include "Engine/Core/Service/ServerService.h"
+#include "Engine/Core/Session/ServerSession.h"
+#include "Engine/Core/Session/SessionManager.h"
+#include "Engine/Core/Task/TaskScheduler.h"
 #include "Engine/GlobalConfig.h"
-#include "Engine/DatabaseManager.h"
+#include "Engine/Database/DatabaseManager.h"
 
 using namespace std;
 using namespace packet;

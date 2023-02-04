@@ -6,9 +6,9 @@
 #include "{{parser.package_name}}.pb.h"
 #pragma warning( pop ) 
 
-#include "Engine/Protocol.h"
-#include "Engine/PacketHeader.h"
-#include "Engine/PacketHandler.h"
+#include "Engine/Core/Protocol/Protocol.h"
+#include "Engine/Core/Packet/PacketHeader.h"
+#include "Engine/Core/Packet/PacketHandler.h"
 
 namespace packet
 {

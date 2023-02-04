@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ServerPacketHandler.h"
-
+#include "Engine/Core/Session/Session.h"
 using namespace packet;
 
 void ServerPacketHandler::onHeartbeat(SessionPtrCRef session, UserProtocol::Heartbeat pkt)

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "AccountEntity.h"
-#include "Engine/DBUtils.h"
+#include "Engine/Database/DBUtils.h"
 
 AccountEntity::AccountEntity(wstring username, wstring password)
 	:

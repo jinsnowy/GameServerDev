@@ -7,6 +7,6 @@
 #ifndef PCH_H
 #define PCH_H
 
-#include "CorePch.h"
+#include "Core/CorePch.h"
 
 #endif //PCH_H

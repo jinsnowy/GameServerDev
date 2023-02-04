@@ -5,7 +5,7 @@
 #pragma once
 
 #include "gtest/gtest.h"
-#include <Engine/CorePch.h>
+#include <Engine/Core/CorePch.h>
 #include <Protocol/UserProtocolHandler.h>
 
 #ifdef _DEBUG

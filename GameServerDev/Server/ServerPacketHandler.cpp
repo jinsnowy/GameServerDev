@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ServerPacketHandler.h"
 
-#include "Engine/Session.h"
+#include "Engine/Core/Session/Session.h"
 
 #include "Room.h"
 #include "UserSession.h"

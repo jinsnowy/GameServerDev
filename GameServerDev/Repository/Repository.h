@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Engine/StdMutex.h>
-
 class Entity;
 class Repository
 {

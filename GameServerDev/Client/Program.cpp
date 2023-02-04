@@ -1,22 +1,21 @@
 #include "stdafx.h"
 
-#include "Engine/GamePacketInstaller.h"
-#include "Engine/ClientService.h"
-#include "Engine/SessionManager.h"
+#include "Engine/Core/Packet/GamePacketInstaller.h"
+#include "Engine/Core/Service/ClientService.h"
+#include "Engine/Core/Session/SessionManager.h"
 
 #include "ClientPacketHandler.h"
-#include "PlayerSession.h"
+#include "NetworkManager.h"
 
 using namespace std;
 using namespace packet;
 
 int main(int argc, char** argv)
 {
-    NetUtils::Initialize();
-    MemoryPool::Initialize();
+    Core::Initialize();
     GamePacketInstaller::Install<ClientPacketHandler>();
 
-    SessionFactory sessionFactory = Session::CreateSessionFactory<PlayerSession>();
+    SessionFactory sessionFactory = Session::CreateSessionFactory<NetworkManager>();
     SessionManager sessionManager(sessionFactory);
 
     ClientServiceParam param(1, 1, "127.0.0.1", 12321);
@@ -31,7 +30,7 @@ int main(int argc, char** argv)
             service.ForEach([&packetNum](SessionPtr session)
             {            
                 UserProtocol::Test test;
-                test.set_text(String::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
+                test.set_text(StringUtils::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
 
                 session->SendAsync(Serializer::SerializeProtoBuf(test));
             });

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/DBConnection.h"
+#include "Engine/Database/DBConnection.h"
 #include "Repository.h"
 #include "Entity.h"
 
@@ -11,7 +11,7 @@ public:
 	template <typename ...Args>
 	std::shared_ptr<T> Create(DBConnectionSourcePtr& db_conn, Args&&... args) {
 		auto entity = std::make_shared<T>(std::forward<Args>(args)...);
-		entity->persist();
+		entity->persist(db_conn);
 		Repository::Add(entity);
 		return entity;
 	}

@@ -12,8 +12,7 @@ IntegrateTest::~IntegrateTest()
 
 void IntegrateTest::SetUp()
 {
-	NetUtils::Initialize();
-	MemoryPool::Initialize();
+	Core::Initialize();
 
 	DatabaseManager::Config config;
 	config.connCount = 1;

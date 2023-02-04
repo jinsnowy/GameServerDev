@@ -6,7 +6,7 @@
 
 #include "gtest/gtest.h"
 
-#include "CorePch.h"
+#include "Engine/Core/CorePch.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "Engined.lib")

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DatabaseTest.h"
-#include "repository/AccountRepository.h"
+#include "Repository/AccountRepository.h"
+#include "Repository/EntityException.h"
 
 class AccountTest : public DatabaseTest
 {
