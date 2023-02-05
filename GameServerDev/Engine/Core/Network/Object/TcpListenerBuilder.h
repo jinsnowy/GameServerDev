@@ -1,6 +1,6 @@
 #pragma once
 
-class TcpListenerBuilder
+class TcpListenerBuilder : public Builder<TcpListenerBuilder>
 {
 private:
 	uint16		   _bindPort;
@@ -14,7 +14,7 @@ public:
 	TcpListenerBuilder& Port(uint16 port);
 	TcpListenerBuilder& BackLog(int32 backLog);
 	TcpListenerBuilder& AcceptCount(int32 acceptCount);
-	TcpListenerBuilder& _NetworkFactory(NetworkFactory networkFactory);
+	TcpListenerBuilder& Factory(NetworkFactory networkFactory);
 
 	shared_ptr<class TcpListener> Build(ServiceBase& serviceBase);
 };

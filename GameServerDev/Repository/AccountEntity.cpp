@@ -11,51 +11,68 @@ AccountEntity::AccountEntity(wstring username, wstring password)
 
 CREATE_API(AccountEntity)
 {
-	DBStatement<2, 1> stmt(db_conn, L"usp_CreateAccount");
+	auto stmt = db_conn->CreateStatement();
 
-	stmt.BindParam(0, _username.c_str());
-	stmt.BindParam(1, _password.c_str());
+	auto handle = stmt->GetHandle();
 
-	int id = 0;
-	stmt.BindCol(0, id);
+	int32 id = 0;
+	stmt->BindParam(_username);
+	stmt->BindParam(_password);
+	stmt->BindResult(id);
 
-	bool result = stmt.Execute();
-	if (result &= stmt.Fetch(); result == true)
-	{
-		_id = id;
+	stmt->Execute(L"usp_CreateAccount");
+
+	if (stmt->Success() == false) {
+		return false;
 	}
 
-	return result;
+	if (stmt->FetchResult())
+	{
+		_id = id;
+
+		return true;
+	}
+
+	return false;
 }
 
 REMOVE_API(AccountEntity)
 {
 	int id = _id.load();
 
-	DBStatement<1, 0> stmt(db_conn, L"usp_DeleteAccount");
-	stmt.BindParam(0, id);
+	auto stmt = db_conn->CreateStatement();
+	stmt->BindParam(id);
+	stmt->Execute(L"usp_DeleteAccount");
 
-	return stmt.Execute();
+	if (stmt->Success() == false) {
+		return false;
+	}
+
+	return true;
 }
 
 UPDATE_API(AccountEntity)
 {
-
 	return true;
 }
 
 SELECT_API(AccountEntity)
 {
-	DBStatement<1, 2> stmt(db_conn, L"usp_SelectAccount");
-	stmt.BindParam(0, id);
+	auto stmt = db_conn->CreateStatement();
+	stmt->BindParam(id);
 
 	wchar_t username_buffer[512];
 	wchar_t password_buffer[512];
 
-	stmt.BindCol(0, username_buffer);
-	stmt.BindCol(1, password_buffer);
+	stmt->Execute(L"usp_SelectAccount");
+	if (stmt->Success() == false) {
+		return nullptr;
+	}
 
-	if (stmt.Execute() && stmt.Fetch()) {
+	stmt->BindResult(username_buffer);
+	stmt->BindResult(password_buffer);
+
+	if (stmt->FetchResult()) {
 		auto entity = make_shared<AccountEntity>(username_buffer, password_buffer);
 		entity->_id = id;
 		return entity;
@@ -66,20 +83,22 @@ SELECT_API(AccountEntity)
 
 SELECT_ALL_API(AccountEntity)
 {
-	DBStatement<0, 2> stmt(db_conn, L"usp_SelectAllAccount");
+	auto stmt = db_conn->CreateStatement();
 
 	wchar_t username_buffer[512];
 	wchar_t password_buffer[512];
 
-	stmt.BindCol(0, username_buffer);
-	stmt.BindCol(1, password_buffer);
-
-	if (stmt.Execute() == false) {
+	stmt->Execute(L"usp_SelectAllAccount");
+	if (stmt->Success() == false) {
 		return {};
 	}
 
+	stmt->BindResult(username_buffer);
+	stmt->BindResult(password_buffer);
+
 	std::vector<std::shared_ptr<AccountEntity>> entities;
-	while (stmt.Fetch()) {
+
+	while (stmt->FetchResult()) {
 		auto entity = make_shared<AccountEntity>(username_buffer, password_buffer);
 		entities.push_back(entity);
 	}

@@ -3,6 +3,7 @@
 #include "DBConnection.h"
 #include "DBConnectionPool.h"
 #include "DBTransaction.h"
+#include "DBStatement.h"
 
 struct DBConnectionSource::Impl
 {
@@ -24,6 +25,11 @@ DBConnectionSource::DBConnectionSource(DBConnectionPool* poolIn, DBConnection* c
 
 DBConnectionSource::~DBConnectionSource()
 {
+}
+
+std::unique_ptr<DBStatement> DBConnectionSource::CreateStatement()
+{
+	return std::make_unique<DBStatement>(shared_from_this());
 }
 
 std::unique_ptr<DBTransaction> DBConnectionSource::StartTransaction()

@@ -34,18 +34,36 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Binary\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Binary\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="ClientMock.h" />
+    <ClInclude Include="ClientPacketHandlerMock.h" />
+    <ClInclude Include="ClientSessionMock.h" />
     <ClInclude Include="DatabaseTest.h" />
     <ClInclude Include="IntegrateTest.h" />
+    <ClInclude Include="NetworkMock.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ServerMock.h" />
+    <ClInclude Include="ServerSessionMock.h" />
+    <ClInclude Include="ServiceMock.h" />
+    <ClInclude Include="SessionManagerMock.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClientMock.cpp" />
+    <ClCompile Include="ClientPacketHandlerMock.cpp" />
+    <ClCompile Include="ClientSessionMock.cpp" />
     <ClCompile Include="DatabaseTest.cpp" />
     <ClCompile Include="IntegrateTest.cpp" />
+    <ClCompile Include="NetworkMock.cpp" />
+    <ClCompile Include="ServerMock.cpp" />
+    <ClCompile Include="ServerSessionMock.cpp" />
+    <ClCompile Include="ServiceMock.cpp" />
+    <ClCompile Include="SessionManagerMock.cpp" />
     <ClCompile Include="test_account.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -53,6 +71,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="test_integrate_account.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Engine{45D1F5AA-C694-4F14-8B09-D1B59705DF35}">
@@ -93,7 +112,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include\networkengine;$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -128,7 +147,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include\networkengine;$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

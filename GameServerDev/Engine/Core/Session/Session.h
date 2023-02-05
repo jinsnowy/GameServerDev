@@ -1,6 +1,7 @@
 #pragma once
 
 struct BufferSegment;
+struct ThreadContext;
 class Session : public std::enable_shared_from_this<Session>
 {
 	friend class TcpNetwork;
@@ -11,10 +12,21 @@ public:
 	virtual ~Session();
 
 public:
-	void SendAsync(const BufferSegment& segment);
+	ThreadContext* GetContext();
 
 	template<typename T>
 	shared_ptr<T> GetShared() { return static_pointer_cast<T>(shared_from_this()); }
+
+	template <typename T>
+	requires std::is_copy_constructible_v<T>&& std::is_copy_assignable_v<T>
+	void Send(const T& message) {
+		if constexpr (std::is_same_v<BufferSegment, T>) {
+			SendInternal(message);
+		}
+		else {
+			SendInternal(Serializer::SerializeProtoBuf(message));
+		}
+	}
 
 	bool IsConnected();
 
@@ -46,4 +58,6 @@ public:
 
 private:
 	SessionID _sessionId;
+
+	void SendInternal(const BufferSegment& segment);
 };

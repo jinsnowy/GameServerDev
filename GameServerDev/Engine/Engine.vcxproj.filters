@@ -43,9 +43,6 @@
     <Filter Include="Core\Memory">
       <UniqueIdentifier>{d7b7c95e-d4c0-4882-a363-21eda929ebfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Handshake">
-      <UniqueIdentifier>{7f52113c-0848-4467-b3b6-cf5968c08149}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Packet">
       <UniqueIdentifier>{d49ca617-2e43-47a9-82d7-71ebf6da7545}</UniqueIdentifier>
     </Filter>
@@ -69,6 +66,12 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{b4e403ce-b700-4cb2-8069-215a377cdda1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Repository">
+      <UniqueIdentifier>{76cc0be5-4192-4c5e-9ff4-3318bb139188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Network\Handshake">
+      <UniqueIdentifier>{7f52113c-0848-4467-b3b6-cf5968c08149}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -198,18 +201,6 @@
     <ClInclude Include="Core\Memory\TlsMemory.h">
       <Filter>Core\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Handshake\Authenticate.h">
-      <Filter>Core\Handshake</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Handshake\ClientHandshake.h">
-      <Filter>Core\Handshake</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Handshake\Handshake.h">
-      <Filter>Core\Handshake</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Handshake\ServerHandshake.h">
-      <Filter>Core\Handshake</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Packet\GamePacketInstaller.h">
       <Filter>Core\Packet</Filter>
     </ClInclude>
@@ -321,6 +312,57 @@
     <ClInclude Include="Core\framework.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Repository\Entity.h">
+      <Filter>Core\Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Repository\EntityException.h">
+      <Filter>Core\Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Repository\PersistentRepository.h">
+      <Filter>Core\Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Repository\Repository.h">
+      <Filter>Core\Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Repository\RepositoryException.h">
+      <Filter>Core\Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Reflection.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Config.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Service\ServerServiceBuilder.h">
+      <Filter>Core\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Builder.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Service\ClientServiceBuilder.h">
+      <Filter>Core\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ServerCommon.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ClientCommon.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Handshake\Authenticate.h">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Handshake\ClientHandshake.h">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Handshake\Handshake.h">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Handshake\ServerHandshake.h">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Object\TcpConnector.h">
+      <Filter>Core\Network\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Database\DatabaseManager.cpp">
@@ -409,18 +451,6 @@
     </ClCompile>
     <ClCompile Include="Core\Memory\TlsMemory.cpp">
       <Filter>Core\Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Handshake\Authenticate.cpp">
-      <Filter>Core\Handshake</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Handshake\ClientHandshake.cpp">
-      <Filter>Core\Handshake</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Handshake\Handshake.cpp">
-      <Filter>Core\Handshake</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Handshake\ServerHandshake.cpp">
-      <Filter>Core\Handshake</Filter>
     </ClCompile>
     <ClCompile Include="Core\Packet\GamePacketInstaller.cpp">
       <Filter>Core\Packet</Filter>
@@ -520,6 +550,51 @@
     </ClCompile>
     <ClCompile Include="Core\CorePch.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Repository\Entity.cpp">
+      <Filter>Core\Repository</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Repository\EntityException.cpp">
+      <Filter>Core\Repository</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Repository\PersistentRepository.cpp">
+      <Filter>Core\Repository</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Repository\Repository.cpp">
+      <Filter>Core\Repository</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Repository\RepositoryException.cpp">
+      <Filter>Core\Repository</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Reflection.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Config.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Service\ServerServiceBuilder.cpp">
+      <Filter>Core\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Builder.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Service\ClientServiceBuilder.cpp">
+      <Filter>Core\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Handshake\Authenticate.cpp">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Handshake\ClientHandshake.cpp">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Handshake\Handshake.cpp">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Handshake\ServerHandshake.cpp">
+      <Filter>Core\Network\Handshake</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Object\TcpConnector.cpp">
+      <Filter>Core\Network\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

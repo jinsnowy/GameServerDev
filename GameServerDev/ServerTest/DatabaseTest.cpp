@@ -14,7 +14,7 @@ void DatabaseTest::SetUp()
 {
 	DatabaseManager::Config config;
 	config.connCount = 1;
-	config.connstr = L"Driver={ODBC Driver 17 for SQL Server};Server=DESKTOP-5DKI3L6;Trusted_Connection=Yes;Database=GameDB;";
+	config.connstr = g_DBConnStr;
 	ASSERT_CRASH(dbManager.Initialize(config));
 
 	dbConn = dbManager.GetConnection();

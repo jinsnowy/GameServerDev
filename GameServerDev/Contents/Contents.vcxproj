@@ -79,10 +79,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,6 +139,10 @@
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>CD $(SolutionDir)
+CALL CopyContentsHeader.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -161,6 +167,10 @@
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>CD $(SolutionDir)
+CALL CopyContentsHeader.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />

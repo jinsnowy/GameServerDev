@@ -19,19 +19,19 @@ TcpListenerBuilder& TcpListenerBuilder::Port(uint16 port)
 TcpListenerBuilder& TcpListenerBuilder::BackLog(int32 backLog)
 {
 	_backLog = backLog;
-	return *this;
+	return self();
 }
 
 TcpListenerBuilder& TcpListenerBuilder::AcceptCount(int32 acceptCount)
 {
 	_acceptCount = acceptCount;
-	return *this;
+	return self();
 }
 
-TcpListenerBuilder& TcpListenerBuilder::_NetworkFactory(NetworkFactory networkFactory)
+TcpListenerBuilder& TcpListenerBuilder::Factory(NetworkFactory networkFactory)
 {
 	_networkFactory = networkFactory;
-	return *this;
+	return self();
 }
 
 shared_ptr<class TcpListener> TcpListenerBuilder::Build(ServiceBase& serviceBase)

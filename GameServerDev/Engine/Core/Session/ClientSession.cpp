@@ -2,15 +2,11 @@
 #include "ClientSession.h"
 #include "Core/Network/Object/TcpNetwork.h"
 
+static void OnNetworkConnectSuccess(shared_ptr<ClientSession> session, shared_ptr<TcpNetwork> network);
+static void OnNetworkConnectFailed(int32 errorCode);
+
 ClientSession::ClientSession()
 	:
-	Session()
-{
-}
-
-ClientSession::ClientSession(ConnectorFactory connectorFactory)
-	:
-	_connectorFactory(connectorFactory),
 	Session()
 {
 }
@@ -57,11 +53,15 @@ void ClientSession::ConnectAsync(const EndPoint& endPoint)
 		return;
 	}
 
-	auto connector = _connectorFactory();
+	if (_network)
+	{
+		const auto connect_success = [session = GetShared<ClientSession>()](shared_ptr<TcpNetwork> network)
+		{
+			OnNetworkConnectSuccess(session, network);
+		};
 
-	connector->ConnectAsync(endPoint, 
-		std::bind(OnNetworkConnectSuccess, shared_from_this(), std::placeholders::_1),
-		OnNetworkConnectFailed);
+		_network->ConnectAsync(endPoint, connect_success, OnNetworkConnectFailed);
+	}
 }
 
 void ClientSession::ReconnectAsync(const EndPoint& endPoint)
@@ -84,12 +84,13 @@ void ClientSession::OnDisconnected()
 	Session::OnDisconnected();
 }
 
-void ClientSession::OnNetworkConnectSuccess(SessionPtr session, NetworkPtr network)
+
+void OnNetworkConnectSuccess(shared_ptr<ClientSession> session, shared_ptr<TcpNetwork> network)
 {
 	network->AttachSession(session);
 }
 
-void ClientSession::OnNetworkConnectFailed(int32 errorCode)
+void OnNetworkConnectFailed(int32 errorCode)
 {
 	LOG_ERROR(L"Connect Failed Error Code : %d, Desc : %s", errorCode, SystemUtils::WSAGetLastErrorMsg(errorCode).c_str());
 }

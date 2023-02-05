@@ -1,7 +1,11 @@
 #pragma once
 
-#include "Core/Buffer/NetworkStream.h"
-#include "Core/Network/Socket/TcpActiveSocket.h"
+#include "../../Buffer/NetworkStream.h"
+#include "../Socket/TcpActiveSocket.h"
+
+namespace packet {
+	class PacketHandler;
+}
 
 class Handshake;
 class ServiceBase;
@@ -46,7 +50,18 @@ public:
 
 	void CloseBy(const wchar_t* reason = L"");
 
-	static shared_ptr<TcpNetwork> Create(ServiceBase& serviceBase);
+	template <typename HandshakeType>
+	static NetworkFactory CreateFactory()
+	{
+		return [](ServiceBase& serviceBase)
+		{
+			auto network = std::make_shared<TcpNetwork>(serviceBase);
+			auto handshake = Handshake::Create<HandshakeType>(network);
+			network->RequireHandshake(MOVE(handshake));
+
+			return network;
+		};
+	}
 
 public:
 	ServiceBase& AssociateService();
@@ -68,7 +83,7 @@ public:
 
 	void SetAuthenticated();
 
-private:
+protected:
 	void SendAsyncInternal(const BufferSegment& segment);
 
 	void SetDisconnected();
@@ -77,6 +92,8 @@ private:
 
 	void Recv(DWORD bytes);
 
+	void Recv(DWORD bytes, packet::PacketHandler* handler);
+
 	void RegisterSend();
 	
 	void RegisterRecv();
@@ -84,6 +101,7 @@ private:
 	void SendCloseBy(const wchar_t* reason);
 
 	void HandleError(int32 errorCode, IoType ioType);
+
 private:
 	atomic<bool>			_connected;
 	atomic<bool>			_pending;

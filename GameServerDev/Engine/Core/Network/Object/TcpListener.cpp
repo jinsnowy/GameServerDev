@@ -34,11 +34,13 @@ bool TcpListener::Start()
 		return false;
 	}
 
+	LOG_INFO(L"Accept Count %d", _acceptCount);
+
 	for (int32 i = 0; i < _acceptCount; ++i) {
 		RegisterAccept();
 	}
 
-	LOG_INFO(L"listen... %s", _listenerNetwork.GetBindAddress().ToString().c_str());
+	LOG_INFO(L"Listen... %s", _listenerNetwork.GetBindAddress().ToString().c_str());
 
 	return true;
 }

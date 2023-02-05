@@ -60,7 +60,7 @@ bool DBConnection::Execute(LPCWSTR query)
 	return false;
 }
 
-bool DBConnection::Fetch()
+bool DBConnection::Fetch(bool& eof)
 {
 	SQLRETURN ret = ::SQLFetch(_statement);
 
@@ -69,14 +69,13 @@ bool DBConnection::Fetch()
 	case SQL_SUCCESS:
 	case SQL_SUCCESS_WITH_INFO:
 		return true;
-	case SQL_NO_DATA:
+	case SQL_NO_DATA_FOUND:
+		eof = true;
 		return false;
-	case SQL_ERROR:
+	default:
 		HandleError(ret);
 		LOG_ERROR(L"[Fetch] error : %s", _last_error_message.c_str());
 		return false;
-	default:
-		return true;
 	}
 }
 
@@ -190,6 +189,17 @@ bool DBConnection::BindParam(int32 paramIndex, LPCWSTR str, SQLLEN* index)
 		return BindParam(paramIndex, SQL_C_WCHAR, SQL_WVARCHAR, size, (SQLPOINTER)str, index);
 }
 
+bool DBConnection::BindParam(int32 paramIndex, const std::wstring& str, SQLLEN* index)
+{
+	SQLULEN size = static_cast<SQLULEN>((str.size() + 1) * 2);
+	*index = SQL_NTSL;
+
+	if (size > WVARCHAR_MAX)
+		return BindParam(paramIndex, SQL_C_WCHAR, SQL_WLONGVARCHAR, size, (SQLPOINTER)str.c_str(), index);
+	else
+		return BindParam(paramIndex, SQL_C_WCHAR, SQL_WVARCHAR, size, (SQLPOINTER)str.c_str(), index);
+}
+
 bool DBConnection::BindParam(int32 paramIndex, BYTE* bin, int32 size, SQLLEN* index)
 {
 	if (bin == nullptr)
@@ -206,58 +216,74 @@ bool DBConnection::BindParam(int32 paramIndex, BYTE* bin, int32 size, SQLLEN* in
 		return BindParam(paramIndex, SQL_C_BINARY, SQL_BINARY, size, (BYTE*)bin, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, bool* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, bool* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_TINYINT, size32(bool), value, index);
+	return BindResult(columnIndex, SQL_C_TINYINT, size32(bool), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, float* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, float* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_FLOAT, size32(float), value, index);
+	return BindResult(columnIndex, SQL_C_FLOAT, size32(float), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, double* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, double* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_DOUBLE, size32(double), value, index);
+	return BindResult(columnIndex, SQL_C_DOUBLE, size32(double), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, int8* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, int8* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_TINYINT, size32(int8), value, index);
+	return BindResult(columnIndex, SQL_C_TINYINT, size32(int8), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, int16* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, int16* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_SHORT, size32(int16), value, index);
+	return BindResult(columnIndex, SQL_C_SHORT, size32(int16), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, int32* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, int32* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_LONG, size32(int32), value, index);
+	return BindResult(columnIndex, SQL_C_LONG, size32(int32), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, int64* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, int64* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_SBIGINT, size32(int64), value, index);
+	return BindResult(columnIndex, SQL_C_SBIGINT, size32(int64), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, TIMESTAMP_STRUCT* value, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, TIMESTAMP_STRUCT* value, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_TYPE_TIMESTAMP, size32(TIMESTAMP_STRUCT), value, index);
+	return BindResult(columnIndex, SQL_C_TYPE_TIMESTAMP, size32(TIMESTAMP_STRUCT), value, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, LPCWSTR str, int32 size, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, LPCWSTR str, int32 size, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_C_WCHAR, size, (SQLPOINTER)str, index);
+	return BindResult(columnIndex, SQL_C_WCHAR, size, (SQLPOINTER)str, index);
 }
 
-bool DBConnection::BindCol(int32 columnIndex, BYTE* bin, int32 size, SQLLEN* index)
+bool DBConnection::BindResult(int32 columnIndex, BYTE* bin, int32 size, SQLLEN* index)
 {
-	return BindCol(columnIndex, SQL_BINARY, size, bin, index);
+	return BindResult(columnIndex, SQL_BINARY, size, bin, index);
+}
+
+bool DBConnection::BindOutputParam(int32 paramIndex, int32* value)
+{
+	SQLRETURN ret = ::SQLBindParameter(_statement, paramIndex, SQL_PARAM_OUTPUT, SQL_C_LONG, SQL_INTEGER, 0, 0, value, 0, SQL_NULL_HANDLE);
+	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+	{
+		HandleError(ret);
+		LOG_ERROR(L"[BindOutputParam] error : %s", _last_error_message.c_str());
+		return false;
+	}
+
+	return true;
 }
 
 bool DBConnection::BindParam(SQLUSMALLINT paramIndex, SQLSMALLINT cType, SQLSMALLINT sqlType, SQLULEN len, SQLPOINTER ptr, SQLLEN* index)
 {
+	//SQLLEN lenOut = SQL_NTSL;
+	//SQLRETURN ret = ::SQLBindParameter(_statement, 2, SQL_PARAM_INPUT, SQL_C_WCHAR, SQL_WVARCHAR, len, 0, ptr, 0, &lenOut);
+	//handle, 2, SQL_PARAM_INPUT, SQL_C_WCHAR, SQL_WVARCHAR, len, 0, (SQLPOINTER)_username.c_str(), 0, & outSize
 	SQLRETURN ret = ::SQLBindParameter(_statement, paramIndex, SQL_PARAM_INPUT, cType, sqlType, len, 0, ptr, 0, index);
 	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
 	{
@@ -269,13 +295,13 @@ bool DBConnection::BindParam(SQLUSMALLINT paramIndex, SQLSMALLINT cType, SQLSMAL
 	return true;
 }
 
-bool DBConnection::BindCol(SQLUSMALLINT columnIndex, SQLSMALLINT cType, SQLULEN len, SQLPOINTER value, SQLLEN* index)
+bool DBConnection::BindResult(SQLUSMALLINT columnIndex, SQLSMALLINT cType, SQLULEN len, SQLPOINTER value, SQLLEN* index)
 {
 	SQLRETURN ret = ::SQLBindCol(_statement, columnIndex, cType, value, len, index);
 	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
 	{
 		HandleError(ret);
-		LOG_ERROR(L"[BindCol] error : %s", _last_error_message.c_str());
+		LOG_ERROR(L"[BindResult] error : %s", _last_error_message.c_str());
 		return false;
 	}
 

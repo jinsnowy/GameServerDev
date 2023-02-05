@@ -1,9 +1,6 @@
 #include "stdafx.h"
 
-#include "Engine/Core/Packet/GamePacketInstaller.h"
-#include "Engine/Core/Service/ClientService.h"
-#include "Engine/Core/Session/SessionManager.h"
-
+#include "Engine/Common/ClientCommon.h"
 #include "ClientPacketHandler.h"
 #include "NetworkManager.h"
 
@@ -13,26 +10,35 @@ using namespace packet;
 int main(int argc, char** argv)
 {
     Core::Initialize();
+
+    Config::thread_count = 1;
+
     GamePacketInstaller::Install<ClientPacketHandler>();
 
     SessionFactory sessionFactory = Session::CreateSessionFactory<NetworkManager>();
-    SessionManager sessionManager(sessionFactory);
+    NetworkFactory networkFactory = TcpNetwork::CreateFactory<ClientHandshake>();
+    ClientServiceBuilder builder;
 
-    ClientServiceParam param(1, 1, "127.0.0.1", 12321);
-    ClientService service(sessionManager, param);
-    service.Start();
-    service.Run([&]() 
+    auto service =  builder
+                    .ClientNum(1)
+                    .Sessions(sessionFactory)
+                    .Networks(networkFactory)
+                    .Build();
+
+    service->Initialize();
+    service->Start();
+    service->Run([&]() 
     {     
         int packetNum = 0;
 
         while (1)
         {
-            service.ForEach([&packetNum](SessionPtr session)
+            service->ForEach([&packetNum](SessionPtr session)
             {            
                 UserProtocol::Test test;
                 test.set_text(StringUtils::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
 
-                session->SendAsync(Serializer::SerializeProtoBuf(test));
+                session->Send(test);
             });
 
             std::this_thread::sleep_for(100ms);

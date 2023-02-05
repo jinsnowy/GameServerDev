@@ -2,28 +2,20 @@
 #include "ServiceBase.h"
 #include "../Session/ServerSession.h"
 
-struct ServerServiceParam
-{
-	uint16 port;
-	int backLog;
-
-	ServerServiceParam(uint16 _port, int _backLog)
-		:
-		port(_port),
-		backLog(_backLog)
-	{}
-};
-
 class LoginSession;
 class ServerService : public ServiceBase
 {
+	friend class ServerServiceBuilder;
 private:
 	uint16 _port;
-	int _backLog;
-	ServerSessionFactory _sessionFactory;
+	int32 _backLog;
+	int32 _acceptCount;
+	DatabaseManager _dbManager;
 
 public:
-	ServerService(SessionManager& sessionManager, const ServerServiceParam& param);
+	ServerService(SessionFactory sessionFactory, NetworkFactory networkFactory);
+
+	virtual void Initialize();
 
 	virtual void Start() override;
 };

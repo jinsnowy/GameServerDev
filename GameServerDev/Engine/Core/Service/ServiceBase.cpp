@@ -6,10 +6,13 @@
 #include "Core/Task/TaskScheduler.h"
 #include "Core/Session/SessionManager.h"
 
-ServiceBase::ServiceBase(SessionManager& sessionManager, int threadWorkerNum)
+std::mutex ServiceBase::g_process_mtx = {};
+
+ServiceBase::ServiceBase(SessionFactory sessionFactory, NetworkFactory networkFactory)
 	:
-	_sessionManager(sessionManager),
-	_threadNum(threadWorkerNum)
+	_sessionManager(sessionFactory),
+	_networkFactory(networkFactory),
+	_started(false)
 {
 }
 
@@ -18,20 +21,127 @@ ServiceBase::~ServiceBase()
 	Stop();
 }
 
+ThreadContext& ServiceBase::GetContext()
+{
+	thread_local ThreadContext context;
+	return context;
+}
+
+IoContext& ServiceBase::GetIoContext()
+{
+	return GetContext().ioContext;
+}
+
+void ServiceBase::Initialize()
+{
+	_started = false;
+	_initCount.store(0);
+	_threadContexts.resize(Config::thread_count, nullptr);
+
+	std::vector<std::unique_ptr<std::thread>> threads;
+	for (int i = 0; i < Config::thread_count; ++i)
+	{
+		threads.emplace_back(std::make_unique<std::thread>([this, idx = i]()
+			{
+				ThreadContext& context = GetContext();
+
+				{
+					std::unique_lock<std::mutex> lk(g_process_mtx);
+
+					_threadContexts[idx] = &context;
+				}
+
+				ProcessCore(context);
+			}));
+	}
+
+	bool init = false;
+	while (init == false) {
+
+		init = true;
+		for (auto& threadContext : _threadContexts)
+		{
+			std::unique_lock<std::mutex> lk(g_process_mtx);
+
+			if (threadContext == nullptr)
+			{
+				init = false;
+				break;
+			}
+		}
+
+		Sleep(100);
+	}
+
+	try
+	{
+		for (size_t idx = 0; idx < _threadContexts.size(); ++idx)
+		{
+			_threadContexts[idx]->worker = std::move(threads[idx]);
+		}
+	}
+	catch (std::exception e) {
+		LOG_ERROR(L"init failed : %s", e.what());
+		throw e;
+	}
+}
+
 void ServiceBase::Start()
 {
-	for (int i = 0; i < _threadNum; ++i)
+	_started = true;
+	_signal.notify_all();
+
+	while (_initCount.load() != _threadContexts.size()) {
+		_signal.notify_all();
+		Sleep(10);
+	}
+}
+
+void ServiceBase::ProcessCore(ThreadContext& context)
+{
+	std::unique_lock lk(g_process_mtx);
+
+	_signal.wait(lk, [this]() { return _started; });
+
+	lk.unlock();
+
+	_initCount.fetch_add(1);
+
+	IoContext* ioContext = &context.ioContext;
+
+	TaskScheduler* taskScheduler = TaskScheduler::GetInstance();
+
+	int timeSliceMs = 128;
+
+	while (true)
 	{
-		_threadWorkers.emplace_back([this]()
-		{ 
-				ProcessCore();
-		});
+		ioContext->Dispatch(16);
+
+		taskScheduler->Poll(timeSliceMs);
 	}
 }
 
 void ServiceBase::Run(std::function<void()> func)
 {
 	func();
+}
+
+void ServiceBase::RunIdle()
+{
+	while (true)
+	{
+		std::this_thread::sleep_for(5s);
+	}
+}
+
+void ServiceBase::Stop()
+{
+	for (size_t idx = 0; idx < _threadContexts.size(); ++idx)
+	{
+		_threadContexts[idx]->Destroy();
+	}
+
+	_threadContexts.clear();
 }
 
 void ServiceBase::OnConnectedNetwork(NetworkPtr network)
@@ -97,29 +207,22 @@ vector<NetworkPtr> ServiceBase::GetNetworks()
 	return networks;
 }
 
-void ServiceBase::Stop()
+ThreadContext::ThreadContext()
 {
-	_ioContext.Dispose();
-
-	for (auto& worker : _threadWorkers)
-	{
-		if (worker.joinable())
-		{
-			worker.join();
-		}
-	}
 }
 
-void ServiceBase::ProcessCore()
+ThreadContext::~ThreadContext()
 {
-	TaskScheduler* taskScheduler = TaskScheduler::GetInstance();
-	
-	int timeSliceMs = 128;
+	Destroy();
+}
 
-	while (true)
+void ThreadContext::Destroy()
+{
+	ioContext.Dispose();
+	dbConn.reset();
+
+	if (worker->joinable())
 	{
-		_ioContext.Dispatch(16);
-
-		taskScheduler->Poll(timeSliceMs);
+		worker->join();
 	}
 }

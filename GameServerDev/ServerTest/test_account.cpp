@@ -1,65 +1,68 @@
 #include "pch.h"
 #include "DatabaseTest.h"
 #include "Repository/AccountRepository.h"
-#include "Repository/EntityException.h"
+#include "Engine/Core/Repository/EntityException.h"
 
-class AccountTest : public DatabaseTest
+namespace DatabaseTestSuite
 {
-protected:
-	AccountRepository repository;
-
-public:
-	shared_ptr<AccountEntity> Create(wstring u, wstring p)
+	class AccountTest : public DatabaseTest
 	{
-		return repository.Create(dbConn, u, p);
+	protected:
+		AccountRepository repository;
+
+	public:
+		shared_ptr<AccountEntity> Create(wstring u, wstring p)
+		{
+			return repository.Create(dbConn, u, p);
+		}
+	};
+
+	TEST_F(AccountTest, Account_계정_생성_테스트) {
+		auto transaction = dbConn->StartTransaction();
+
+		wstring my_username = L"hello";
+		wstring my_password = L"world";
+
+		auto account = Create(my_username, my_password);
+
+		ASSERT_TRUE(account != nullptr);
+		ASSERT_TRUE(account->username() == my_username);
+		ASSERT_TRUE(account->password() == my_password);
+
+		LOG_INFO(L"계정 테스트 생성 성공");
+
+		transaction->Rollback();
 	}
-};
 
-TEST_F(AccountTest, Account_계정_생성_테스트) {
-	auto transaction = dbConn->StartTransaction();
+	TEST_F(AccountTest, Account_계정_삭제_테스트) {
+		auto transaction = dbConn->StartTransaction();
 
-	wstring my_username = L"hello";
-	wstring my_password = L"world";
+		wstring my_username = L"hello";
+		wstring my_password = L"world";
 
-	auto account = Create(my_username, my_password);
+		auto account = Create(my_username, my_password);
 
-	ASSERT_TRUE(account != nullptr);
-	ASSERT_TRUE(account->username() == my_username);
-	ASSERT_TRUE(account->password() == my_password);
+		ASSERT_TRUE(account->valid());
 
-	LOG_INFO(L"계정 테스트 생성 성공");
+		repository.Remove(dbConn, account);
 
-	transaction->Rollback();
-}
+		ASSERT_TRUE(account->valid() == false);
 
-TEST_F(AccountTest, Account_계정_삭제_테스트) {
-	auto transaction = dbConn->StartTransaction();
+		transaction->Rollback();
+	}
 
-	wstring my_username = L"hello";
-	wstring my_password = L"world";
+	TEST_F(AccountTest, Account_동일_이름_생성_테스트) {
+		auto transaction = dbConn->StartTransaction();
 
-	auto account = Create(my_username, my_password);
+		wstring my_username = L"hello";
+		wstring my_password = L"world";
 
-	ASSERT_TRUE(account->valid());
+		auto account = Create(my_username, my_password);
 
-	repository.Remove(dbConn, account);
+		ASSERT_TRUE(account->valid());
 
-	ASSERT_TRUE(account->valid() == false);
+		EXPECT_THROW(Create(my_username, my_password), entity_persist_exception);
 
-	transaction->Rollback();
-}
-
-TEST_F(AccountTest, Account_동일_이름_생성_테스트) {
-	auto transaction = dbConn->StartTransaction();
-
-	wstring my_username = L"hello";
-	wstring my_password = L"world";
-
-	auto account = Create(my_username, my_password);
-
-	ASSERT_TRUE(account->valid());
-
-	EXPECT_THROW(Create(my_username, my_password), entity_persist_exception);
-
-	transaction->Rollback();
+		transaction->Rollback();
+	}
 }

@@ -4,6 +4,7 @@
 
 #include "Core/Buffer/BufferSegment.h"
 #include "Core/Network/Object/TcpNetwork.h"
+#include "Core/Service/ServiceBase.h"
 
 Session::Session()
 	:
@@ -16,12 +17,21 @@ Session::~Session()
 	LOG_INFO(L"~Session()");
 }
 
-void Session::SendAsync(const BufferSegment& segment)
+void Session::SendInternal(const BufferSegment& segment)
 {
 	if (IsConnected() == false || segment.len == 0)
 		return;
 
 	_network->SendAsync(segment);
+}
+
+ThreadContext* Session::GetContext()
+{
+	if (_network == nullptr) {
+		return nullptr;
+	}
+
+	return &_network->AssociateService().GetContext();
 }
 
 void Session::AttachNetwork(shared_ptr<TcpNetwork> network)

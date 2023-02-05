@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "IntegrateTest.h"
-#include "Engine/GlobalConfig.h"
 
 IntegrateTest::IntegrateTest()
 {
@@ -14,10 +13,15 @@ void IntegrateTest::SetUp()
 {
 	Core::Initialize();
 
-	DatabaseManager::Config config;
-	config.connCount = 1;
-	config.connstr = L"Driver={ODBC Driver 17 for SQL Server};Server=DESKTOP-5DKI3L6;Trusted_Connection=Yes;Database=GameDB;";
-	ASSERT_CRASH(dbManager.Initialize(config));
+	_serverMock.Initialize();
+	_clientMock.Initialize();
+
+	_serverMock.SetClient(_clientMock.GetNetworkMock());
+	_clientMock.SetServer(_serverMock.GetNetworkMock());
+
+	Config::dbsn = g_DBConnStr;
+	Config::thread_count = 1;
+
 }
 
 void IntegrateTest::TearDown()

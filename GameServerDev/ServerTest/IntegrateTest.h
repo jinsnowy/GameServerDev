@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ServerMock.h"
+#include "ClientMock.h"
 #include "Engine/Database/DatabaseManager.h"
 
 class IntegrateTest : public ::testing::Test
@@ -16,6 +18,7 @@ protected:
 	DBConnectionSourcePtr GetDBConnection();
 
 private:
-	DatabaseManager dbManager;
+	ServerMock _serverMock;
+	ClientMock _clientMock;
 };
 

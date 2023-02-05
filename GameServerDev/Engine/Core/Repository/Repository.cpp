@@ -11,12 +11,18 @@ Repository::~Repository()
 {
 }
 
-void Repository::Add(std::shared_ptr<Entity> entity)
+void Repository::Initialize(DBConnectionSourcePtr& db_conn)
+{
+}
+
+void Repository::Create(std::shared_ptr<Entity> entity)
 {
 	int id = entity->_id;
 	if (id == Entity::kInvalidId) {
 		throw repositoy_exception("entity has invalid id");
 	}
+
+	OnCreate(entity);
 
 	StdWriteLock lk(_mtx);
 
@@ -32,6 +38,8 @@ void Repository::Remove(std::shared_ptr<Entity> entity)
 
 	entity->_pending_perish = true;
 	entity->_id = Entity::kInvalidId;
+
+	OnDestroy(entity);
 
 	StdWriteLock lk(_mtx);
 
@@ -52,6 +60,14 @@ std::shared_ptr<Entity> Repository::Find(int id)
 	}
 
 	return nullptr;
+}
+
+void Repository::OnCreate(std::shared_ptr<Entity> entity)
+{
+}
+
+void Repository::OnDestroy(std::shared_ptr<Entity> entity)
+{
 }
 
 bool Repository::Exists(int id)

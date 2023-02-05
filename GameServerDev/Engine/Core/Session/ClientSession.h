@@ -3,14 +3,8 @@
 
 class ClientSession : public Session
 {
-	friend class ClientService;
-private:
-	ConnectorFactory _connectorFactory;
-
 public:
 	ClientSession();
-
-	ClientSession(ConnectorFactory connectorFactory);
 
 	bool Connect(const char* address, uint16 port);
 
@@ -26,8 +20,4 @@ protected:
 	virtual void OnConnected() override;
 
 	virtual void OnDisconnected() override;
-
-private:
-	static void OnNetworkConnectSuccess(SessionPtr session, NetworkPtr network);
-	static void OnNetworkConnectFailed(int32 errorCode);
 };

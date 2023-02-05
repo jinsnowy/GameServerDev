@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/Session/Session.h"
 #include "Core/Network/Object/TcpNetwork.h"
-#include "Core/Handshake/Handshake.h"
+#include "Core/Network/Handshake/Handshake.h"
 #include "Core/Packet/InternalPacketHandler.h"
 
 void packet::InternalPacketHandler::OnCloseBy(NetworkPtrCRef network, PKT_CLOSE_BY* pkt)

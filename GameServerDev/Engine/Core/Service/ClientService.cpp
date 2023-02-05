@@ -2,39 +2,41 @@
 #include "ClientService.h"
 #include "Core/Session/ClientSession.h"
 #include "Core/Session/SessionManager.h"
-#include "Core/Handshake/ClientHandshake.h"
+#include "Core/Network/Handshake/ClientHandshake.h"
 #include "Core/Network/Object/TcpNetwork.h"
+#include "Core/Network/Object/TcpConnector.h"
 
-ClientService::ClientService(SessionManager& sessionManager, const ClientServiceParam& param)
+ClientService::ClientService(SessionFactory sessionFactory, NetworkFactory networkFactory)
 	:
-	ServiceBase(sessionManager, param.workerNum),
-	_clientNum(param.clientNum),
-	_endPoint(param.address, param.port)
+	ServiceBase(sessionFactory, networkFactory),
+	_clientNum(1)
 {
+}
+
+void ClientService::Initialize()
+{
+	ServiceBase::Initialize();
 }
 
 void ClientService::Start()
 {
 	ServiceBase::Start();
 
+	_connectors.clear();
+
 	std::this_thread::sleep_for(2s);
 
-	const auto connectorFactory = [this]()
-	{
-		auto network = TcpNetwork::Create(*this);
-		auto handshake = Handshake::Create<ClientHandshake>(network);
-		network->RequireHandshake(MOVE(handshake));
-
-		return network;
-	};
+	wstring target_address = _endPoint.ToString();
 
 	for (int i = 0; i < _clientNum; ++i)
 	{
 		auto clientSession = _sessionManager.NewSession()->GetShared<ClientSession>();
+		auto network = _networkFactory(*this);
+		auto connector = make_shared<TcpConnector>(clientSession, network);
 
-		clientSession->_connectorFactory = connectorFactory;
+		connector->Connect(_endPoint);
 
-		clientSession->ConnectAsync(_endPoint);
+		_connectors.push_back(connector);
 	}
 }
 
@@ -48,7 +50,7 @@ void ClientService::Broadcast(BufferSegment buffer)
 		if (client->IsConnected())
 		{
 			++count;
-			client->SendAsync(buffer);
+			client->Send(buffer);
 		}
 	}
 
@@ -63,4 +65,8 @@ void ClientService::ForEach(function<void(SessionPtr)> func)
 	{
 		func(client);
 	}
+}
+
+void ClientService::CreateJobOnActiveContext(std::function<void()> func)
+{
 }

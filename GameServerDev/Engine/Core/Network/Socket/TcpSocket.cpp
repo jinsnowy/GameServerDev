@@ -7,7 +7,7 @@ TcpSocket::TcpSocket(ServiceBase& service)
 	_service(service),
 	_socket(NetUtils::CreateSocket())
 {
-	_service.GetContext().RegisterHandle((HANDLE)_socket);
+	_service.GetIoContext().RegisterHandle((HANDLE)_socket);
 }
 
 TcpSocket::~TcpSocket()

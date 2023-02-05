@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.h"
+#include "Engine/Core/Repository/Entity.h"
 
 class AccountEntity : public Entity
 {

@@ -7,6 +7,7 @@
 #include "gtest/gtest.h"
 #include <Engine/Core/CorePch.h>
 #include <Protocol/UserProtocolHandler.h>
+#include "Config.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "Engined.lib")
@@ -19,3 +20,4 @@
 #endif
 #pragma comment(lib, "cryptlib.lib")
 #pragma comment(lib, "Repository.lib")
+#pragma comment(lib, "Contents.lib")

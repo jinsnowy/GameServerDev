@@ -11,6 +11,33 @@
     <ClCompile Include="test_account.cpp">
       <Filter>DatabaseTest</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkMock.cpp">
+      <Filter>Mock</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceMock.cpp">
+      <Filter>Mock</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerMock.cpp">
+      <Filter>Mock\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerSessionMock.cpp">
+      <Filter>Mock\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientMock.cpp">
+      <Filter>Mock\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSessionMock.cpp">
+      <Filter>Mock\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionManagerMock.cpp">
+      <Filter>Mock</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientPacketHandlerMock.cpp">
+      <Filter>Mock\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="test_integrate_account.cpp">
+      <Filter>DatabaseTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -19,6 +46,30 @@
     </ClInclude>
     <ClInclude Include="DatabaseTest.h">
       <Filter>TestBase</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkMock.h">
+      <Filter>Mock</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceMock.h">
+      <Filter>Mock</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerMock.h">
+      <Filter>Mock\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSessionMock.h">
+      <Filter>Mock\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientMock.h">
+      <Filter>Mock\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSessionMock.h">
+      <Filter>Mock\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionManagerMock.h">
+      <Filter>Mock</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientPacketHandlerMock.h">
+      <Filter>Mock\Client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +81,15 @@
     </Filter>
     <Filter Include="DatabaseTest">
       <UniqueIdentifier>{d7a4dc71-0da2-4c47-a6bc-0f507ca0b7b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock">
+      <UniqueIdentifier>{fd96f4d0-fe56-47cb-b249-c6cd5f858a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock\Server">
+      <UniqueIdentifier>{34813596-f4d8-4ab8-b4f1-ed664686e80e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock\Client">
+      <UniqueIdentifier>{b6988975-ac40-448c-8687-0dd05989d7c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

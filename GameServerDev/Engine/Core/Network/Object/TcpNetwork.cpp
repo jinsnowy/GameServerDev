@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "TcpNetwork.h"
+#include "../Handshake/Handshake.h"
 #include "Core/Session/Session.h"
 #include "Core/Network/Object/TcpNetworkEvent.h"
 #include "Core/Packet/InternalPacketHandler.h"
 #include "Core/Packet/GamePacketInstaller.h"
-#include "Core/Handshake/Handshake.h"
 #include "Core/Service/ServiceBase.h"
 
 using namespace packet;
@@ -88,6 +88,47 @@ void TcpNetwork::Recv(DWORD recvBytes)
 	}
 }
 
+void TcpNetwork::Recv(DWORD recvBytes, packet::PacketHandler* handler)
+{
+	static InternalPacketHandler InternalPacketHandler;
+
+	RecvBuffer& recvBuffer = _stream.Recv();
+	if (recvBuffer.Read(recvBytes) == false)
+	{
+		CloseBy(L"recv buffer overflows");
+		return;
+	}
+
+	for (CHAR* bufferToRead = recvBuffer.GetBufferPtrRead(); recvBuffer.IsHeaderReadable(); recvBuffer.Next())
+	{
+		for (PacketHeader* header = PacketHeader::Peek(bufferToRead); recvBuffer.IsReadable(header->size); recvBuffer.Move(header->size))
+		{
+			if (InternalPacketHandler.IsValidProtocol(header->protocol))
+			{
+				InternalPacketHandler.HandleRecv(shared_from_this(), *header, bufferToRead);
+
+				continue;
+			}
+
+			SessionPtr session = _session.lock();
+
+			if (session == nullptr)
+			{
+				CloseBy(L"null session");
+				return;
+			}
+
+			if (handler->IsValidProtocol(header->protocol) == false)
+			{
+				CloseBy(L"unknown protocol");
+				return;
+			}
+
+			handler->HandleRecv(session, *header, bufferToRead);
+		}
+	}
+}
+
 void TcpNetwork::SendAsyncInternal(const BufferSegment& segment)
 {
 	if (_connected == false) {
@@ -159,11 +200,6 @@ void TcpNetwork::CloseBy(const wchar_t* reason)
 	{
 		SetDisconnected();
 	}
-}
-
-shared_ptr<TcpNetwork> TcpNetwork::Create(ServiceBase& serviceBase)
-{
-	return make_shared<TcpNetwork>(serviceBase);
 }
 
 void TcpNetwork::SetAuthenticated()

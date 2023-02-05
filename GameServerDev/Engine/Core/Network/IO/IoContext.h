@@ -9,6 +9,7 @@ private:
 
 public:
 	IoContext();
+
 	~IoContext();
 
 	void RegisterHandle(HANDLE handle);
@@ -18,5 +19,7 @@ public:
 	void Dispose();
 
 	bool isFinished() { return _disposed; }
+
+	NO_COPY_AND_ASSIGN(IoContext)
 };
 

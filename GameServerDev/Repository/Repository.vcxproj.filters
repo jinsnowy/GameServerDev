@@ -10,22 +10,10 @@
     <Filter Include="Main">
       <UniqueIdentifier>{0982aa2e-454e-49e8-af2b-18193c2f2024}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Exeception">
-      <UniqueIdentifier>{e30e351b-6cec-4804-bc05-9ea7d2b16b31}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AccountRepository.h">
       <Filter>Repository</Filter>
-    </ClInclude>
-    <ClInclude Include="Repository.h">
-      <Filter>Repository</Filter>
-    </ClInclude>
-    <ClInclude Include="PersistentRepository.h">
-      <Filter>Repository</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="AccountEntity.h">
       <Filter>Entity</Filter>
@@ -36,37 +24,16 @@
     <ClInclude Include="pch.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="RepositoryException.h">
-      <Filter>Exeception</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityException.h">
-      <Filter>Exeception</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AccountRepository.cpp">
       <Filter>Repository</Filter>
-    </ClCompile>
-    <ClCompile Include="Repository.cpp">
-      <Filter>Repository</Filter>
-    </ClCompile>
-    <ClCompile Include="PersistentRepository.cpp">
-      <Filter>Repository</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="AccountEntity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="RepositoryException.cpp">
-      <Filter>Exeception</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityException.cpp">
-      <Filter>Exeception</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

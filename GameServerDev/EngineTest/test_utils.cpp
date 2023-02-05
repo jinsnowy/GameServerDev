@@ -40,16 +40,3 @@ TEST(TestUtils, 서로_다른_SHA512해시_검증_테스트) {
 	EXPECT_FALSE(Crypto::VerifySHA512Hash(s1, s2hash));
 	EXPECT_FALSE(Crypto::VerifySHA512Hash(s2, s1hash));
 }
-
-TEST(TestUtils, 랜덤_스트링_생성)
-{
-	const int gen_num = 1000;
-
-	unordered_set<wstring> set;
-	for (int i = 0; i < gen_num; ++i)
-	{
-		set.insert(Crypto::GenerateRandomString(16));
-	}
-
-	EXPECT_EQ(set.size(), gen_num);
-}

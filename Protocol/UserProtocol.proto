@@ -20,7 +20,32 @@ message LoginRequest
 	string password = 2;
 }
 
+message CreateAccountRequest
+{
+	string username = 1;
+	string password = 2;
+}
+
+message CreateAccountResponse
+{
+	enum Result
+	{
+		kSuccess = 0;
+		kFailure = 1;
+	}
+
+	Result result = 1;
+	string username = 2;
+	string password = 3;
+}
+
 message LoginResponse
 {
-	bool success = 1;
+	enum Result
+	{
+		kSuccess = 0;
+		kFailure = 1;
+	}
+
+	Result result = 1;
 }

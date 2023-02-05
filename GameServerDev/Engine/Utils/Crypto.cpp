@@ -16,6 +16,12 @@
 using namespace CryptoPP;
 using CryptoByte = CryptoPP::byte;
 
+static auto& RandomEngine() {
+	thread_local CryptoPP::AutoSeededRandomPool rng;
+	rng.Reseed(true);
+	return rng;
+}
+
 std::wstring Crypto::GenerateUUID()
 {
 	wstring out;
@@ -80,21 +86,4 @@ bool Crypto::VerifySHA256Hash(const std::wstring& targetMessage, const std::wstr
 	hash.Update((const CryptoByte*)msg.data(), msg.size());
 
 	return hash.Verify((const CryptoByte*)digest.data());
-}
-
-std::wstring Crypto::GenerateRandomString(unsigned int length)
-{
-	// Scratch Area
-	SecByteBlock scratch(length);
-
-	// Construction
-	CryptoPP::AutoSeededRandomPool rng;
-
-	// Random Block
-	rng.GenerateBlock(scratch, scratch.size());
-
-	wstringstream wss;
-	wss << scratch;
-
-	return wss.str();
 }

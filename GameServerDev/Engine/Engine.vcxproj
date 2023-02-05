@@ -195,9 +195,13 @@ CALL CopyEngineHeader.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Builder.h" />
+    <ClInclude Include="Common\ClientCommon.h" />
     <ClInclude Include="Common\Common.h" />
+    <ClInclude Include="Common\Config.h" />
     <ClInclude Include="Common\Logger.h" />
     <ClInclude Include="Common\Serializer.h" />
+    <ClInclude Include="Common\ServerCommon.h" />
     <ClInclude Include="Common\Singleton.h" />
     <ClInclude Include="Common\StdMutex.h" />
     <ClInclude Include="Common\StringBuffer.h" />
@@ -214,15 +218,16 @@ CALL CopyEngineHeader.bat</Command>
     <ClInclude Include="Core\Exception\PacketException.h" />
     <ClInclude Include="Core\Exception\SehException.h" />
     <ClInclude Include="Core\framework.h" />
-    <ClInclude Include="Core\Handshake\Authenticate.h" />
-    <ClInclude Include="Core\Handshake\ClientHandshake.h" />
-    <ClInclude Include="Core\Handshake\Handshake.h" />
-    <ClInclude Include="Core\Handshake\ServerHandshake.h" />
     <ClInclude Include="Core\Memory\MemoryPool.h" />
     <ClInclude Include="Core\Memory\PoolObject.h" />
     <ClInclude Include="Core\Memory\TlsMemory.h" />
+    <ClInclude Include="Core\Network\Handshake\Authenticate.h" />
+    <ClInclude Include="Core\Network\Handshake\ClientHandshake.h" />
+    <ClInclude Include="Core\Network\Handshake\Handshake.h" />
+    <ClInclude Include="Core\Network\Handshake\ServerHandshake.h" />
     <ClInclude Include="Core\Network\IO\IoContext.h" />
     <ClInclude Include="Core\Network\IO\IoEvent.h" />
+    <ClInclude Include="Core\Network\Object\TcpConnector.h" />
     <ClInclude Include="Core\Network\Object\TcpListener.h" />
     <ClInclude Include="Core\Network\Object\TcpListenerBuilder.h" />
     <ClInclude Include="Core\Network\Object\TcpListenerNetwork.h" />
@@ -237,8 +242,15 @@ CALL CopyEngineHeader.bat</Command>
     <ClInclude Include="Core\Packet\PacketHeader.h" />
     <ClInclude Include="Core\Protocol\InternalProtocol.h" />
     <ClInclude Include="Core\Protocol\Protocol.h" />
+    <ClInclude Include="Core\Repository\Entity.h" />
+    <ClInclude Include="Core\Repository\EntityException.h" />
+    <ClInclude Include="Core\Repository\PersistentRepository.h" />
+    <ClInclude Include="Core\Repository\Repository.h" />
+    <ClInclude Include="Core\Repository\RepositoryException.h" />
     <ClInclude Include="Core\Service\ClientService.h" />
+    <ClInclude Include="Core\Service\ClientServiceBuilder.h" />
     <ClInclude Include="Core\Service\ServerService.h" />
+    <ClInclude Include="Core\Service\ServerServiceBuilder.h" />
     <ClInclude Include="Core\Service\ServiceBase.h" />
     <ClInclude Include="Core\Session\ClientSession.h" />
     <ClInclude Include="Core\Session\ServerSession.h" />
@@ -273,6 +285,7 @@ CALL CopyEngineHeader.bat</Command>
     <ClInclude Include="Utils\Crypto.h" />
     <ClInclude Include="Utils\Enums.h" />
     <ClInclude Include="Utils\NetUtils.h" />
+    <ClInclude Include="Utils\Reflection.h" />
     <ClInclude Include="Utils\StringUtils.h" />
     <ClInclude Include="Utils\SystemUtils.h" />
     <ClInclude Include="Utils\TimeUtils.h" />
@@ -280,6 +293,8 @@ CALL CopyEngineHeader.bat</Command>
     <ClInclude Include="Utils\Xml.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Common\Builder.cpp" />
+    <ClCompile Include="Common\Config.cpp" />
     <ClCompile Include="Common\Logger.cpp" />
     <ClCompile Include="Common\Serializer.cpp" />
     <ClCompile Include="Common\StdMutex.cpp" />
@@ -291,15 +306,16 @@ CALL CopyEngineHeader.bat</Command>
     <ClCompile Include="Core\Buffer\SendBuffer.cpp" />
     <ClCompile Include="Core\CorePch.cpp" />
     <ClCompile Include="Core\Exception\SehException.cpp" />
-    <ClCompile Include="Core\Handshake\Authenticate.cpp" />
-    <ClCompile Include="Core\Handshake\ClientHandshake.cpp" />
-    <ClCompile Include="Core\Handshake\Handshake.cpp" />
-    <ClCompile Include="Core\Handshake\ServerHandshake.cpp" />
     <ClCompile Include="Core\Memory\MemoryPool.cpp" />
     <ClCompile Include="Core\Memory\PoolObject.cpp" />
     <ClCompile Include="Core\Memory\TlsMemory.cpp" />
+    <ClCompile Include="Core\Network\Handshake\Authenticate.cpp" />
+    <ClCompile Include="Core\Network\Handshake\ClientHandshake.cpp" />
+    <ClCompile Include="Core\Network\Handshake\Handshake.cpp" />
+    <ClCompile Include="Core\Network\Handshake\ServerHandshake.cpp" />
     <ClCompile Include="Core\Network\IO\IoContext.cpp" />
     <ClCompile Include="Core\Network\IO\IoEvent.cpp" />
+    <ClCompile Include="Core\Network\Object\TcpConnector.cpp" />
     <ClCompile Include="Core\Network\Object\TcpListener.cpp" />
     <ClCompile Include="Core\Network\Object\TcpListenerBuilder.cpp" />
     <ClCompile Include="Core\Network\Object\TcpListenerNetwork.cpp" />
@@ -314,8 +330,15 @@ CALL CopyEngineHeader.bat</Command>
     <ClCompile Include="Core\Packet\PacketHeader.cpp" />
     <ClCompile Include="Core\Protocol\InternalProtocol.cpp" />
     <ClCompile Include="Core\Protocol\Protocol.cpp" />
+    <ClCompile Include="Core\Repository\Entity.cpp" />
+    <ClCompile Include="Core\Repository\EntityException.cpp" />
+    <ClCompile Include="Core\Repository\PersistentRepository.cpp" />
+    <ClCompile Include="Core\Repository\Repository.cpp" />
+    <ClCompile Include="Core\Repository\RepositoryException.cpp" />
     <ClCompile Include="Core\Service\ClientService.cpp" />
+    <ClCompile Include="Core\Service\ClientServiceBuilder.cpp" />
     <ClCompile Include="Core\Service\ServerService.cpp" />
+    <ClCompile Include="Core\Service\ServerServiceBuilder.cpp" />
     <ClCompile Include="Core\Service\ServiceBase.cpp" />
     <ClCompile Include="Core\Session\ClientSession.cpp" />
     <ClCompile Include="Core\Session\ServerSession.cpp" />
@@ -352,6 +375,7 @@ CALL CopyEngineHeader.bat</Command>
     <ClCompile Include="Utils\Crypto.cpp" />
     <ClCompile Include="Utils\Enums.cpp" />
     <ClCompile Include="Utils\NetUtils.cpp" />
+    <ClCompile Include="Utils\Reflection.cpp" />
     <ClCompile Include="Utils\StringUtils.cpp" />
     <ClCompile Include="Utils\SystemUtils.cpp" />
     <ClCompile Include="Utils\TimeUtils.cpp" />
