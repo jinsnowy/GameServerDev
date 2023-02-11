@@ -49,9 +49,9 @@
     <ClInclude Include="NetworkMock.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServerMock.h" />
+    <ClInclude Include="ServerServiceMock.h" />
     <ClInclude Include="ServerSessionMock.h" />
-    <ClInclude Include="ServiceMock.h" />
-    <ClInclude Include="SessionManagerMock.h" />
+    <ClInclude Include="ClientServiceMock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientMock.cpp" />
@@ -61,9 +61,9 @@
     <ClCompile Include="IntegrateTest.cpp" />
     <ClCompile Include="NetworkMock.cpp" />
     <ClCompile Include="ServerMock.cpp" />
+    <ClCompile Include="ServerServiceMock.cpp" />
     <ClCompile Include="ServerSessionMock.cpp" />
-    <ClCompile Include="ServiceMock.cpp" />
-    <ClCompile Include="SessionManagerMock.cpp" />
+    <ClCompile Include="ClientServiceMock.cpp" />
     <ClCompile Include="test_account.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

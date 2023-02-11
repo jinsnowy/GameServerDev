@@ -3,17 +3,20 @@
 #include "ServerSessionMock.h"
 
 ServerMock::ServerMock()
-	:
-	_sessionManagerMock(Session::CreateSessionFactory<ServerSessionMock>()),
-	_serviceMock(_sessionManagerMock)
 {
 }
 
 void ServerMock::Initialize()
 {
-	_networkMock = make_shared<NetworkMock>(_serviceMock);
+	const auto network_factory = TcpNetwork::CreateFactory<NetworkMock>();
+	const auto session_factory = Session::CreateSessionFactory<ServerSessionMock>();
+
+	_serviceMock = make_unique<ServerServiceMock>(session_factory, network_factory);
+	_serviceMock->Initialize();
+
+	_networkMock = network_factory(*_serviceMock);
 	_networkMock->SetConnectedMock();
 
-	_serverSession = _sessionManagerMock.NewSession();
+	_serverSession = session_factory();
 	_networkMock->AttachSession(_serverSession);
 }

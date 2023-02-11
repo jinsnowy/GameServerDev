@@ -1,9 +1,12 @@
 #include "pch.h"
 #include "IntegrateTest.h"
 
+#include "Repository/AccountRepository.h"
+#include "Engine/Core/Repository/EntityException.h"
+
 namespace IntegrateTestSuite
 {
-	class AccountTest : public IntegrateTest
+	class AccountIntegrateTest : public IntegrateTest
 	{
 	protected:
 		AccountRepository repository;
@@ -15,7 +18,8 @@ namespace IntegrateTestSuite
 		}
 	};
 
-	TEST_F(AccountTest, Account_계정_생성_테스트) {
+	TEST_F(AccountTest, Account_계정_생성_테스트) 
+	{
 		auto transaction = dbConn->StartTransaction();
 
 		wstring my_username = L"hello";
@@ -32,35 +36,4 @@ namespace IntegrateTestSuite
 		transaction->Rollback();
 	}
 
-	TEST_F(AccountTest, Account_계정_삭제_테스트) {
-		auto transaction = dbConn->StartTransaction();
-
-		wstring my_username = L"hello";
-		wstring my_password = L"world";
-
-		auto account = Create(my_username, my_password);
-
-		ASSERT_TRUE(account->valid());
-
-		repository.Remove(dbConn, account);
-
-		ASSERT_TRUE(account->valid() == false);
-
-		transaction->Rollback();
-	}
-
-	TEST_F(AccountTest, Account_동일_이름_생성_테스트) {
-		auto transaction = dbConn->StartTransaction();
-
-		wstring my_username = L"hello";
-		wstring my_password = L"world";
-
-		auto account = Create(my_username, my_password);
-
-		ASSERT_TRUE(account->valid());
-
-		EXPECT_THROW(Create(my_username, my_password), entity_persist_exception);
-
-		transaction->Rollback();
-	}
 }

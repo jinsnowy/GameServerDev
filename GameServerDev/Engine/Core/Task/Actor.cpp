@@ -1,25 +1,17 @@
 #include "pch.h"
-#include "TaskSerializer.h"
-#include "TaskScheduler.h"
-#include "TaskSchedule.h"
+#include "Actor.h"
 
-TaskSerializer::TaskSerializer()
+Actor::Actor(ExecutionContext& _exec_context)
 	:
-	_processing(false)
+	ActorBase(_exec_context)
 {
 }
 
-TaskSerializer::~TaskSerializer()
+Actor::~Actor()
 {
 }
 
-size_t TaskSerializer::Count()
-{
-	StdWriteLock lk(_mtx);
-	return _tasks.size();
-}
-
-void TaskSerializer::Push(TaskPtr task)
+void Actor::Push(TaskPtr task)
 {
 	{
 		StdWriteLock lk(_mtx);
@@ -32,7 +24,7 @@ void TaskSerializer::Push(TaskPtr task)
 	}
 }
 
-void TaskSerializer::Submit()
+void Actor::Submit()
 {
 	static TaskScheduler* taskScheduler = TaskScheduler::GetInstance();
 
@@ -60,7 +52,7 @@ void TaskSerializer::Submit()
 	taskScheduler->Schedule(schedule);
 }
 
-void TaskSerializer::PostExecute()
+void Actor::PostExecute()
 {
 	Submit();
 }

@@ -14,7 +14,7 @@ void DatabaseTest::SetUp()
 {
 	DatabaseManager::Config config;
 	config.connCount = 1;
-	config.connstr = g_DBConnStr;
+	config.connstr = Core::Config::dbsn;
 	ASSERT_CRASH(dbManager.Initialize(config));
 
 	dbConn = dbManager.GetConnection();

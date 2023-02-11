@@ -10,7 +10,7 @@
 ServerServiceBuilder::ServerServiceBuilder()
     :
     _backLog(10),
-    _port(Config::default_port),
+    _port(Core::Config::default_port),
     _acceptCount(1),
     _sessionFactory([]() { return std::shared_ptr<Session>(new ServerSession()); }),
     _networkFactory(TcpNetwork::CreateFactory<ServerHandshake>())

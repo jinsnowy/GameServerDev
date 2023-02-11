@@ -10,7 +10,7 @@
 ServerService::ServerService(SessionFactory sessionFactory, NetworkFactory networkFactory)
 	:
 	ServiceBase(sessionFactory, networkFactory),
-    _port(Config::default_port),
+    _port(Core::Config::default_port),
     _backLog(10),
 	_acceptCount(1)
 {
@@ -21,8 +21,8 @@ void ServerService::Initialize()
 	ServiceBase::Initialize();
 
 	DatabaseManager::Config config;
-	config.connCount = Config::thread_count;
-	config.connstr = Config::dbsn;
+	config.connCount = Core::Config::thread_count;
+	config.connstr = Core::Config::dbsn;
 
 	if (_dbManager.Initialize(config) == false) {
 		return;

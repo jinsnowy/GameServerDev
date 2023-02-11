@@ -1,14 +1,12 @@
 #pragma once
 
-#include "SessionManagerMock.h"
-#include "ServiceMock.h"
+#include "ClientServiceMock.h"
 #include "NetworkMock.h"
 
 class ClientMock
 {
 protected:
-	SessionManagerMock _sessionManagerMock;
-	ServiceMock _serviceMock;
+	unique_ptr<ClientServiceMock> _serviceMock;
 	shared_ptr<NetworkMock> _networkMock;
 
 	shared_ptr<Session> _serverSession;

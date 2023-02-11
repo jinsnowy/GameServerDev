@@ -14,11 +14,10 @@ public:
 
 	virtual void TearDown() override;
 
-protected:
-	DBConnectionSourcePtr GetDBConnection();
+	ServerMock& Server() { return _serverMock; }
+	ClientMock& Client() { return _clientMock; }
 
 private:
 	ServerMock _serverMock;
 	ClientMock _clientMock;
 };
-

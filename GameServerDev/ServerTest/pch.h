@@ -7,7 +7,6 @@
 #include "gtest/gtest.h"
 #include <Engine/Core/CorePch.h>
 #include <Protocol/UserProtocolHandler.h>
-#include "Config.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "Engined.lib")

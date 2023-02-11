@@ -36,10 +36,10 @@ void ServiceBase::Initialize()
 {
 	_started = false;
 	_initCount.store(0);
-	_threadContexts.resize(Config::thread_count, nullptr);
+	_threadContexts.resize(Core::Config::thread_count, nullptr);
 
 	std::vector<std::unique_ptr<std::thread>> threads;
-	for (int i = 0; i < Config::thread_count; ++i)
+	for (int i = 0; i < Core::Config::thread_count; ++i)
 	{
 		threads.emplace_back(std::make_unique<std::thread>([this, idx = i]()
 			{
@@ -108,8 +108,6 @@ void ServiceBase::ProcessCore(ThreadContext& context)
 	_initCount.fetch_add(1);
 
 	IoContext* ioContext = &context.ioContext;
-
-	TaskScheduler* taskScheduler = TaskScheduler::GetInstance();
 
 	int timeSliceMs = 128;
 

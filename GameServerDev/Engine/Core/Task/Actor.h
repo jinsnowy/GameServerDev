@@ -1,14 +1,14 @@
 #pragma once
 
-#include "ITaskCreator.h"
+#include "ActorBase.h"
 
-class TaskSchedule;
-class TaskSerializer : public ITaskCreator
+class ExecutionContext;
+class Actor : public ActorBase
 {
-	friend class TaskSchedule;
+	friend class ExecutionContext;
 public:
-	TaskSerializer();
-	virtual ~TaskSerializer();
+	Actor(ExecutionContext& _exec_context);
+	virtual ~Actor();
 
 public:
 	template<typename R, typename T, typename ...Args>
@@ -18,11 +18,8 @@ public:
 		Push(MakeTask(mem_func, obj, std::forward<Args>(args)...));
 	}
 
-	size_t Count();
-
 private:
 	atomic<bool>     _processing;
-	StdMutex	     _mtx;
 	queue<TaskPtr>   _tasks;
 
 private:

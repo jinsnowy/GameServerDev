@@ -8,7 +8,7 @@
 
 ClientServiceBuilder::ClientServiceBuilder()
 	:
-	_endPoint("127.0.0.1", Config::default_port),
+	_endPoint("127.0.0.1", Core::Config::default_port),
 	_clientNum(1),
 	_sessionFactory(Session::CreateSessionFactory<ClientSession>()),
 	_networkFactory(TcpNetwork::CreateFactory<ClientHandshake>())

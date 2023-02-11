@@ -10,8 +10,7 @@ using namespace packet;
 int main(int argc, char** argv)
 {
     Core::Initialize();
-
-    Config::thread_count = 1;
+    Core::Config::thread_count = 1;
 
     GamePacketInstaller::Install<ClientPacketHandler>();
 
