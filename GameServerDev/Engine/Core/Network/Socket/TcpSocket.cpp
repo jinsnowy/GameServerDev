@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "TcpSocket.h"
 #include "Core/Service/ServiceBase.h"
+#include "Core/Context/IoContext.h"
 
 TcpSocket::TcpSocket(ServiceBase& service)
 	:
 	_service(service),
 	_socket(NetUtils::CreateSocket())
 {
-	_service.GetIoContext().RegisterHandle((HANDLE)_socket);
+	_service.GetContext().GetIoContext()->RegisterHandle((HANDLE)_socket);
 }
 
 TcpSocket::~TcpSocket()

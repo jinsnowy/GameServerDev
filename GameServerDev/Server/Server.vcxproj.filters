@@ -23,9 +23,6 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Room.cpp">
-      <Filter>Room</Filter>
-    </ClCompile>
     <ClCompile Include="ServerPacketHandler.cpp">
       <Filter>ServerPacketHandler</Filter>
     </ClCompile>
@@ -35,9 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Room.h">
-      <Filter>Room</Filter>
-    </ClInclude>
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>ServerPacketHandler</Filter>
     </ClInclude>

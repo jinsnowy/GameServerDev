@@ -5,6 +5,7 @@
 #include "Core/Buffer/BufferSegment.h"
 #include "Core/Network/Object/TcpNetwork.h"
 #include "Core/Service/ServiceBase.h"
+#include "Core/Packet/PacketHandler.h"
 
 Session::Session()
 	:
@@ -85,6 +86,16 @@ void Session::DisconnectAsync()
 		return;
 
 	_network->DisconnectAsync();
+}
+
+void Session::HandleRecv(packet::PacketHandler* handler, const packet::PacketHeader& header, CHAR* buffer)
+{
+	CHAR* buffer_ptr = static_cast<CHAR*>(MemoryPool::allocate(header.size));
+	memcpy_s(buffer_ptr, header.size, buffer, header.size);
+	Enqueue<Session>(__FUNCTIONW__, [handler, header = header, buffer_ptr](SessionPtrCRef session) mutable {
+		handler->HandleRecv(session, header, buffer_ptr);
+		MemoryPool::deallocate(buffer_ptr);
+	});
 }
 
 void Session::OnConnected()

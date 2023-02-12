@@ -3,8 +3,10 @@
 
 void NetworkManager::OnConnected()
 {
+	ClientSession::OnConnected();
 }
 
 void NetworkManager::OnDisconnected()
 {
+	ClientSession::OnDisconnected();
 }

@@ -83,7 +83,7 @@ void TcpNetwork::Recv(DWORD recvBytes)
 				return;
 			}
 
-			GamePacketHandler->HandleRecv(session, *header, bufferToRead);
+			session->HandleRecv(GamePacketHandler, *header, bufferToRead);
 		}
 	}
 }
@@ -124,7 +124,7 @@ void TcpNetwork::Recv(DWORD recvBytes, packet::PacketHandler* handler)
 				return;
 			}
 
-			handler->HandleRecv(session, *header, bufferToRead);
+			session->HandleRecv(handler, *header, bufferToRead);
 		}
 	}
 }
@@ -177,6 +177,8 @@ void TcpNetwork::Start()
 	_pending = false;
 
 	RegisterRecv();
+	
+	LOG_INFO(L"start recv...");
 
 	if (_handshake) {
 		_handshake->Process();
@@ -264,8 +266,7 @@ void TcpNetwork::RegisterRecv()
 
 	RecvBuffer& recvBuffer = _stream.Recv();
 
-	if (!_socket.ReadAsync(recvBuffer.GetBufferPtr(), recvBuffer.GetFreeSize(), RecvEvent(shared_from_this())))
-	{
+	if (!_socket.ReadAsync(recvBuffer.GetBufferPtr(), recvBuffer.GetFreeSize(), RecvEvent(shared_from_this()))) {
 		int32 errCode = ::WSAGetLastError();
 
 		HandleError(errCode, IoType::IO_READ);

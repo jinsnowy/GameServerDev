@@ -1,6 +1,7 @@
 #pragma once
 
 class Entity;
+class DBConnection;
 class Repository
 {
 private:
@@ -23,7 +24,7 @@ protected:
 public:
 	virtual ~Repository();
 
-	virtual void Initialize(DBConnectionSourcePtr& db_conn);
+	virtual void Initialize(DBConnection* db_conn);
 
 	size_t Count() { return _entities.size(); }
 

@@ -1,8 +1,9 @@
 #pragma once
 
+#include "../../Actor/Actor.h"
 #include "TcpListenerNetwork.h"
 
-class TcpListener : public std::enable_shared_from_this<TcpListener>
+class TcpListener : public Actor
 {
 	friend struct AcceptEvent;
 	friend class TcpListenerBuilder;

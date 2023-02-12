@@ -11,7 +11,7 @@ Repository::~Repository()
 {
 }
 
-void Repository::Initialize(DBConnectionSourcePtr& db_conn)
+void Repository::Initialize(DBConnection* db_conn)
 {
 }
 

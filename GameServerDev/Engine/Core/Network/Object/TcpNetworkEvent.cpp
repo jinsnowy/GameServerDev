@@ -100,6 +100,8 @@ void AcceptEvent::operator()(int32 errorCode, DWORD)
 		return;
 	}
 
+	LOG_INFO(L"OnAccept");
+
 	if (!listenerPtr->ProcessAccept(networkPtr))
 	{
 		LOG_ERROR(L"cannot process accept");

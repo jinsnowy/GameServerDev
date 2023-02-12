@@ -41,6 +41,8 @@ void ClientHandshake::OnRecv(packet::PacketHeader* packet)
 
 		network->SendAsync(auth_request);
 		SetState(Hello);
+
+		LOG_INFO(L"Server Hello");
 	}
 	else if (protocol == AUTH_RESPONSE)
 	{
@@ -50,6 +52,7 @@ void ClientHandshake::OnRecv(packet::PacketHeader* packet)
 		if (success) {
 			network->SetAuthenticated();
 			SetState(Auth);
+			LOG_INFO(L"Auth Ok");
 		}
 		else {
 			LOG_ERROR(L"Auth Failed");

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _Singleton_H_
-#define _Singleton_H_
+#ifndef _SINGLETON_H_
+#define _SINGLETON_H_
 
 template<typename T>
 class ISingleton
@@ -15,10 +15,10 @@ public:
 	ISingleton(ISingleton&&) = delete;
 	ISingleton& operator=(ISingleton&&) = delete;
 
-	static T* GetInstance()
+	static T& GetInstance()
 	{
 		static T instance;
-		return &instance;
+		return instance;
 	}
 };
 

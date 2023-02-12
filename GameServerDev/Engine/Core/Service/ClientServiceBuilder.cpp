@@ -15,9 +15,9 @@ ClientServiceBuilder::ClientServiceBuilder()
 {
 }
 
-unique_ptr<ClientService> ClientServiceBuilder::Build()
+shared_ptr<ClientService> ClientServiceBuilder::Build()
 {
-	auto service = make_unique<ClientService>(_sessionFactory, _networkFactory);
+	auto service = make_shared<ClientService>(_sessionFactory, _networkFactory);
 	service->_endPoint = _endPoint;
 	service->_clientNum = _clientNum;
 

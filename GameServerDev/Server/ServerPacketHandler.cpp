@@ -3,7 +3,6 @@
 
 #include "Engine/Core/Session/Session.h"
 
-#include "Room.h"
 #include "UserSession.h"
 
 using namespace packet;
@@ -21,7 +20,7 @@ void ServerPacketHandler::onTest(SessionPtrCRef session, UserProtocol::Test pkt)
 
 	int count = counter[session->GetSessionId()]++;
 	if (count % 10 == 0) {
-		LOG_INFO(L"Session (%lld) : %S", session->GetSessionId(), pkt.text().c_str());
+		LOG_INFO(L"Session (%lld) : %S count %d", session->GetSessionId(), pkt.text().c_str(), count);
 	}
 
 	// auto player = session->GetShared<UserSession>()->GetPlayer();

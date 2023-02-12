@@ -6,6 +6,7 @@
 #include "Core/Network/Object/TcpNetwork.h"
 #include "Core/Network/Object/TcpListener.h"
 #include "Core/Network/Object/TcpListenerBuilder.h"
+#include "Core/Database/DatabaseManager.h"
 
 ServerService::ServerService(SessionFactory sessionFactory, NetworkFactory networkFactory)
 	:
@@ -18,33 +19,9 @@ ServerService::ServerService(SessionFactory sessionFactory, NetworkFactory netwo
 
 void ServerService::Initialize()
 {
+    DatabaseManager::GetInstance().Initialize();
+
 	ServiceBase::Initialize();
-
-	DatabaseManager::Config config;
-	config.connCount = Core::Config::thread_count;
-	config.connstr = Core::Config::dbsn;
-
-	if (_dbManager.Initialize(config) == false) {
-		return;
-	}
-
-	try
-	{
-		for (size_t idx = 0; idx < _threadContexts.size(); ++idx)
-		{
-			_threadContexts[idx]->dbConn = _dbManager.GetConnection();
-
-			for (auto& [tag, factory] : _repository_factories)
-			{
-				_threadContexts[idx]->repositories[tag] = factory();
-				_threadContexts[idx]->repositories[tag]->Initialize(_threadContexts[idx]->dbConn);
-			}
-		}
-	}
-	catch (std::exception e) {
-		LOG_ERROR(L"init failed : %s", e.what());
-		throw e;
-	}
 }
 
 void ServerService::Start()
@@ -57,9 +34,12 @@ void ServerService::Start()
         .AcceptCount(_acceptCount)
         .Factory(_networkFactory);
 
-    auto listener = builder.Build(*this);
-    if (!listener->Start())
+    ENQUEUE(ServerService, [builder](shared_ptr<ServerService> service) mutable
     {
-        throw std::exception("TcpListener start failed");
-    }
+        auto listener = builder.Build(*service);
+        if (!listener->Start())
+        {
+            throw std::exception("TcpListener start failed");
+        }
+    });
 }

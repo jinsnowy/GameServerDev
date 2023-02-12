@@ -21,7 +21,6 @@ class Logger : public ISingleton<Logger>
 		wstring message;
 	};
 
-	friend class ISingleton<Logger>;
 private:
 	bool _consoleLog;
 
@@ -35,10 +34,8 @@ private:
 	vector<LogInfo> _que;
 	atomic<bool> _pending;
 	ELogLevel _logLevel;
-private:
-	Logger();
-
 public:
+	Logger();
 	~Logger();
 
 	void SetConsolelogger(bool bConsolelogger) { _consoleLog = bConsolelogger; }
@@ -56,8 +53,8 @@ public:
 
 #define LOG_FATAL(fmt, ...) Logger::GLogger->Out(ELogLevel::Fatal, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
 #define LOG_ERROR(fmt, ...) Logger::GLogger->Out(ELogLevel::Error, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
-#define LOG_WARN(fmt, ...) Logger::GLogger->Out(ELogLevel::Warn, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
+#define LOG_WARN(fmt, ...)  Logger::GLogger->Out(ELogLevel::Warn, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
 #define LOG_DEBUG(fmt, ...) Logger::GLogger->Out(ELogLevel::Debug, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
-#define LOG_INFO(fmt, ...) Logger::GLogger->Out(ELogLevel::Info, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
+#define LOG_INFO(fmt, ...)  Logger::GLogger->Out(ELogLevel::Info, std::this_thread::get_id(), __LINE__, __FUNCTIONW__, fmt, __VA_ARGS__)
 
 #endif

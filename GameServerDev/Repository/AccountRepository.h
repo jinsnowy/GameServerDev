@@ -9,5 +9,5 @@ public:
 
 	~AccountRepository();
 
-	shared_ptr<AccountEntity> CreateNewAccount(DBConn& db_conn, const std::wstring& name, const wstring& password);
+	shared_ptr<AccountEntity> CreateNewAccount(DBConnection* db_conn, const std::wstring& name, const wstring& password);
 };

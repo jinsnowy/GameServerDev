@@ -26,25 +26,23 @@ int main(int argc, char** argv)
 
     service->Initialize();
     service->Start();
-    service->Run([&]() 
-    {     
-        int packetNum = 0;
 
-        while (1)
+    int packetNum = 0;
+
+    while (1)
+    {
+        service->ForEach([&packetNum](SessionPtr session)
         {
-            service->ForEach([&packetNum](SessionPtr session)
-            {            
-                UserProtocol::Test test;
-                test.set_text(StringUtils::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
+            UserProtocol::Test test;
+            test.set_text(StringUtils::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
 
-                session->Send(test);
-            });
+            session->Send(test);
+        });
 
-            std::this_thread::sleep_for(100ms);
+        std::this_thread::sleep_for(100ms);
 
-            ++packetNum;
-        }
-    });
+        ++packetNum;
+    }
 
     return 0;
 }

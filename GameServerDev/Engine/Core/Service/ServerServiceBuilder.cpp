@@ -9,17 +9,17 @@
 
 ServerServiceBuilder::ServerServiceBuilder()
     :
-    _backLog(10),
+    _backLog(50),
     _port(Core::Config::default_port),
-    _acceptCount(1),
+    _acceptCount(10),
     _sessionFactory([]() { return std::shared_ptr<Session>(new ServerSession()); }),
     _networkFactory(TcpNetwork::CreateFactory<ServerHandshake>())
 {
 }
 
-unique_ptr<ServerService> ServerServiceBuilder::Build()
+shared_ptr<ServerService> ServerServiceBuilder::Build()
 {
-    auto service = make_unique<ServerService>(_sessionFactory, _networkFactory);
+    auto service = make_shared<ServerService>(_sessionFactory, _networkFactory);
     service->_backLog = _backLog;
     service->_port = _port;
 

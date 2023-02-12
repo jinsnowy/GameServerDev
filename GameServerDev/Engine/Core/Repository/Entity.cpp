@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Entity.h"
 #include "EntityException.h"
-#include "../../Database/DBUtils.h"
+#include "../Database/DBUtils.h"
 
 Entity::Entity()
 	:
@@ -20,21 +20,21 @@ void Entity::force_valid(PERSIST_ACTION action)
 	}
 }
 
-void Entity::persist(DBConnectionSourcePtr& db_conn)
+void Entity::persist(DBConnection* db_conn)
 {
 	if (_pending_perish == true) {
 		if (Remove(db_conn) == false) {
-			throw entity_persist_exception(PERSIST_ACTION::REMOVE, shared_from_this(), db_conn->Get()->last_error_message());
+			throw entity_persist_exception(PERSIST_ACTION::REMOVE, shared_from_this(), db_conn->last_error_message());
 		}
 	}
 	else if (_id == kInvalidId) {
 		if (Create(db_conn) == false) {
-			throw entity_persist_exception(PERSIST_ACTION::CREATE, shared_from_this(), db_conn->Get()->last_error_message());
+			throw entity_persist_exception(PERSIST_ACTION::CREATE, shared_from_this(), db_conn->last_error_message());
 		}
 	}
 	else {
 		if (Update(db_conn) == false) {
-			throw entity_persist_exception(PERSIST_ACTION::UPDATE, shared_from_this(), db_conn->Get()->last_error_message());
+			throw entity_persist_exception(PERSIST_ACTION::UPDATE, shared_from_this(), db_conn->last_error_message());
 		}
 	}
 }

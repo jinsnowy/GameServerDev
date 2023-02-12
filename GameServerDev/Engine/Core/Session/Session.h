@@ -1,8 +1,15 @@
 #pragma once
 
+#include "../Actor/Actor.h"
+
+namespace packet {
+	class PacketHandler;
+	struct PacketHeader;
+}
+
 struct BufferSegment;
-struct ThreadContext;
-class Session : public std::enable_shared_from_this<Session>
+class ThreadContext;
+class Session : public Actor
 {
 	friend class TcpNetwork;
 	friend class TcpListener;
@@ -38,6 +45,8 @@ public:
 	static SessionFactory CreateSessionFactory() {
 		return []() { return SessionPtr(new T()); };
 	}
+
+	void HandleRecv(packet::PacketHandler* handler, const packet::PacketHeader& header, CHAR* buffer);
 
 protected:
 	shared_ptr<TcpNetwork> _network;

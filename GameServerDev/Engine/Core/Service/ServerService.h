@@ -10,7 +10,6 @@ private:
 	uint16 _port;
 	int32 _backLog;
 	int32 _acceptCount;
-	DatabaseManager _dbManager;
 
 public:
 	ServerService(SessionFactory sessionFactory, NetworkFactory networkFactory);

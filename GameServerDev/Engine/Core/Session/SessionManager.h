@@ -17,10 +17,11 @@ public:
 
 	vector<shared_ptr<Session>> GetSessions();
 
+	void AddSession(SessionPtrCRef sessionPtr);
+
+	void RemoveSession(SessionPtrCRef sessionPtr);
+
 private:
 	StdMutex _sync;
 	std::vector<shared_ptr<Session>> _sessionContainer;
-
-	void AddSession(SessionPtrCRef sessionPtr);
-	void RemoveSession(SessionPtrCRef sessionPtr);
 };

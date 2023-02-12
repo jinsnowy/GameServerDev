@@ -14,7 +14,7 @@ public:
 public:
 	ClientServiceBuilder();
 
-	unique_ptr<ClientService> Build();
+	shared_ptr<ClientService> Build();
 
 	auto& EndPoint(const EndPoint& endPoint)
 	{

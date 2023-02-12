@@ -34,6 +34,8 @@ void ServerHandshake::OnRecv(PacketHeader* packet)
 		hello.uuid.Set(_uuid);
 		network->SendAsync(hello);
 		SetState(Hello);
+
+		LOG_INFO(L"Client Hello");
 	}
 	else if (protocol == AUTH_REQUEST)
 	{
@@ -42,14 +44,18 @@ void ServerHandshake::OnRecv(PacketHeader* packet)
 
 		PKT_AUTH_RESPONSE response;
 
+		
+
 		if (uuid.Equal(_uuid) == false) {
 			response.success = false;
 			response.reason.Set(L"Invalid UUID");
+			LOG_INFO(L"Auth Failed");
 		}
 		else {
 			response.success = true;
 			network->SetAuthenticated();
 			SetState(Auth);
+			LOG_INFO(L"Auth Ok");
 		}
 
 		network->SendAsync(response);

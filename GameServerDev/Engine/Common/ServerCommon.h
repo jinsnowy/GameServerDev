@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Common/Common.h"
 #include "../Core/Packet/GamePacketInstaller.h"
 #include "../Core/Network/Object/TcpNetwork.h"
 #include "../Core/Network/Handshake/ServerHandshake.h"

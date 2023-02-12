@@ -26,7 +26,7 @@ void ServerPacketHandler::onCreateAccountRequest(SessionPtrCRef session, UserPro
 
 	auto password_hash = Crypto::GenerateSHA256Hash(password);
 
-	auto entity = repository->CreateNewAccount(username, password_hash);
+	auto entity = repository->CreateNewAccount(dbConn, username, password_hash);
 
 	UserProtocol::LoginResponse res;
 	if (entity == nullptr) {

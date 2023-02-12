@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Database/DBConnection.h"
+#include "../Database/DBConnection.h"
 #include "Repository.h"
 #include "Entity.h"
 
@@ -13,7 +13,7 @@ protected:
 
 public:
 	template <typename ...Args>
-	std::shared_ptr<T> Create(DBConnectionSourcePtr& db_conn, Args&&... args) 
+	std::shared_ptr<T> Create(DBConnection* db_conn, Args&&... args)
 	{
 		auto entity = std::make_shared<T>(std::forward<Args>(args)...);
 		entity->persist(db_conn);
@@ -28,7 +28,7 @@ public:
 		return entity;
 	}
 
-	void Remove(DBConnectionSourcePtr& db_conn, shared_ptr<T> entity) 
+	void Remove(DBConnection* db_conn, shared_ptr<T> entity)
 	{
 		Repository::Remove(entity);
 		entity->persist(db_conn);
@@ -54,7 +54,7 @@ public:
 		return nullptr;
 	}
 
-	void Initialize(DBConnectionSourcePtr& db_conn) override
+	void Initialize(DBConnection* db_conn) override
 	{
 		auto entities = T::SelectAll(db_conn);
 		for (auto& entity : entities) 

@@ -28,16 +28,7 @@ void ClientService::Start()
 
 	wstring target_address = _endPoint.ToString();
 
-	for (int i = 0; i < _clientNum; ++i)
-	{
-		auto clientSession = _sessionManager.NewSession()->GetShared<ClientSession>();
-		auto network = _networkFactory(*this);
-		auto connector = make_shared<TcpConnector>(clientSession, network);
-
-		connector->Connect(_endPoint);
-
-		_connectors.push_back(connector);
-	}
+	ENQUEUE_MEM(&ClientService::StartConnection);
 }
 
 void ClientService::Broadcast(BufferSegment buffer)
@@ -59,14 +50,26 @@ void ClientService::Broadcast(BufferSegment buffer)
 
 void ClientService::ForEach(function<void(SessionPtr)> func)
 {
-	auto clients = _sessionManager.GetSessions();
-
-	for (auto& client : clients)
+	ENQUEUE(ClientService, [func](shared_ptr<ClientService> service)
 	{
-		func(client);
-	}
+		auto clients = service->GetSessionManager().GetSessions();
+
+		for (auto& client : clients)
+		{
+			func(client);
+		}
+	});
 }
 
-void ClientService::CreateJobOnActiveContext(std::function<void()> func)
+void ClientService::StartConnection()
 {
+	for (int i = 0; i < _clientNum; ++i)
+	{
+		auto network = _networkFactory(*this);
+		auto connector = make_shared<TcpConnector>(network);
+
+		connector->Connect(_endPoint);
+
+		_connectors.push_back(connector);
+	}
 }

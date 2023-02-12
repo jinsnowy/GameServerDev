@@ -5,7 +5,6 @@
 
 #include "ServerPacketHandler.h"
 #include "UserSession.h"
-#include "Room.h"
 #include "Protocol/UserProtocol.pb.h"
 
 using namespace std;
@@ -14,8 +13,7 @@ using namespace packet;
 int main(int argc, char ** argv)
 {
 	Core::Initialize();
-
-	Core::Config::thread_count = 1;
+	Core::Config::thread_count = 4;
 
 	GamePacketInstaller::Install<ServerPacketHandler>();
 	

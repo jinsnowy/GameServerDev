@@ -15,7 +15,7 @@ private:
 public:
 	ServerServiceBuilder();
 
-	unique_ptr<ServerService> Build();
+	shared_ptr<ServerService> Build();
 
 	auto& BackLog(int backLog) {
 		_backLog = backLog;

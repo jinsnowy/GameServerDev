@@ -73,11 +73,14 @@ bool TcpListener::ProcessAccept(const NetworkPtr& network)
 
 void TcpListener::RegisterAccept()
 {
-	NetworkPtr network = _networkFactory(_serviceBase);
-	LPVOID bufferPtr = network->GetRecvBuffer().GetBufferPtr();
-
-	if (!_listenerNetwork.AcceptAsync(shared_from_this(), network, bufferPtr))
+	ENQUEUE(TcpListener, [](shared_ptr<TcpListener> listener)
 	{
-		LOG_ERROR(L"accept error : %s", get_last_err_msg());
-	}
+		NetworkPtr network = listener->_networkFactory(listener->_serviceBase);
+		LPVOID bufferPtr = network->GetRecvBuffer().GetBufferPtr();
+
+		if (!listener->_listenerNetwork.AcceptAsync(listener, network, bufferPtr))
+		{
+			LOG_ERROR(L"accept error : %s", get_last_err_msg());
+		}
+	});
 }

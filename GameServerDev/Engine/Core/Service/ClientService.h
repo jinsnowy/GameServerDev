@@ -22,5 +22,6 @@ public:
 
 	void ForEach(function<void(SessionPtr)> func);
 
-	void CreateJobOnActiveContext(std::function<void()> func);
+private:
+	void StartConnection();
 };

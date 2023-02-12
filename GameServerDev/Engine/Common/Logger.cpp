@@ -2,7 +2,7 @@
 #include "Logger.h"
 #include "Utils/StringUtils.h"
 
-Logger* Logger::GLogger = Logger::GetInstance();
+Logger* Logger::GLogger = &Logger::GetInstance();
 
 static const wchar_t* GetTag(ELogLevel level)
 {

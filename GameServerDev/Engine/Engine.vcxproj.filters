@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Database">
-      <UniqueIdentifier>{fea54945-713f-4a9b-8217-7d132b6157ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{a1432cf0-3ea4-4f09-b778-c6e22c37ecea}</UniqueIdentifier>
     </Filter>
@@ -15,9 +12,6 @@
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{4b17811a-4979-4882-9c31-e52ee3cbf274}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Task">
-      <UniqueIdentifier>{29a3626b-f726-4525-bb38-6ddc133ea089}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Network">
       <UniqueIdentifier>{6b3b98c8-42d5-45b3-9777-cf2008f7eb64}</UniqueIdentifier>
@@ -33,9 +27,6 @@
     </Filter>
     <Filter Include="Core\Buffer">
       <UniqueIdentifier>{ba0f0e31-4260-4154-9d4c-e20c409f93b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Task\Alaram">
-      <UniqueIdentifier>{3c3001e0-d8d8-413d-a5e3-e47d7910fe4c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Exception">
       <UniqueIdentifier>{21363eb6-0e1c-482e-8eba-ebf2a59a0854}</UniqueIdentifier>
@@ -73,29 +64,17 @@
     <Filter Include="Core\Network\Handshake">
       <UniqueIdentifier>{7f52113c-0848-4467-b3b6-cf5968c08149}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Context">
+      <UniqueIdentifier>{7e0ad7d3-0d14-4e8d-b924-f3c6670e2f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Actor">
+      <UniqueIdentifier>{29a3626b-f726-4525-bb38-6ddc133ea089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Database">
+      <UniqueIdentifier>{fea54945-713f-4a9b-8217-7d132b6157ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Database\DatabaseManager.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="Database\DBConnection.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="Database\DBConnectionPool.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="Database\DBConnectionSource.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="Database\DBStatement.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="Database\DBTransaction.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="Database\DBUtils.h">
-      <Filter>Database</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdParty\Tinyxml2\tinyxml2.h">
       <Filter>ThirdParty\tinyxml2</Filter>
     </ClInclude>
@@ -147,9 +126,6 @@
     <ClInclude Include="Core\Network\Socket\TcpSocket.h">
       <Filter>Core\Network\Socket</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Network\IO\IoContext.h">
-      <Filter>Core\Network\IO</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Network\IO\IoEvent.h">
       <Filter>Core\Network\IO</Filter>
     </ClInclude>
@@ -179,12 +155,6 @@
     </ClInclude>
     <ClInclude Include="Core\Buffer\SendBuffer.h">
       <Filter>Core\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Task\Alarm\Alarm.h">
-      <Filter>Core\Task\Alaram</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Task\Alarm\AlarmManager.h">
-      <Filter>Core\Task\Alaram</Filter>
     </ClInclude>
     <ClInclude Include="Core\Exception\PacketException.h">
       <Filter>Core\Exception</Filter>
@@ -291,24 +261,6 @@
     <ClInclude Include="Core\Packet\InternalPacketHandler.h">
       <Filter>Core\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Task\ITaskCreator.h">
-      <Filter>Core\Task</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Task\Task.h">
-      <Filter>Core\Task</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Task\TaskAsync.h">
-      <Filter>Core\Task</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Task\TaskSchedule.h">
-      <Filter>Core\Task</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Task\TaskScheduler.h">
-      <Filter>Core\Task</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Task\TaskSerializer.h">
-      <Filter>Core\Task</Filter>
-    </ClInclude>
     <ClInclude Include="Core\framework.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -363,26 +315,50 @@
     <ClInclude Include="Core\Network\Object\TcpConnector.h">
       <Filter>Core\Network\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Actor\Actor.h">
+      <Filter>Core\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Actor\Task.h">
+      <Filter>Core\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Actor\TaskAsync.h">
+      <Filter>Core\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Actor\TaskQueue.h">
+      <Filter>Core\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Context\ThreadContext.h">
+      <Filter>Core\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Context\ExecutionContext.h">
+      <Filter>Core\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Context\IoContext.h">
+      <Filter>Core\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Database\DatabaseManager.h">
+      <Filter>Core\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Database\DBConnection.h">
+      <Filter>Core\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Database\DBConnectionPool.h">
+      <Filter>Core\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Database\DBStatement.h">
+      <Filter>Core\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Database\DBTransaction.h">
+      <Filter>Core\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Database\DBUtils.h">
+      <Filter>Core\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ThreadStaticSingleton.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Database\DatabaseManager.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
-    <ClCompile Include="Database\DBConnection.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
-    <ClCompile Include="Database\DBConnectionPool.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
-    <ClCompile Include="Database\DBConnectionSource.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
-    <ClCompile Include="Database\DBStatement.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
-    <ClCompile Include="Database\DBTransaction.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
     <ClCompile Include="ThirdParty\Tinyxml2\tinyxml2.cpp">
       <Filter>ThirdParty\tinyxml2</Filter>
     </ClCompile>
@@ -400,9 +376,6 @@
     </ClCompile>
     <ClCompile Include="Core\Network\Socket\TcpSocket.cpp">
       <Filter>Core\Network\Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Network\IO\IoContext.cpp">
-      <Filter>Core\Network\IO</Filter>
     </ClCompile>
     <ClCompile Include="Core\Network\IO\IoEvent.cpp">
       <Filter>Core\Network\IO</Filter>
@@ -433,12 +406,6 @@
     </ClCompile>
     <ClCompile Include="Core\Buffer\SendBuffer.cpp">
       <Filter>Core\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Task\Alarm\Alarm.cpp">
-      <Filter>Core\Task\Alaram</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Task\Alarm\AlarmManager.cpp">
-      <Filter>Core\Task\Alaram</Filter>
     </ClCompile>
     <ClCompile Include="Core\Exception\SehException.cpp">
       <Filter>Core\Exception</Filter>
@@ -530,24 +497,6 @@
     <ClCompile Include="Core\Packet\InternalPacketHandler.cpp">
       <Filter>Core\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Task\ITaskCreator.cpp">
-      <Filter>Core\Task</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Task\Task.cpp">
-      <Filter>Core\Task</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Task\TaskAsync.cpp">
-      <Filter>Core\Task</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Task\TaskSchedule.cpp">
-      <Filter>Core\Task</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Task\TaskScheduler.cpp">
-      <Filter>Core\Task</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Task\TaskSerializer.cpp">
-      <Filter>Core\Task</Filter>
-    </ClCompile>
     <ClCompile Include="Core\CorePch.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -595,6 +544,42 @@
     </ClCompile>
     <ClCompile Include="Core\Network\Object\TcpConnector.cpp">
       <Filter>Core\Network\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Actor\Actor.cpp">
+      <Filter>Core\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Actor\Task.cpp">
+      <Filter>Core\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Actor\TaskAsync.cpp">
+      <Filter>Core\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Actor\TaskQueue.cpp">
+      <Filter>Core\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Context\ThreadContext.cpp">
+      <Filter>Core\Context</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Context\ExecutionContext.cpp">
+      <Filter>Core\Context</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Context\IoContext.cpp">
+      <Filter>Core\Context</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Database\DatabaseManager.cpp">
+      <Filter>Core\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Database\DBConnection.cpp">
+      <Filter>Core\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Database\DBConnectionPool.cpp">
+      <Filter>Core\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Database\DBStatement.cpp">
+      <Filter>Core\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Database\DBTransaction.cpp">
+      <Filter>Core\Database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
