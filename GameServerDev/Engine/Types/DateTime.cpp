@@ -14,6 +14,16 @@ DateTime DateTime::UtcNow()
 	return DateTime(std::time(NULL));
 }
 
+DateTime DateTime::FromString(const std::wstring& str, const wchar_t* format)
+{
+	DateTime datetime;
+	std::wstringstream wss;
+	wss << str;
+	wss >> std::get_time((tm*)&datetime, format);
+
+	return datetime;
+}
+
 DateTime::DateTime(time_t t)
 {
 	gmtime_s((tm*)this, &t);

@@ -114,6 +114,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)$(SolutionName)\NetworkEngine;$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableSpecificWarnings>4946;4251</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,8 +122,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>CD $(SolutionDir)
+CALL CopyMessageHeader.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>CD $(SolutionDir)
@@ -162,19 +163,21 @@ CALL GenProtocols.bat</Command>
   <ItemGroup>
     <ClCompile Include="..\..\Include\protocol\Enum.pb.cc" />
     <ClCompile Include="..\..\Include\protocol\Struct.pb.cc" />
-    <ClCompile Include="..\..\Include\protocol\UserProtocol.pb.cc" />
-    <ClCompile Include="..\..\Include\protocol\UserProtocolHandler.cpp" />
+    <ClCompile Include="..\..\Include\Protocol\User.pb.cc" />
+    <ClCompile Include="..\..\Include\Protocol\UserHandler.cpp" />
+    <ClCompile Include="ProtobufUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Include\protocol\Enum.pb.h" />
     <ClInclude Include="..\..\Include\protocol\Struct.pb.h" />
-    <ClInclude Include="..\..\Include\protocol\UserProtocol.pb.h" />
-    <ClInclude Include="..\..\Include\protocol\UserProtocolHandler.h" />
+    <ClInclude Include="..\..\Include\Protocol\User.pb.h" />
+    <ClInclude Include="..\..\Include\Protocol\UserHandler.h" />
+    <ClInclude Include="ProtobufUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Protocol\Enum.proto" />
     <None Include="..\..\Protocol\Struct.proto" />
-    <None Include="..\..\Protocol\UserProtocol.proto" />
+    <None Include="..\..\Protocol\User.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

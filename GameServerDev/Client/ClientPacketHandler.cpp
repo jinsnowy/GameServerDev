@@ -3,12 +3,12 @@
 
 using namespace packet;
 
-void ClientPacketHandler::onTest(SessionPtrCRef session, UserProtocol::Test pkt)
+void ClientPacketHandler::onTest(SessionPtrCRef session, User::Test pkt)
 {
 	//LOG_INFO("%s", pkt.text().c_str());
 }
 
-void ClientPacketHandler::onLoginResponse(SessionPtrCRef session, UserProtocol::LoginResponse pkt)
+void ClientPacketHandler::onLoginResponse(SessionPtrCRef session, User::LoginResponse pkt)
 {
 	/*session->GetShared<PlayerSession>()->SetPlayer(pkt.player());
 

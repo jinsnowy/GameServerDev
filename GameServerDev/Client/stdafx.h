@@ -5,7 +5,7 @@
 #pragma warning( push )
 #pragma warning(disable : 4946)
 #pragma warning(disable : 4251)
-#include "protocol/UserProtocolHandler.h"
+#include "protocol/UserHandler.h"
 #pragma warning( pop ) 
 
 #ifdef _DEBUG

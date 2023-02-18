@@ -33,8 +33,10 @@ int main(int argc, char** argv)
     {
         service->ForEach([&packetNum](SessionPtr session)
         {
-            UserProtocol::Test test;
-            test.set_text(StringUtils::Format("[%d] hello world : %lld", packetNum, session->GetSessionId()));
+           string narrow = StringUtils::ToNarrow(L"안녕하세요 테스트 중입니다.");
+
+            User::Test test;
+            test.set_text(narrow);
 
             session->Send(test);
         });

@@ -7,38 +7,47 @@
     <Filter Include="UserProtocol">
       <UniqueIdentifier>{48b24fa7-d706-43df-a02e-2696b9b27bd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{b345c2d8-6c38-40b1-ac5f-3363ba7ada14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Include\protocol\UserProtocolHandler.cpp">
-      <Filter>UserProtocol</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Include\protocol\Enum.pb.cc">
       <Filter>Protobuf</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Include\protocol\Struct.pb.cc">
       <Filter>Protobuf</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Include\protocol\UserProtocol.pb.cc">
+    <ClCompile Include="..\..\Include\Protocol\UserHandler.cpp">
+      <Filter>UserProtocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Include\Protocol\User.pb.cc">
       <Filter>Protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtobufUtils.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Include\protocol\UserProtocolHandler.h">
-      <Filter>UserProtocol</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\protocol\Enum.pb.h">
       <Filter>Protobuf</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Include\protocol\Struct.pb.h">
       <Filter>Protobuf</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\protocol\UserProtocol.pb.h">
+    <ClInclude Include="..\..\Include\Protocol\UserHandler.h">
+      <Filter>UserProtocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\Protocol\User.pb.h">
       <Filter>Protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtobufUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Protocol\Enum.proto" />
     <None Include="..\..\Protocol\Struct.proto" />
-    <None Include="..\..\Protocol\UserProtocol.proto" />
+    <None Include="..\..\Protocol\User.proto" />
   </ItemGroup>
 </Project>

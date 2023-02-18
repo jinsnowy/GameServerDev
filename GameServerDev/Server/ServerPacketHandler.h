@@ -1,14 +1,12 @@
 #pragma once
 
-#include "protocol/UserProtocolHandler.h"
-
 namespace packet
 {
-	class ServerPacketHandler : public UserProtocolPacketHandler
+	class ServerPacketHandler : public UserPacketHandler
 	{
 	public:
-		virtual void onHeartbeat(SessionPtrCRef session, UserProtocol::Heartbeat pkt) override;
-		virtual void onTest(SessionPtrCRef session, UserProtocol::Test pkt) override;
-		virtual void onLoginRequest(SessionPtrCRef session, UserProtocol::LoginRequest pkt) override;
+		virtual void onHeartbeat(SessionPtrCRef session, User::Heartbeat pkt) override;
+		virtual void onTest(SessionPtrCRef session, User::Test pkt) override;
+		virtual void onLoginRequest(SessionPtrCRef session, User::LoginRequest pkt) override;
 	};
 }

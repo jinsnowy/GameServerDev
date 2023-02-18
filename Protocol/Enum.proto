@@ -1,2 +1,3 @@
 syntax = "proto3";
-package UserProtocol;
+
+package User;

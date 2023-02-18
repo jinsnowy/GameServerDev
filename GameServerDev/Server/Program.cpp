@@ -5,7 +5,7 @@
 
 #include "ServerPacketHandler.h"
 #include "UserSession.h"
-#include "Protocol/UserProtocol.pb.h"
+#include "Protocol/User.pb.h"
 
 using namespace std;
 using namespace packet;
@@ -17,7 +17,6 @@ int main(int argc, char ** argv)
 
 	GamePacketInstaller::Install<ServerPacketHandler>();
 	
-
 	SessionFactory sessionFactory = Session::CreateSessionFactory<UserSession>();
 	NetworkFactory networkFactory = TcpNetwork::CreateFactory<ServerHandshake>();
 	ServerServiceBuilder builder;

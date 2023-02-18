@@ -2,7 +2,7 @@
 
 
 #include <Engine/Core/CorePch.h>
-#include "protocol/UserProtocolHandler.h"
+#include "protocol/UserHandler.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "Engined.lib")

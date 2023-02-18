@@ -42,12 +42,10 @@ std::wstring StringUtils::ToWide(const std::string& str)
 		return wstr;
 	}
 
-	size_t szNumberOfConverted = str.size();
-	wchar_t buffer[DEFAULT_BUF_SIZE];
-	ZeroMemory(&buffer, sizeof(buffer));
-	mbstowcs_s(&szNumberOfConverted, buffer, str.c_str(), DEFAULT_BUF_SIZE);
+	WCHAR buffer[DEFAULT_BUF_SIZE];
+	int length = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.size(), buffer, DEFAULT_BUF_SIZE);
 
-	return buffer;
+	return std::wstring(buffer, length);
 }
 
 std::string StringUtils::ToNarrow(const std::wstring& str)
@@ -59,12 +57,9 @@ std::string StringUtils::ToNarrow(const std::wstring& str)
 		return str;
 	}
 
-	size_t szNumberOfConverted = str.size();
 	CHAR buffer[DEFAULT_BUF_SIZE];
-	ZeroMemory(&buffer, sizeof(buffer));
-	wcstombs_s(&szNumberOfConverted, buffer, str.c_str(), DEFAULT_BUF_SIZE);
-
-	return buffer;
+	int length = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), str.size(), buffer, DEFAULT_BUF_SIZE, 0, 0);
+	return std::string(buffer, length);
 }
 
 std::string StringUtils::Join(const vector<std::string>& strs, const std::string& delimiter)
