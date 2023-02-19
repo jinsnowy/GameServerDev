@@ -1,32 +1,47 @@
 #pragma once
 
-class ServiceBase;
-class TcpSocket
-{
-	friend class ServiceBase;
-	friend class TcpListenerSocket;
-protected:
-	SOCKET	   _socket;
+namespace Core {
+	namespace Network {
+		namespace Service {
+			class ServiceBase;
+		}
+		namespace IO {
+			enum class IoType;
+			struct IoEvent;
+		}
 
-private:
-	ServiceBase& _service;
-	atomic<bool> _disposed;
+		namespace Socket {
+			class TcpSocket
+			{
+				friend class Service::ServiceBase;
+				friend class TcpListenerSocket;
 
-public:
-	TcpSocket(ServiceBase& service);
-	virtual ~TcpSocket();
+				using ServiceBase = Service::ServiceBase;
+			protected:
+				SOCKET	   _socket;
 
-	ServiceBase& Service() { return _service; }
-	SOCKET   GetSocket() { return _socket; }
+			private:
+				ServiceBase& _service;
+				atomic<bool> _disposed;
 
-	bool SetLinger(uint16 onoff, uint16 linger);
-	bool SetReuseAddress(bool flag);
-	bool SetRecvBufferSize(int32 size);
-	bool SetSendBufferSize(int32 size);
-	bool SetTcpNoDelay(bool flag);
+			public:
+				TcpSocket(Service::ServiceBase& service);
+				virtual ~TcpSocket();
 
-	bool IsOk();
-	void Dispose();
-	bool IsDisposed();
-	void Close();
-};
+				ServiceBase& Service() { return _service; }
+				SOCKET   GetSocket() { return _socket; }
+
+				bool SetLinger(uint16 onoff, uint16 linger);
+				bool SetReuseAddress(bool flag);
+				bool SetRecvBufferSize(int32 size);
+				bool SetSendBufferSize(int32 size);
+				bool SetTcpNoDelay(bool flag);
+
+				bool IsOk();
+				void Dispose();
+				bool IsDisposed();
+				void Close();
+			};
+		}
+	}
+}

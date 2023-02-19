@@ -25,30 +25,6 @@
     <Filter Include="Core\Network\Socket">
       <UniqueIdentifier>{500c6004-bac0-471e-aa92-a0263141e626}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Buffer">
-      <UniqueIdentifier>{ba0f0e31-4260-4154-9d4c-e20c409f93b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Exception">
-      <UniqueIdentifier>{21363eb6-0e1c-482e-8eba-ebf2a59a0854}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Memory">
-      <UniqueIdentifier>{d7b7c95e-d4c0-4882-a363-21eda929ebfb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Packet">
-      <UniqueIdentifier>{d49ca617-2e43-47a9-82d7-71ebf6da7545}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Protocol">
-      <UniqueIdentifier>{7b2178f2-9770-4989-9ab8-6ebf566e3468}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Service">
-      <UniqueIdentifier>{d5ef0f87-f79d-472d-a8be-921482bb7bbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Session">
-      <UniqueIdentifier>{8b87d5a8-1e8d-43f3-8e79-e2dba4721f51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{abb55291-904e-4eac-81b4-04576542c177}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Types">
       <UniqueIdentifier>{f3a5d98c-294b-433e-9abc-14a2829ffa46}</UniqueIdentifier>
     </Filter>
@@ -64,14 +40,41 @@
     <Filter Include="Core\Network\Handshake">
       <UniqueIdentifier>{7f52113c-0848-4467-b3b6-cf5968c08149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Context">
-      <UniqueIdentifier>{7e0ad7d3-0d14-4e8d-b924-f3c6670e2f6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Actor">
-      <UniqueIdentifier>{29a3626b-f726-4525-bb38-6ddc133ea089}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Database">
       <UniqueIdentifier>{fea54945-713f-4a9b-8217-7d132b6157ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Datastructure">
+      <UniqueIdentifier>{bd48ee35-ddd5-4fdd-91a3-2a321394a5e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\System">
+      <UniqueIdentifier>{7e0ad7d3-0d14-4e8d-b924-f3c6670e2f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Network\Buffer">
+      <UniqueIdentifier>{683406d8-cf95-4de2-bbf4-14986a598014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Network\Session">
+      <UniqueIdentifier>{2fea3130-7aaf-4176-91f7-a94edc474363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Network\Protocol">
+      <UniqueIdentifier>{91f1dfd7-06cd-4b5d-a2a8-268f0dba7e6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\System\Actor">
+      <UniqueIdentifier>{29a3626b-f726-4525-bb38-6ddc133ea089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\System\Memory">
+      <UniqueIdentifier>{d7b7c95e-d4c0-4882-a363-21eda929ebfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Common">
+      <UniqueIdentifier>{abb55291-904e-4eac-81b4-04576542c177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\System\Exception">
+      <UniqueIdentifier>{21363eb6-0e1c-482e-8eba-ebf2a59a0854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Network\Packet">
+      <UniqueIdentifier>{d8aae6b2-b33f-405a-a4ea-fc9b1f1fe53a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Network\Service">
+      <UniqueIdentifier>{7c3ecb25-47ab-4e7e-a0e1-11b3e9ff8c79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,86 +144,8 @@
     <ClInclude Include="Core\Network\Object\TcpNetwork.h">
       <Filter>Core\Network\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Buffer\BufferSegment.h">
-      <Filter>Core\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Buffer\BufferSource.h">
-      <Filter>Core\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Buffer\NetworkStream.h">
-      <Filter>Core\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Buffer\RecvBuffer.h">
-      <Filter>Core\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Buffer\SendBuffer.h">
-      <Filter>Core\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Exception\PacketException.h">
-      <Filter>Core\Exception</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Exception\SehException.h">
-      <Filter>Core\Exception</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Memory\MemoryPool.h">
-      <Filter>Core\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Memory\PoolObject.h">
-      <Filter>Core\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Memory\TlsMemory.h">
-      <Filter>Core\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Packet\GamePacketInstaller.h">
-      <Filter>Core\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Packet\PacketHandler.h">
-      <Filter>Core\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Packet\PacketHeader.h">
-      <Filter>Core\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Protocol\Protocol.h">
-      <Filter>Core\Protocol</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Service\ClientService.h">
-      <Filter>Core\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Service\ServerService.h">
-      <Filter>Core\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Service\ServiceBase.h">
-      <Filter>Core\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Session\ClientSession.h">
-      <Filter>Core\Session</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Session\ServerSession.h">
-      <Filter>Core\Session</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Session\Session.h">
-      <Filter>Core\Session</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Session\SessionManager.h">
-      <Filter>Core\Session</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Common.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Logger.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Serializer.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\StdMutex.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\StringBuffer.h">
-      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Types\Types.h">
       <Filter>Types</Filter>
@@ -249,17 +174,8 @@
     <ClInclude Include="Utils\Xml.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Common\Singleton.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Network\Object\TcpNetworkEvent.h">
       <Filter>Core\Network\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Protocol\InternalProtocol.h">
-      <Filter>Core\Protocol</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Packet\InternalPacketHandler.h">
-      <Filter>Core\Packet</Filter>
     </ClInclude>
     <ClInclude Include="Core\framework.h">
       <Filter>Core</Filter>
@@ -282,27 +198,6 @@
     <ClInclude Include="Utils\Reflection.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Common\Config.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Service\ServerServiceBuilder.h">
-      <Filter>Core\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Builder.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Service\ClientServiceBuilder.h">
-      <Filter>Core\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\ServerCommon.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\ClientCommon.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Network\Handshake\Authenticate.h">
-      <Filter>Core\Network\Handshake</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Network\Handshake\ClientHandshake.h">
       <Filter>Core\Network\Handshake</Filter>
     </ClInclude>
@@ -314,27 +209,6 @@
     </ClInclude>
     <ClInclude Include="Core\Network\Object\TcpConnector.h">
       <Filter>Core\Network\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Actor\Actor.h">
-      <Filter>Core\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Actor\Task.h">
-      <Filter>Core\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Actor\TaskAsync.h">
-      <Filter>Core\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Actor\TaskQueue.h">
-      <Filter>Core\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Context\ThreadContext.h">
-      <Filter>Core\Context</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Context\ExecutionContext.h">
-      <Filter>Core\Context</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Context\IoContext.h">
-      <Filter>Core\Context</Filter>
     </ClInclude>
     <ClInclude Include="Core\Database\DatabaseManager.h">
       <Filter>Core\Database</Filter>
@@ -354,8 +228,134 @@
     <ClInclude Include="Core\Database\DBUtils.h">
       <Filter>Core\Database</Filter>
     </ClInclude>
-    <ClInclude Include="Common\ThreadStaticSingleton.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Core\Datastructure\LRUCache.h">
+      <Filter>Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Datastructure\MPSCQueue.h">
+      <Filter>Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\ExecutionContext.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\ThreadContext.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\GlobalWaitingQueue.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Buffer\BufferSegment.h">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Buffer\BufferSource.h">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Buffer\NetworkStream.h">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Buffer\RecvBuffer.h">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Buffer\SendBuffer.h">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\Actor\Actor.h">
+      <Filter>Core\System\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\Actor\Message.h">
+      <Filter>Core\System\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\Actor\MessageQueue.h">
+      <Filter>Core\System\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\Memory\MemoryPool.h">
+      <Filter>Core\System\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\Memory\PoolObject.h">
+      <Filter>Core\System\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\IO\IoContext.h">
+      <Filter>Core\Network\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\Builder.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\ClientCommon.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\Common.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\Config.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\Logger.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\ServerCommon.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\Singleton.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\StringBuffer.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\ThreadStaticSingleton.h">
+      <Filter>Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System\Exception\SehException.h">
+      <Filter>Core\System\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Protocol\InternalProtocol.h">
+      <Filter>Core\Network\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Protocol\Protocol.h">
+      <Filter>Core\Network\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Session\ClientSession.h">
+      <Filter>Core\Network\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Session\ServerSession.h">
+      <Filter>Core\Network\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Session\SessionBase.h">
+      <Filter>Core\Network\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Session\SessionManager.h">
+      <Filter>Core\Network\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Packet\GamePacketInstaller.h">
+      <Filter>Core\Network\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Packet\InternalPacketHandler.h">
+      <Filter>Core\Network\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Packet\PacketHandler.h">
+      <Filter>Core\Network\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Packet\PacketHeader.h">
+      <Filter>Core\Network\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Packet\Serializer.h">
+      <Filter>Core\Network\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Service\ClientService.h">
+      <Filter>Core\Network\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Service\ClientServiceBuilder.h">
+      <Filter>Core\Network\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Service\ServerService.h">
+      <Filter>Core\Network\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Service\ServerServiceBuilder.h">
+      <Filter>Core\Network\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Network\Service\ServiceBase.h">
+      <Filter>Core\Network\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common\ThreadId.h">
+      <Filter>Core\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -392,80 +392,8 @@
     <ClCompile Include="Core\Network\Object\TcpNetwork.cpp">
       <Filter>Core\Network\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Buffer\BufferSegment.cpp">
-      <Filter>Core\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Buffer\BufferSource.cpp">
-      <Filter>Core\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Buffer\NetworkStream.cpp">
-      <Filter>Core\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Buffer\RecvBuffer.cpp">
-      <Filter>Core\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Buffer\SendBuffer.cpp">
-      <Filter>Core\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Exception\SehException.cpp">
-      <Filter>Core\Exception</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Memory\MemoryPool.cpp">
-      <Filter>Core\Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Memory\PoolObject.cpp">
-      <Filter>Core\Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Memory\TlsMemory.cpp">
-      <Filter>Core\Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Packet\GamePacketInstaller.cpp">
-      <Filter>Core\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Packet\PacketHandler.cpp">
-      <Filter>Core\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Packet\PacketHeader.cpp">
-      <Filter>Core\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Protocol\Protocol.cpp">
-      <Filter>Core\Protocol</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Service\ClientService.cpp">
-      <Filter>Core\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Service\ServerService.cpp">
-      <Filter>Core\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Service\ServiceBase.cpp">
-      <Filter>Core\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Session\ClientSession.cpp">
-      <Filter>Core\Session</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Session\ServerSession.cpp">
-      <Filter>Core\Session</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Session\Session.cpp">
-      <Filter>Core\Session</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Session\SessionManager.cpp">
-      <Filter>Core\Session</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Logger.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Serializer.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\StdMutex.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\StringBuffer.cpp">
-      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Utils\Crypto.cpp">
       <Filter>Utils</Filter>
@@ -491,12 +419,6 @@
     <ClCompile Include="Core\Network\Object\TcpNetworkEvent.cpp">
       <Filter>Core\Network\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Protocol\InternalProtocol.cpp">
-      <Filter>Core\Protocol</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Packet\InternalPacketHandler.cpp">
-      <Filter>Core\Packet</Filter>
-    </ClCompile>
     <ClCompile Include="Core\CorePch.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -518,21 +440,6 @@
     <ClCompile Include="Utils\Reflection.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Common\Config.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Service\ServerServiceBuilder.cpp">
-      <Filter>Core\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Builder.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Service\ClientServiceBuilder.cpp">
-      <Filter>Core\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Network\Handshake\Authenticate.cpp">
-      <Filter>Core\Network\Handshake</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Network\Handshake\ClientHandshake.cpp">
       <Filter>Core\Network\Handshake</Filter>
     </ClCompile>
@@ -544,27 +451,6 @@
     </ClCompile>
     <ClCompile Include="Core\Network\Object\TcpConnector.cpp">
       <Filter>Core\Network\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Actor\Actor.cpp">
-      <Filter>Core\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Actor\Task.cpp">
-      <Filter>Core\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Actor\TaskAsync.cpp">
-      <Filter>Core\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Actor\TaskQueue.cpp">
-      <Filter>Core\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Context\ThreadContext.cpp">
-      <Filter>Core\Context</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Context\ExecutionContext.cpp">
-      <Filter>Core\Context</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Context\IoContext.cpp">
-      <Filter>Core\Context</Filter>
     </ClCompile>
     <ClCompile Include="Core\Database\DatabaseManager.cpp">
       <Filter>Core\Database</Filter>
@@ -580,6 +466,117 @@
     </ClCompile>
     <ClCompile Include="Core\Database\DBTransaction.cpp">
       <Filter>Core\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Datastructure\LRUCache.cpp">
+      <Filter>Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Datastructure\MPSCQueue.cpp">
+      <Filter>Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\ExecutionContext.cpp">
+      <Filter>Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\ThreadContext.cpp">
+      <Filter>Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\GlobalWaitingQueue.cpp">
+      <Filter>Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Buffer\BufferSegment.cpp">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Buffer\BufferSource.cpp">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Buffer\NetworkStream.cpp">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Buffer\RecvBuffer.cpp">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Buffer\SendBuffer.cpp">
+      <Filter>Core\Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\Actor\Actor.cpp">
+      <Filter>Core\System\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\Actor\Message.cpp">
+      <Filter>Core\System\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\Actor\MessageQueue.cpp">
+      <Filter>Core\System\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\Memory\MemoryPool.cpp">
+      <Filter>Core\System\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\Memory\PoolObject.cpp">
+      <Filter>Core\System\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\IO\IoContext.cpp">
+      <Filter>Core\Network\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Common\Builder.cpp">
+      <Filter>Core\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Common\Config.cpp">
+      <Filter>Core\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Common\Logger.cpp">
+      <Filter>Core\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Common\StringBuffer.cpp">
+      <Filter>Core\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\System\Exception\SehException.cpp">
+      <Filter>Core\System\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Protocol\InternalProtocol.cpp">
+      <Filter>Core\Network\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Protocol\Protocol.cpp">
+      <Filter>Core\Network\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Session\ClientSession.cpp">
+      <Filter>Core\Network\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Session\ServerSession.cpp">
+      <Filter>Core\Network\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Session\SessionBase.cpp">
+      <Filter>Core\Network\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Session\SessionManager.cpp">
+      <Filter>Core\Network\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Packet\GamePacketInstaller.cpp">
+      <Filter>Core\Network\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Packet\InternalPacketHandler.cpp">
+      <Filter>Core\Network\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Packet\PacketHandler.cpp">
+      <Filter>Core\Network\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Packet\PacketHeader.cpp">
+      <Filter>Core\Network\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Packet\Serializer.cpp">
+      <Filter>Core\Network\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Service\ClientService.cpp">
+      <Filter>Core\Network\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Service\ClientServiceBuilder.cpp">
+      <Filter>Core\Network\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Service\ServerService.cpp">
+      <Filter>Core\Network\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Service\ServerServiceBuilder.cpp">
+      <Filter>Core\Network\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Network\Service\ServiceBase.cpp">
+      <Filter>Core\Network\Service</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

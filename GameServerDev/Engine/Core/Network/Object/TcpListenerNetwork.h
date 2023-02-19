@@ -2,29 +2,37 @@
 
 #include "../Socket/TcpListenerSocket.h"
 
-class TcpListenerNetwork
-{
-private:
-	TcpListenerSocket  _listenerSocket;
+namespace Core {
+	namespace Network {
+		namespace Service {
+			class ServiceBase;
+		}
 
-public:
-	TcpListenerNetwork(ServiceBase& serviceBase);
+		class TcpListenerNetwork
+		{
+		private:
+			Socket::TcpListenerSocket  _listenerSocket;
 
-	~TcpListenerNetwork();
+		public:
+			TcpListenerNetwork(Service::ServiceBase& serviceBase);
 
-	bool Initialize();
+			~TcpListenerNetwork();
 
-	bool Bind(uint16 port);
+			bool Initialize();
 
-	bool Listen(int32 backLog);
+			bool Bind(uint16 port);
 
-	EndPoint GetBindAddress();
+			bool Listen(int32 backLog);
 
-	bool AcceptAsync(ListenerPtr listener, NetworkPtr network, LPVOID bufferPtr);
+			EndPoint GetBindAddress();
 
-	bool UpdateAcceptSocket(SOCKET socket);
+			bool AcceptAsync(ListenerPtr listener, NetworkPtr network, LPVOID bufferPtr);
 
-	void Finish();
+			bool UpdateAcceptSocket(SOCKET socket);
 
-	bool IsFinished();
-};
+			void Finish();
+
+			bool IsFinished();
+		};
+	}
+}

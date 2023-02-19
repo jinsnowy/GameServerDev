@@ -16,6 +16,9 @@
 	Class(const Class&) = delete;\
 	void operator=(const Class&) = delete;
 
+#define ALLOC(size) Core::System::Memory::MemoryPool::allocate(size)
+#define DEALLOC(size) Core::System::Memory::MemoryPool::deallocate(size)
+
 #define WRITE_LOCK(mtx) StdWriteLock lk(mtx);
 #define READ_LOCK(mtx) StdReadLock lk(mtx);
 

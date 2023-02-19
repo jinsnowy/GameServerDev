@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "DatabaseManager.h"
-#include "Common/Config.h"
+#include "Core/Common/Config.h"
 
 DatabaseManager::DatabaseManager()
     :

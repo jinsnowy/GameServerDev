@@ -24,8 +24,6 @@ void Repository::Create(std::shared_ptr<Entity> entity)
 
 	OnCreate(entity);
 
-	StdWriteLock lk(_mtx);
-
 	_entities[entity->id()] = entity;
 }
 
@@ -41,8 +39,6 @@ void Repository::Remove(std::shared_ptr<Entity> entity)
 
 	OnDestroy(entity);
 
-	StdWriteLock lk(_mtx);
-
 	auto iter = _entities.find(id);
 	if (iter == _entities.end()) {
 		throw repositoy_exception("entity was not in repository");
@@ -53,8 +49,6 @@ void Repository::Remove(std::shared_ptr<Entity> entity)
 
 std::shared_ptr<Entity> Repository::Find(int id)
 {
-	StdReadLock lk(_mtx);
-
 	if (auto iter = _entities.find(id); iter != _entities.end()) {
 		return iter->second;
 	}
@@ -72,12 +66,10 @@ void Repository::OnDestroy(std::shared_ptr<Entity> entity)
 
 bool Repository::Exists(int id)
 {
-	StdReadLock lk(_mtx);
 	return _entities.find(id) != _entities.end();
 }
 
 void Repository::Clear()
 {
-	StdWriteLock lk(_mtx);
 	_entities.clear();
 }

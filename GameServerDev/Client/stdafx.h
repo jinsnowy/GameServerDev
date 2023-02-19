@@ -17,3 +17,5 @@
 #pragma comment(lib, "MessageLib.lib")
 #pragma comment(lib, "libprotobuf.lib")
 #endif
+
+#include "Engine/Core/Common/ClientCommon.h"

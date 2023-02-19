@@ -6,40 +6,44 @@
 #include "{{parser.package_name}}.pb.h"
 #pragma warning( pop ) 
 
-#include "Engine/Core/Protocol/Protocol.h"
-#include "Engine/Core/Packet/PacketHeader.h"
-#include "Engine/Core/Packet/PacketHandler.h"
+#include "Engine/Core/Network/Protocol/Protocol.h"
+#include "Engine/Core/Network/Packet/PacketHeader.h"
+#include "Engine/Core/Network/Packet/PacketHandler.h"
 
-namespace packet
+{%- for pkt in parser.total_pkt %}
+USE_PROTOCOL({{parser.package_name}}::{{pkt.name}});
+{%- endfor %}
+
+namespace Core
 {
-	enum {{parser.package_name_upper}} : int
+namespace Network
+{
+namespace Packet
+{
+	enum class {{parser.package_name}}Protocol : int
 	{
 	{%- for pkt in parser.total_pkt %}
-		PKT_{{pkt.name}} = {{pkt.id}},
+		{{pkt.name}} = {{pkt.id}},
 	{%- endfor %}
 
-		{{parser.package_name_upper}}_START = {{parser.start_id}},
-		{{parser.package_name_upper}}_END = {{parser.end_id}}
+		START = {{parser.start_id}},
+		END = {{parser.end_id}}
 	};
-
-	{%- for pkt in parser.total_pkt %}
-	USE_PROTOCOL({{parser.package_name}}::{{pkt.name}});
-	{%- endfor %}
 
 	class {{parser.package_name}}PacketHandler: public PacketHandler
 	{
 	public:
 		virtual bool IsValidProtocol(int protocol) override
 		{
-			return protocol >= {{parser.package_name_upper}}_START&& protocol <= {{parser.package_name_upper}}_END;
+			return protocol >= (int){{parser.package_name}}Protocol::START && protocol <= (int){{parser.package_name}}Protocol::END;
 		}
 
-		virtual void HandleRecv(SessionPtrCRef session, const PacketHeader & header, char* buffer) override
+		virtual void HandleRecv(const std::shared_ptr<Session::SessionBase>& session, const PacketHeader & header, char* buffer) override
 		{
-			switch (header.protocol)
+			switch (({{parser.package_name}}Protocol)header.protocol)
 			{
 	{%- for pkt in parser.total_pkt %}
-			case PKT_{{pkt.name}}:
+			case {{parser.package_name}}Protocol::{{pkt.name}}:
 				on{{pkt.name_res}}(session, Parse<{{parser.package_name}}::{{pkt.name}}> (buffer, header.size));
 				break;
 	{%- endfor %}
@@ -48,7 +52,10 @@ namespace packet
 
 	public:
 	{%- for pkt in parser.total_pkt %}
-		virtual void on{{pkt.name_res}}(SessionPtrCRef, {{parser.package_name}}::{{pkt.name}} pkt) {}
+		virtual void on{{pkt.name_res}}(const std::shared_ptr<Session::SessionBase>&, {{parser.package_name}}::{{pkt.name}} pkt) {}
 	{%- endfor %}
 	};
+
+}
+}
 }

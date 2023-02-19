@@ -17,8 +17,6 @@ bool DBConnectionPool::Connect(int32 connectionCount, LPCWSTR connectionString)
 {
 	_connStr = connectionString;
 
-	StdWriteLock lk(_mtx);
-
 	if (::SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &_environment) != SQL_SUCCESS)
 		return false;
 
@@ -39,8 +37,6 @@ bool DBConnectionPool::Connect(int32 connectionCount, LPCWSTR connectionString)
 
 void DBConnectionPool::Clear()
 {
-	StdWriteLock lk(_mtx);
-
 	if (_environment != SQL_NULL_HANDLE)
 	{
 		::SQLFreeHandle(SQL_HANDLE_ENV, _environment);
@@ -66,7 +62,6 @@ DBConnection* DBConnectionPool::GetConnection()
 
 void DBConnectionPool::Push(DBConnection* connection)
 {
-	StdWriteLock lk(_mtx);
 	_connections.push_back(connection);
 }
 

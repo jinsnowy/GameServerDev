@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <bitset>
 #include <mutex>
-#include <memory>
+#include <Memory>
 #include <functional>
 #include <thread>
 #include <future>
@@ -40,13 +40,17 @@ using namespace std;
 #include "CoreStruct.h"
 
 #ifdef _ENGINE
-#include "Common/Common.h"
 #include "Types/Types.h"
 #include "Utils/Utils.h"
+#include "Core/Common/Common.h"
+#include "Core/System/Memory/MemoryPool.h"
+#include "Core/Network/Packet/Serializer.h"
 #else
-#include "Engine/Common/Common.h"
 #include "Engine/Types/Types.h"
 #include "Engine/Utils/Utils.h"
+#include "Engine/Core/Common/Common.h"
+#include "Engine/Core/System/Memory/MemoryPool.h"
+#include "Engine/Core/Network/Packet/Serializer.h"
 #endif
 
 #pragma comment(lib, "Rpcrt4.lib")

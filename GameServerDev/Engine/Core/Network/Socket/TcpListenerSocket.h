@@ -3,36 +3,42 @@
 #include "TcpSocket.h"
 #include "../IO/IoEvent.h"
 
-class TcpListenerSocket : public TcpSocket
-{
-private:
-	EndPoint _bindEndPoint;
+namespace Core {
+	namespace Network {
+		namespace Socket {
+			class TcpListenerSocket : public TcpSocket
+			{
+			private:
+				EndPoint _bindEndPoint;
 
-public:
-	TcpListenerSocket(ServiceBase& service);
+			public:
+				TcpListenerSocket(ServiceBase& service);
 
-	EndPoint GetAddress() { return _bindEndPoint; }
+				EndPoint GetAddress() { return _bindEndPoint; }
 
-	bool Bind(uint16 port);
+				bool Bind(uint16 port);
 
-	bool Listen(int32 backLog = SOMAXCONN);
+				bool Listen(int32 backLog = SOMAXCONN);
 
-	bool SetUpdateAcceptSocket(SOCKET acceptSocket);
+				bool SetUpdateAcceptSocket(SOCKET acceptSocket);
 
-	template<typename OnAcceptCallback>
-	bool AcceptAsync(SOCKET acceptSocket, LPVOID recvBuf, OnAcceptCallback&& onAccept)
-	{
-		IoEvent* ioEvent = MakeAcceptTask(std::forward<OnAcceptCallback>(onAccept));
+				template<typename OnAcceptCallback>
+				bool AcceptAsync(SOCKET acceptSocket, LPVOID recvBuf, OnAcceptCallback&& onAccept)
+				{
+					IO::IoEvent* ioEvent = IO::MakeAcceptTask(std::forward<OnAcceptCallback>(onAccept));
 
-		if (!NetUtils::AcceptAsync(_socket, acceptSocket, recvBuf, ioEvent))
-		{
-			ioEvent->release();
+					if (!NetUtils::AcceptAsync(_socket, acceptSocket, recvBuf, ioEvent))
+					{
+						ioEvent->release();
 
-			return false;
+						return false;
+					}
+
+					return true;
+				}
+
+				ServiceBase& GetServiceBase() { return TcpSocket::_service; }
+			};
 		}
-
-		return true;
 	}
-
-	ServiceBase& GetServiceBase() { return TcpSocket::_service; }
-};
+}

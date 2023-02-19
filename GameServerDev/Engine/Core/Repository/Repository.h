@@ -5,7 +5,6 @@ class DBConnection;
 class Repository
 {
 private:
-	StdMutex _mtx;
 	std::unordered_map<int, std::shared_ptr<Entity>> _entities;
 
 protected:

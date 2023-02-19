@@ -16,3 +16,5 @@
 
 #pragma comment(lib, "cryptlib.lib")
 #pragma comment(lib, "Repository.lib")
+
+#include "Engine/Core/Common/ServerCommon.h"

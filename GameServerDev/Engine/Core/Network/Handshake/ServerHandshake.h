@@ -1,13 +1,17 @@
 #pragma once
 #include "Handshake.h"
 
-class ServerHandshake : public Handshake
-{
-public:
-	ServerHandshake(NetworkPtr network);
+namespace Core {
+	namespace Network {
+		class ServerHandshake : public Handshake
+		{
+		public:
+			ServerHandshake(NetworkPtr network);
 
-protected:
-	virtual void OnProcess(NetworkPtr network) override;
+		protected:
+			virtual void OnProcess(NetworkPtr network) override;
 
-	virtual void OnRecv(packet::PacketHeader* packet) override;
-};
+			virtual void OnRecv(Packet::PacketHeader* packet) override;
+		};
+	}
+}

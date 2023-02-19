@@ -23,7 +23,7 @@ std::string StringUtils::Format(const char* fmt, ...)
 
 std::wstring StringUtils::Format(const wchar_t* fmt, ...)
 {
-	wchar_t buffer[1024];
+	wchar_t buffer[2048];
 
 	va_list arg_ptr;
 	va_start(arg_ptr, fmt);
@@ -43,7 +43,7 @@ std::wstring StringUtils::ToWide(const std::string& str)
 	}
 
 	WCHAR buffer[DEFAULT_BUF_SIZE];
-	int length = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.size(), buffer, DEFAULT_BUF_SIZE);
+	int length = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), (int)str.size(), buffer, DEFAULT_BUF_SIZE);
 
 	return std::wstring(buffer, length);
 }
@@ -58,7 +58,7 @@ std::string StringUtils::ToNarrow(const std::wstring& str)
 	}
 
 	CHAR buffer[DEFAULT_BUF_SIZE];
-	int length = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), str.size(), buffer, DEFAULT_BUF_SIZE, 0, 0);
+	int length = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), (int)str.size(), buffer, DEFAULT_BUF_SIZE, 0, 0);
 	return std::string(buffer, length);
 }
 

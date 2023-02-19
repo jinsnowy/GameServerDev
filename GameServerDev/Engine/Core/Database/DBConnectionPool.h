@@ -18,7 +18,6 @@ public:
 
 private:
 	wstring _connStr;
-	StdMutex _mtx;
 	SQLHENV  _environment;
 	vector<DBConnection*> _connections;
 

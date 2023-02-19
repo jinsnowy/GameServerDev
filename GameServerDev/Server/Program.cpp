@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "Engine/Common/ServerCommon.h"
-
 #include "Repository/AccountRepository.h"
 
 #include "ServerPacketHandler.h"
@@ -8,7 +6,13 @@
 #include "Protocol/User.pb.h"
 
 using namespace std;
-using namespace packet;
+using namespace Core;
+using namespace Core::System;
+using namespace Core::Network;
+using namespace Core::Network::Packet;
+using namespace Core::Network::Session;
+using namespace Core::Network::Service;
+
 
 int main(int argc, char ** argv)
 {

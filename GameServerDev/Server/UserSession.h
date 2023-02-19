@@ -1,7 +1,6 @@
 #pragma once
-#include "Engine/Core/Session/ServerSession.h"
 
-class UserSession : public ServerSession
+class UserSession : public Core::Network::Session::ServerSession
 {
 public:
 	UserSession();

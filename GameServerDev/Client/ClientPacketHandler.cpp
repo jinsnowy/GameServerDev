@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "ClientPacketHandler.h"
 
-using namespace packet;
-
 void ClientPacketHandler::onTest(SessionPtrCRef session, User::Test pkt)
 {
 	//LOG_INFO("%s", pkt.text().c_str());

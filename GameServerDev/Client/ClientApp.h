@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/Core/Session/ClientSession.h"
+#include "Engine/Core/Network/Session/ClientSession.h"
 #include "ClientState.h"
 #include "NetworkManager.h"
 

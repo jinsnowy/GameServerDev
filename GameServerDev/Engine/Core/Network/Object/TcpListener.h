@@ -1,33 +1,37 @@
 #pragma once
 
-#include "../../Actor/Actor.h"
+#include "../../System/Actor/Actor.h"
 #include "TcpListenerNetwork.h"
 
-class TcpListener : public Actor
-{
-	friend struct AcceptEvent;
-	friend class TcpListenerBuilder;
-private:
-	ServiceBase&   _serviceBase;
-	atomic<bool>   _finished;
-	uint16		   _bindPort;
-	int32		   _backLog;
-	int32		   _acceptCount;
-	NetworkFactory _networkFactory;
+namespace Core {
+	namespace Network {
+		namespace Service {
+			class ServiceBase;
+		}
 
-public:
-	TcpListener(ServiceBase& serviceBase);
-	
-	~TcpListener();
+		class TcpListener : public System::Actor::Actor
+		{
+			friend struct AcceptEvent;
+			friend class TcpListenerBuilder;
+		private:
+			Service::ServiceBase& _serviceBase;
+			atomic<bool>   _finished;
+			uint16		   _bindPort;
+			int32		   _backLog;
+			int32		   _acceptCount;
+			NetworkFactory _networkFactory;
 
-	bool Start();
+		public:
+			TcpListener(Service::ServiceBase& serviceBase);
+			~TcpListener();
 
-	void Stop();
+			bool Start();
+			void Stop();
+		private:
+			bool ProcessAccept(const NetworkPtr& network);
+			void RegisterAccept();
 
-private:
-	bool ProcessAccept(const NetworkPtr& network);
-
-	void RegisterAccept();
-
-	TcpListenerNetwork _listenerNetwork;
-};
+			TcpListenerNetwork _listenerNetwork;
+		};
+	}
+}

@@ -1,11 +1,8 @@
 #pragma once
 
-namespace packet
+class ClientPacketHandler : public Core::Network::Packet::UserPacketHandler
 {
-	class ClientPacketHandler : public UserPacketHandler
-	{
-	protected:
-		virtual void onTest(SessionPtrCRef session, User::Test pkt);
-		virtual void onLoginResponse(SessionPtrCRef session, User::LoginResponse pkt) override;
-	};
-}
+protected:
+	virtual void onTest(SessionPtrCRef session, User::Test pkt);
+	virtual void onLoginResponse(SessionPtrCRef session, User::LoginResponse pkt) override;
+};

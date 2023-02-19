@@ -1,7 +1,8 @@
 #pragma once
-#include "Engine/Core/Session/ClientSession.h"
 
-class NetworkManager : public ClientSession
+#include "Engine/Core/Network/Session/ClientSession.h"
+
+class NetworkManager : public Core::Network::Session::ClientSession
 {
 public:
 	virtual void OnConnected() override;

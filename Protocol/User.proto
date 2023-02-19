@@ -12,7 +12,7 @@ message Heartbeat
 
 message Test
 {
-	string text = 1;
+	bytes text = 1;
 }
 
 message LoginRequest

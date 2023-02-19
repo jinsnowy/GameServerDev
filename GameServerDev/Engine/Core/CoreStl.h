@@ -18,4 +18,7 @@
 #include <unordered_set>
 #include <atomic>
 
+#include <concurrent_queue.h>
+#include <concurrent_vector.h>
+
 using namespace std;
